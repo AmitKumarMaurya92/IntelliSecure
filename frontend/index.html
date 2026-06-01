@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InteliSecure Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            InteliSecure
+        </div>
+        <div class="section-title">
+            Monitoring
+        </div>
+        <ul class="menu">
+            <li class="active">Dashboard</li>
+            <li>Real-Time Monitor</li>
+            <li>Threats</li>
+            <li>Alerts</li>
+            <li>Logs</li>
+            <li>Devices</li>
+        </ul>
+        <div class="section-title">
+            Analytics
+        </div>
+        <ul class="menu">
+            <li>Security Score</li>
+            <li>Attack Trends</li>
+            <li>Risk Analysis</li>
+        </ul>
+        <div class="section-title">
+            Reports
+        </div>
+        <ul class="menu">
+            <li>PDF Reports</li>
+            <li>PPT Reports</li>
+        </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <div>
+                <h1>Dashboard</h1>
+                <p>Welcome back Administrator</p>
+            </div>
+            <div>
+                <input type="text" placeholder="Search..." class="search-box">
+            </div>
+        </header>
+
+        <!-- CARDS -->
+        <section class="cards">
+            <div class="card">
+                <h4>Total Logs</h4>
+                <h2 id="totalLogs">0</h2>
+            </div>
+            <div class="card">
+                <h4>Active Threats</h4>
+                <h2 id="activeThreats">0</h2>
+            </div>
+            <div class="card">
+                <h4>Critical Alerts</h4>
+                <h2 id="criticalAlerts">0</h2>
+            </div>
+            <div class="card">
+                <h4>Security Score</h4>
+                <h2 id="securityScore">0</h2>
+            </div>
+        </section>
+
+        <!-- CHARTS -->
+        <section class="charts">
+            <div class="chart-box">
+                <h3>Threat Trend</h3>
+                <div id="threatTrendChart"></div>
+            </div>
+            <div class="chart-box">
+                <h3>Threat Distribution</h3>
+                <div id="threatDistributionChart"></div>
+            </div>
+        </section>
+
+        <!-- ADVANCED ANALYTICS CHARTS -->
+        <section class="charts">
+            <div class="chart-box">
+                <h3>Security Score Trend</h3>
+                <div id="scoreTrendChart"></div>
+            </div>
+            <div class="chart-box">
+                <h3>Top Attack Sources</h3>
+                <div id="attackSourcesChart"></div>
+            </div>
+        </section>
+
+        <!-- ALERTS -->
+        <section class="bottom-grid">
+            <div class="recent-alerts">
+                <h3>Recent Alerts</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Threat</th>
+                        <th>Severity</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+                    <tbody id="alertsTable">
+                    </tbody>
+                </table>
+            </div>
+            <div class="system-health">
+                <h3>System Health</h3>
+                <div class="health-item">
+                    Log Collector : Active
+                </div>
+                <div class="health-item">
+                    Threat Engine : Active
+                </div>
+                <div class="health-item">
+                    AI Detector : Active
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

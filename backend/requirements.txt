@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+sqlalchemy
+passlib[bcrypt]
+python-jose[cryptography]
+python-dotenv
+pandas
+numpy
+scikit-learn
+joblib
+reportlab
+python-pptx
+aiofiles
+pytest
+pydantic-settings
