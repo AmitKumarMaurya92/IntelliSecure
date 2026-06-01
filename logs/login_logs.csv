@@ -2,3 +2,5 @@ timestamp,username,ip_address,status
 2026-06-01T10:00:00Z,operator_01,192.168.1.10,Success
 2026-06-01T10:05:00Z,malicious_actor,192.168.1.200,Failed
 2026-06-01T13:51:07.835209Z,sec_admin,testclient,Success
+2026-06-01T13:53:56.272766Z,ABCD1234,127.0.0.1,Failed
+2026-06-01T13:53:58.598911Z,ABCD1234,127.0.0.1,Failed

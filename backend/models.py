@@ -65,3 +65,15 @@ class USBLog(Base):
     device_name = Column(String, nullable=False)
     device_id = Column(String, index=True, nullable=False)
     action = Column(String, nullable=False)  # "Connected", "Disconnected", "Blocked"
+
+class Alert(Base):
+    __tablename__ = "alerts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    threat_type = Column(String, index=True, nullable=False)  # e.g., "Brute Force Attack", "Port Scanning"
+    severity = Column(String, nullable=False)  # "Low", "Medium", "High", "Critical"
+    source = Column(String, index=True, nullable=False)  # e.g., Client IP or Username
+    description = Column(String, nullable=False)
+    resolved = Column(Boolean, default=False, nullable=False)
+    resolution_notes = Column(String, nullable=True)
