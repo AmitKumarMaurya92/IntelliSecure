@@ -17,41 +17,47 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="logo">
-            <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="logo-icon">
+                <svg width="34" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--primary-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <rect x="9" y="11" width="6" height="6" rx="1" fill="var(--primary-blue)" stroke="none"></rect>
+                    <path d="M9 11V9a3 3 0 0 1 6 0v2" stroke="var(--primary-blue)" fill="none"></path>
+                </svg>
+            </div>
             <div class="logo-text">
-                InteliSecure
+                <div class="logo-title">Inteli<span class="text-blue">Secure</span></div>
                 <span class="logo-sub">AI-Powered Cybersecurity</span>
             </div>
         </div>
 
         <div class="section-title">Monitoring</div>
         <ul class="menu">
-            <li class="active"><i class="fa-solid fa-house"></i> Dashboard</li>
-            <li><i class="fa-solid fa-wave-square"></i> Real-Time Monitor</li>
-            <li><i class="fa-solid fa-shield-virus"></i> Threats</li>
-            <li><i class="fa-regular fa-bell"></i> Alerts</li>
-            <li><i class="fa-regular fa-file-lines"></i> Logs</li>
-            <li><i class="fa-solid fa-desktop"></i> Devices (LAN)</li>
+            <li class="active" data-target="view-dashboard"><i class="fa-solid fa-house"></i> Dashboard</li>
+            <li data-target="view-real-time"><i class="fa-solid fa-wave-square"></i> Real-Time Monitor</li>
+            <li data-target="view-threats"><i class="fa-solid fa-shield-virus"></i> Threats</li>
+            <li data-target="view-alerts"><i class="fa-regular fa-bell"></i> Alerts</li>
+            <li data-target="view-logs"><i class="fa-regular fa-file-lines"></i> Logs</li>
+            <li data-target="view-devices"><i class="fa-solid fa-desktop"></i> Devices (LAN)</li>
         </ul>
 
         <div class="section-title">Analytics</div>
         <ul class="menu">
-            <li><i class="fa-solid fa-shield-halved"></i> Security Score</li>
-            <li><i class="fa-solid fa-chart-line"></i> Attack Trends</li>
-            <li><i class="fa-solid fa-magnifying-glass-chart"></i> Risk Analysis</li>
+            <li data-target="view-security-score"><i class="fa-solid fa-shield-halved"></i> Security Score</li>
+            <li data-target="view-attack-trends"><i class="fa-solid fa-chart-line"></i> Attack Trends</li>
+            <li data-target="view-risk-analysis"><i class="fa-solid fa-magnifying-glass-chart"></i> Risk Analysis</li>
         </ul>
 
         <div class="section-title">Reports</div>
         <ul class="menu">
-            <li><i class="fa-regular fa-file-pdf"></i> Reports</li>
-            <li><i class="fa-solid fa-file-export"></i> Export Reports</li>
+            <li data-target="view-reports"><i class="fa-regular fa-file-pdf"></i> Reports</li>
+            <li data-target="view-export-reports"><i class="fa-solid fa-file-export"></i> Export Reports</li>
         </ul>
 
         <div class="section-title">System</div>
         <ul class="menu">
-            <li><i class="fa-solid fa-gear"></i> Settings</li>
-            <li><i class="fa-regular fa-user"></i> Users</li>
-            <li><i class="fa-regular fa-circle-question"></i> Help & Learn</li>
+            <li data-target="view-settings"><i class="fa-solid fa-gear"></i> Settings</li>
+            <li data-target="view-users"><i class="fa-regular fa-user"></i> Users</li>
+            <li data-target="view-help"><i class="fa-regular fa-circle-question"></i> Help & Learn</li>
         </ul>
 
         <div class="system-status">
@@ -88,8 +94,19 @@
                         <i class="fa-regular fa-bell"></i>
                         <span class="badge">3</span>
                     </div>
-                    <div class="icon-btn"><i class="fa-regular fa-sun"></i></div>
                 </div>
+
+                <div class="theme-switch" id="theme-toggle">
+                    <div class="switch-track">
+                        <span class="switch-text light-text">DAY MODE</span>
+                        <span class="switch-text dark-text">NIGHT MODE</span>
+                        <div class="switch-thumb">
+                            <i class="fa-regular fa-sun" id="theme-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topbar-divider"></div>
 
                 <div class="profile-container">
                     <div class="avatar">A</div>
@@ -105,6 +122,8 @@
             </div>
         </header>
 
+        <!-- DYNAMIC VIEWS -->
+        <div id="view-dashboard" class="view-section active">
         <!-- CARDS -->
         <section class="cards">
             <div class="card">
@@ -143,10 +162,19 @@
 
         <!-- MIDDLE GRID -->
         <section class="middle-grid">
-            <div class="chart-box span-2">
+            <div class="chart-box">
                 <div class="box-header">
                     <h3>Threats Over Time</h3>
-                    <div class="dropdown">Last 7 Days <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="dropdown-wrapper">
+                        <select class="dropdown-select" id="threatTrendSelect">
+                            <option value="1">Last 24 Hours</option>
+                            <option value="7" selected>Last 7 Days</option>
+                            <option value="30">Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+                    </div>
                 </div>
                 <div id="threatTrendChart"></div>
             </div>
@@ -155,7 +183,10 @@
                 <div class="box-header">
                     <h3>Threat Distribution</h3>
                 </div>
-                <div id="threatDistributionChart"></div>
+                <div class="donut-container">
+                    <div id="threatDistributionChart" class="donut-chart"></div>
+                    <div class="custom-legend" id="threatLegend"></div>
+                </div>
             </div>
             
             <div class="chart-box attack-sources">
@@ -175,7 +206,7 @@
 
         <!-- BOTTOM GRID -->
         <section class="bottom-grid">
-            <div class="chart-box span-2 recent-alerts-box">
+            <div class="chart-box recent-alerts-box">
                 <div class="box-header">
                     <h3>Recent Alerts</h3>
                     <a href="#" class="view-all">View All</a>
@@ -187,8 +218,17 @@
             
             <div class="chart-box">
                 <div class="box-header">
-                    <h3>Security Score Trend</h3>
-                    <div class="dropdown">Last 7 Days <i class="fa-solid fa-chevron-down"></i></div>
+                    <h3>Security Score</h3>
+                    <div class="dropdown-wrapper">
+                        <select class="dropdown-select" id="scoreTrendSelect">
+                            <option value="1">Last 24 Hours</option>
+                            <option value="7" selected>Last 7 Days</option>
+                            <option value="30">Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+                    </div>
                 </div>
                 <div id="scoreTrendChart"></div>
             </div>
@@ -208,6 +248,23 @@
             </div>
         </section>
         
+        </div> <!-- End view-dashboard -->
+
+        <!-- OTHER VIEWS (SKELETONS) -->
+        <div id="view-real-time" class="view-section"><div class="view-content"><h2>Real-Time Monitor</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-threats" class="view-section"><div class="view-content"><h2>Threats</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-alerts" class="view-section"><div class="view-content"><h2>Alerts</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-logs" class="view-section"><div class="view-content"><h2>Logs</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-devices" class="view-section"><div class="view-content"><h2>Devices (LAN)</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-security-score" class="view-section"><div class="view-content"><h2>Security Score</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-attack-trends" class="view-section"><div class="view-content"><h2>Attack Trends</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-risk-analysis" class="view-section"><div class="view-content"><h2>Risk Analysis</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-reports" class="view-section"><div class="view-content"><h2>Reports</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-export-reports" class="view-section"><div class="view-content"><h2>Export Reports</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-settings" class="view-section"><div class="view-content"><h2>Settings</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-users" class="view-section"><div class="view-content"><h2>Users</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-help" class="view-section"><div class="view-content"><h2>Help & Learn</h2><p>Feature coming soon...</p></div></div>
+
         <footer class="footer">
             &copy; 2024 InteliSecure. All rights reserved.
         </footer>
