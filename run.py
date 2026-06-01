@@ -2,7 +2,7 @@
 InteliSecure - Application Launcher
 =====================================
 Run this from the project root:  python run.py
-Or via uvicorn:                  uvicorn backend.app_old:app --reload
+Or via uvicorn:                  uvicorn backend.main:app --reload
 
 This launcher ensures the backend package imports work correctly.
 """
@@ -19,7 +19,7 @@ sys.path.insert(0, ROOT_DIR)
 
 if __name__ == "__main__":
     uvicorn.run(
-        "backend.app_old:app",
+        "backend.main:app",
         host="127.0.0.1",
         port=8000,
         reload=True,

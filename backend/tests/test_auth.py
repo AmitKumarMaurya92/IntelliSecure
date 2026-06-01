@@ -35,8 +35,12 @@ def db():
     yield session
     session.close()
     Base.metadata.drop_all(bind=test_engine)
+    test_engine.dispose()
     if os.path.exists("test_intelisecure.db"):
-        os.remove("test_intelisecure.db")
+        try:
+            os.remove("test_intelisecure.db")
+        except PermissionError:
+            pass
 
 
 # ─── Password Tests ────────────────────────────────────────────────────────────
@@ -176,18 +180,18 @@ class TestThreatExplainer:
         """Known threat types should return full explanations."""
         from backend.modules.threat_explainer import explain_threat
         result = explain_threat("Brute Force Attack")
-        assert result["threat_name"] == "Brute Force Attack"
-        assert "technical_reason" in result
-        assert "impact" in result
-        assert isinstance(result["recommendations"], list)
-        assert len(result["recommendations"]) > 0
+        assert result["Threat Name"] == "Brute Force Attack"
+        assert "Reason" in result
+        assert "Impact" in result
+        assert isinstance(result["Recommendation"], list)
+        assert len(result["Recommendation"]) > 0
 
     def test_unknown_threat_fallback(self):
         """Unknown threat types should return a graceful fallback."""
         from backend.modules.threat_explainer import explain_threat
         result = explain_threat("Unknown Exotic Attack XYZ")
-        assert "threat_name" in result
-        assert isinstance(result["recommendations"], list)
+        assert "Threat Name" in result
+        assert isinstance(result["Recommendation"], list)
 
     def test_all_known_types(self):
         """All 6 main threat types should have full explanations."""
@@ -198,8 +202,8 @@ class TestThreatExplainer:
         ]
         for threat_type in threat_types:
             result = explain_threat(threat_type)
-            assert "recommendations" in result, f"Missing recommendations for: {threat_type}"
-            assert len(result["recommendations"]) >= 3, f"Too few recommendations for: {threat_type}"
+            assert "Recommendation" in result, f"Missing recommendations for: {threat_type}"
+            assert len(result["Recommendation"]) >= 3, f"Too few recommendations for: {threat_type}"
 
 
 class TestRecommendationEngine:

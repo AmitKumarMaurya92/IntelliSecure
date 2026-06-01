@@ -212,15 +212,11 @@ def explain_threat(threat_type: str, context: dict = None) -> dict:
 
     # Build final response
     return {
-        "threat_name":       entry["threat_name"],
-        "category":          entry["category"],
-        "severity":          ctx.get("severity", entry["severity_default"]),
-        "simple_summary":    entry["simple_summary"],
-        "technical_reason":  entry["technical_reason"],
-        "impact":            entry["impact"],
-        "recommendations":   entry["recommendation"],
-        "mitre_technique":   entry["mitre_technique"],
-        "context":           ctx
+        "Threat Name":       entry["threat_name"],
+        "Severity":          ctx.get("severity", entry["severity_default"]),
+        "Reason":            entry["technical_reason"],
+        "Impact":            entry["impact"],
+        "Recommendation":    entry["recommendation"]
     }
 
 

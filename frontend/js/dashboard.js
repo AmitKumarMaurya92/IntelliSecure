@@ -14,12 +14,12 @@ async function loadDashboardStats() {
         document.getElementById("totalLogs").innerText = data.total_logs.toLocaleString();
         document.getElementById("activeThreats").innerText = data.active_threats.toLocaleString();
         document.getElementById("criticalAlerts").innerText = data.critical_alerts.toLocaleString();
-        document.getElementById("securityScore").innerText = data.security_score.score;
+        document.getElementById("securityScore").innerText = data.security_score;
         
         // Update security score color based on risk level
         const scoreEl = document.getElementById("securityScore");
-        if (data.security_score.score < 50) scoreEl.style.color = "#ef4444";
-        else if (data.security_score.score < 80) scoreEl.style.color = "#f59e0b";
+        if (data.security_score < 50) scoreEl.style.color = "#ef4444";
+        else if (data.security_score < 80) scoreEl.style.color = "#f59e0b";
         else scoreEl.style.color = "#10b981";
         
     } catch (err) {
@@ -31,8 +31,8 @@ async function loadAlerts() {
     try {
         const response = await fetch('/api/threats/active', { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
-        const alerts = await response.json();
-        renderAlerts(alerts);
+        const data = await response.json();
+        renderAlerts(data.alerts || []);
     } catch (err) {
         console.error("Failed to load alerts:", err);
     }
@@ -85,7 +85,8 @@ async function loadAttackSources() {
     try {
         const response = await fetch('/api/dashboard/top-sources', { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
-        const sources = await response.json();
+        const data = await response.json();
+        const sources = data.sources || [];
         
         const listEl = document.getElementById("attackSourcesList");
         listEl.innerHTML = "";
@@ -95,11 +96,11 @@ async function loadAttackSources() {
             return;
         }
 
-        const maxCount = Math.max(...sources.map(s => s.count)) || 1;
+        const maxCount = Math.max(...sources.map(s => s.alert_count)) || 1;
         const colors = ["#ef4444", "#f59e0b", "#8b5cf6", "#2563eb", "#06b6d4"];
         
         sources.forEach((src, idx) => {
-            let widthPct = (src.count / maxCount) * 100;
+            let widthPct = (src.alert_count / maxCount) * 100;
             let color = colors[idx % colors.length];
             listEl.innerHTML += `
                 <div class="source-item">
@@ -107,7 +108,7 @@ async function loadAttackSources() {
                     <div class="source-bar-container">
                         <div class="source-bar" style="width: ${widthPct}%; background: ${color}"></div>
                     </div>
-                    <div class="source-count">${src.count}</div>
+                    <div class="source-count">${src.alert_count}</div>
                 </div>
             `;
         });
@@ -124,10 +125,14 @@ async function loadThreatTrend(days = 7) {
         const response = await fetch(`/api/dashboard/threat-trend?days=${days}`, { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
+        
+        const trend = data.trend || [];
+        const xDates = trend.map(item => item.date);
+        const yCounts = trend.map(item => item.count);
 
         Plotly.newPlot("threatTrendChart", [{
-            x: data.dates,
-            y: data.counts,
+            x: xDates,
+            y: yCounts,
             type: "scatter",
             mode: "lines+markers",
             fill: "tozeroy",
@@ -155,19 +160,24 @@ async function loadThreatDistribution() {
         const response = await fetch('/api/dashboard/threat-distribution', { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
+        
+        const dist = data.distribution || [];
+        const values = dist.map(item => item.count);
+        const labels = dist.map(item => item.threat_type);
+        const apiColors = dist.map(item => item.color);
 
         const threatColors = ["#ef4444", "#f59e0b", "#8b5cf6", "#2563eb", "#94a3b8", "#10b981", "#ec4899"];
         
-        let total = data.values.reduce((a,b) => a+b, 0);
+        let total = values.reduce((a,b) => a+b, 0);
         let annotationsText = total > 0 ? `${total}<br><span style='font-size:11px;color:#64748b;font-weight:500'>Total</span>` : "0";
 
         Plotly.newPlot("threatDistributionChart", [{
-            values: data.values,
-            labels: data.labels,
+            values: values,
+            labels: labels,
             type: "pie",
             hole: .65,
             marker: {
-                colors: threatColors.slice(0, data.labels.length),
+                colors: apiColors.length > 0 ? apiColors : threatColors.slice(0, labels.length),
                 line: { color: "#ffffff", width: 2 }
             },
             textinfo: "none",
@@ -190,12 +200,13 @@ async function loadThreatDistribution() {
         const legendContainer = document.getElementById("threatLegend");
         if(legendContainer) {
             legendContainer.innerHTML = "";
-            data.labels.forEach((label, i) => {
-                let pct = total > 0 ? Math.round((data.values[i]/total)*100) : 0;
+            labels.forEach((label, i) => {
+                let pct = total > 0 ? Math.round((values[i]/total)*100) : 0;
+                let color = apiColors[i] || threatColors[i % threatColors.length];
                 legendContainer.innerHTML += `
                     <div class="legend-item">
                         <div class="legend-left">
-                            <span class="legend-dot" style="background: ${threatColors[i % threatColors.length]}"></span>
+                            <span class="legend-dot" style="background: ${color}"></span>
                             <span>${label}</span>
                         </div>
                         <span class="legend-pct">${pct}%</span>

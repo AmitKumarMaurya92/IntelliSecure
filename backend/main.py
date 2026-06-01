@@ -16,23 +16,24 @@ from fastapi.responses import FileResponse
 import os
 
 # ─── Core imports ──────────────────────────────────────────────────────────────
-from config   import settings
-from database import engine, Base
+from .config   import settings
+from .database import engine, Base
 
 # ─── Model registration (must import before create_all) ────────────────────────
-from models import (
+from .models import (
     User, LoginLog, NetworkLog, FileAccessLog,
     MalwareLog, USBLog, Alert
 )
 
 # ─── Router imports ─────────────────────────────────────────────────────────────
-from routes.auth_routes   import router as auth_router
-from routes.log_routes    import router as log_router
-from routes.threat_routes import router as threat_router
-from api.score_routes     import router as score_router
-from api.dashboard_routes import router as dashboard_router
-from api.device_routes    import router as device_router
-from api.report_routes    import router as report_router
+from .routes.auth_routes   import router as auth_router
+from .routes.log_routes    import router as log_router
+from .routes.threat_routes import router as threat_router
+from .routes.score_routes  import router as score_router
+from .routes.dashboard_routes import router as dashboard_router
+from .routes.device_routes    import router as device_router
+from .routes.report_routes    import router as report_router
+from .routes.educational_routes import router as educational_router
 
 # ─── DB Table Creation ──────────────────────────────────────────────────────────
 Base.metadata.create_all(bind=engine)
@@ -63,10 +64,11 @@ app.add_middleware(
 app.include_router(auth_router,      prefix="/api/auth",      tags=["Authentication"])
 app.include_router(log_router,       prefix="/api/logs",      tags=["Logs"])
 app.include_router(threat_router,    prefix="/api/threats",   tags=["Threats"])
-app.include_router(score_router,     prefix="/api/score",     tags=["Security Score"])
+app.include_router(score_router,     prefix="/api/security-score", tags=["Security Score"])
 app.include_router(dashboard_router, prefix="/api/dashboard", tags=["Dashboard"])
 app.include_router(device_router,    prefix="/api/devices",   tags=["LAN Devices"])
 app.include_router(report_router,    prefix="/api/reports",   tags=["Reports"])
+app.include_router(educational_router, prefix="/api/education", tags=["Education"])
 
 # ─── Static File Serving ─────────────────────────────────────────────────────────
 BACKEND_DIR  = os.path.dirname(os.path.abspath(__file__))
