@@ -22,7 +22,7 @@ class UserOut(BaseModel):
 
     class Config:
         orm_mode = True
-        from_attributes = True  # Compatible with Pydantic V2
+        from_attributes = True
 
 class Token(BaseModel):
     access_token: str

@@ -31,8 +31,8 @@ AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response Syste
 
 ### Development Roadmap
 - **Phase 1**: Project Audit (Completed)
-- **Phase 2**: Authentication System (Pending)
-- **Phase 3**: Login Logging System (Pending)
+- **Phase 2**: Authentication System (Completed)
+- **Phase 3**: Login Logging System (Completed)
 - **Phase 4**: Multi-Source Log Collection (Pending)
 - **Phase 5**: Real-Time Threat Monitoring (Pending)
 - **Phase 6**: Threat Detection Engine (Pending)

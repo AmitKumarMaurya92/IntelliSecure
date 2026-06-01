@@ -26,7 +26,7 @@ from models import (
 )
 
 # ─── Router imports ─────────────────────────────────────────────────────────────
-from api.auth_routes      import router as auth_router
+from routes.auth_routes   import router as auth_router
 from api.log_routes       import router as log_router
 from api.threat_routes    import router as threat_router
 from api.score_routes     import router as score_router
