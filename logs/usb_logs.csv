@@ -1,2 +1,10 @@
 timestamp,username,device_name,device_id,action
-2026-06-01T10:25:00Z,operator_01,Kingston DataTraveler,USB-001,Connected
+2026-05-25T10:30:00,user_01,Kingston DataTraveler 32GB,USB\VID_0951&PID_1666\AA0123456789,Connected
+2026-05-25T12:00:00,user_01,Kingston DataTraveler 32GB,USB\VID_0951&PID_1666\AA0123456789,Disconnected
+2026-05-26T14:00:00,user_03,SanDisk Ultra 64GB,USB\VID_0781&PID_5581\BB9876543210,Blocked
+2026-05-27T09:30:00,analyst_01,Verbatim Store n Go,USB\VID_18A5&PID_0302\CC1122334455,Connected
+2026-05-27T11:00:00,analyst_01,Verbatim Store n Go,USB\VID_18A5&PID_0302\CC1122334455,Disconnected
+2026-05-28T15:45:00,user_02,Unknown USB Device,USB\VID_FFFF&PID_0001\DD5544332211,Blocked
+2026-05-30T08:00:00,operator_01,WD Passport 1TB,USB\VID_1058&PID_25A3\EE0011223344,Connected
+2026-05-30T17:00:00,operator_01,WD Passport 1TB,USB\VID_1058&PID_25A3\EE0011223344,Disconnected
+2026-06-01T09:00:00,user_03,Generic Flash Drive,USB\VID_058F&PID_6387\FF9988776655,Blocked

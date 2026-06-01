@@ -1,26 +1,54 @@
+"""
+InteliSecure - Unified FastAPI Application
+==========================================
+AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response System
+Version 2.0.0
+
+This is the canonical application entry point.
+Run via: python run.py  (from project root)
+Or:      uvicorn backend.app_old:app --reload  (from project root)
+
+Author: InteliSecure Team
+"""
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
-from .config import settings
+
+from .config   import settings
 from .database import engine, Base
 
-# Import models so they are registered before metadata create_all
-from .models import User, LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog
-from .api.auth_routes import router as auth_router
-from .api.log_routes import router as log_router
+# ─── Model registration (must import BEFORE create_all) ────────────────────────
+from .models import User, LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog, Alert
 
-# Dynamic database creation on startup
+# ─── API Routers ─────────────────────────────────────────────────────────────────
+from .api.auth_routes      import router as auth_router
+from .api.log_routes       import router as log_router
+from .api.threat_routes    import router as threat_router
+from .api.score_routes     import router as score_router
+from .api.dashboard_routes import router as dashboard_router
+from .api.device_routes    import router as device_router
+from .api.report_routes    import router as report_router
+
+# ─── DB Table Creation ────────────────────────────────────────────────────────
 Base.metadata.create_all(bind=engine)
 
+# ─── FastAPI App ──────────────────────────────────────────────────────────────
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    description="AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response System",
-    version="1.0.0"
+    description=(
+        "AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response System. "
+        "Features: real-time threat monitoring, multi-source log correlation, "
+        "explainable AI, automated PDF/PPT reporting, and LAN device discovery."
+    ),
+    version="2.0.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc"
 )
 
-# CORS configuration
+# ─── CORS ─────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -29,54 +57,62 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include Authentication Routes
-app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
+# ─── Mount All Routers ─────────────────────────────────────────────────────────
+app.include_router(auth_router,      prefix="/api/auth",      tags=["Authentication"])
+app.include_router(log_router,       prefix="/api/logs",      tags=["Logs"])
+app.include_router(threat_router,    prefix="/api/threats",   tags=["Threats"])
+app.include_router(score_router,     prefix="/api/score",     tags=["Security Score"])
+app.include_router(dashboard_router, prefix="/api/dashboard", tags=["Dashboard"])
+app.include_router(device_router,    prefix="/api/devices",   tags=["LAN Devices"])
+app.include_router(report_router,    prefix="/api/reports",   tags=["Reports"])
 
-# Include Telemetry Log Routes
-app.include_router(log_router, prefix="/api/logs", tags=["Logs"])
+# ─── Static Assets ────────────────────────────────────────────────────────────
+BACKEND_DIR  = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR     = os.path.dirname(BACKEND_DIR)
+FRONTEND_DIR = os.path.join(ROOT_DIR, "frontend")
 
-# Resolve path to the frontend directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+for sub in ["css", "js", "assets"]:
+    os.makedirs(os.path.join(FRONTEND_DIR, sub), exist_ok=True)
 
-# Ensure frontend folders exist
-os.makedirs(os.path.join(FRONTEND_DIR, "css"), exist_ok=True)
-os.makedirs(os.path.join(FRONTEND_DIR, "js"), exist_ok=True)
-os.makedirs(os.path.join(FRONTEND_DIR, "assets"), exist_ok=True)
-
-# Mount static asset folders
-app.mount("/css", StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")), name="css")
-app.mount("/js", StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")), name="js")
+app.mount("/css",    StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")),    name="css")
+app.mount("/js",     StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")),     name="js")
 app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
 
-# Page Routes (delivering HTML files from frontend)
-@app.get("/")
-@app.get("/login")
-def get_login():
+# ─── Page Routes ──────────────────────────────────────────────────────────────
+@app.get("/", include_in_schema=False)
+@app.get("/login", include_in_schema=False)
+def serve_login():
+    """Serve the login / registration page."""
     return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
 
-@app.get("/dashboard")
-def get_dashboard():
-    return FileResponse(os.path.join(FRONTEND_DIR, "dashboard.html"))
+@app.get("/dashboard", include_in_schema=False)
+def serve_dashboard():
+    """Serve the main SPA dashboard."""
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
 
-@app.get("/reports")
-def get_reports():
-    return FileResponse(os.path.join(FRONTEND_DIR, "reports.html"))
-
-@app.get("/devices")
-def get_devices():
-    return FileResponse(os.path.join(FRONTEND_DIR, "devices.html"))
-
-@app.get("/alerts")
-def get_alerts():
+@app.get("/alerts", include_in_schema=False)
+def serve_alerts_page():
     return FileResponse(os.path.join(FRONTEND_DIR, "alerts.html"))
 
-# Base API Health Check Endpoint
-@app.get("/api/health")
-def health_check():
-    return {
-        "status": "healthy",
-        "project": settings.PROJECT_NAME,
-        "database": "sqlite"
-    }
+@app.get("/devices", include_in_schema=False)
+def serve_devices_page():
+    return FileResponse(os.path.join(FRONTEND_DIR, "devices.html"))
 
+@app.get("/reports", include_in_schema=False)
+def serve_reports_page():
+    return FileResponse(os.path.join(FRONTEND_DIR, "reports.html"))
+
+# ─── Health Check ─────────────────────────────────────────────────────────────
+@app.get("/api/health", tags=["System"])
+def health_check():
+    """System health probe."""
+    return {
+        "status":   "healthy",
+        "project":  settings.PROJECT_NAME,
+        "version":  "2.0.0",
+        "database": "sqlite",
+        "modules":  [
+            "auth", "logs", "threats", "score",
+            "dashboard", "devices", "reports"
+        ]
+    }
