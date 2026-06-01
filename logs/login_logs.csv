@@ -1,0 +1,3 @@
+timestamp,username,ip_address,status
+2026-06-01T13:48:05.955298Z,log_tester,testclient,Success
+2026-06-01T13:48:06.200740Z,log_tester,testclient,Failed

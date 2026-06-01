@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InteliSecure - Cyber Security Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-body">
+    <!-- Background glowing atmospheric bubbles -->
+    <div class="glow-orb orb-1" style="display: none;"></div>
+    <div class="glow-orb orb-2" style="display: none;"></div>
+
+    <div class="auth-container">
+        <div class="auth-card auth-card-light">
+            <!-- Header section -->
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <svg class="auth-logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M12 8v4"/>
+                        <path d="M12 16h.01"/>
+                    </svg>
+                    <span class="auth-title" style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; letter-spacing: -1px; background: linear-gradient(90deg, #06b6d4, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">INTELI_SECURE</span>
+                </div>
+                <p class="auth-subtitle" id="auth-subtitle-text">AI Threat Monitoring & Incident Response</p>
+            </div>
+
+            <!-- Toast alert notifications -->
+            <div id="auth-notification" class="notification">
+                <span id="notification-message"></span>
+            </div>
+
+            <!-- Login View -->
+            <div id="login-view">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label" for="login-username">System User ID</label>
+                        <div class="input-container">
+                            <input type="text" id="login-username" class="form-input" placeholder="Enter username" required>
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">Access Passkey</label>
+                        <div class="input-container">
+                            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span>INITIATE ACCESS</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    New deployment? <a href="#" id="toggle-to-register" class="auth-link">Register Master User</a>
+                </div>
+            </div>
+
+            <!-- Register View (Hidden by default) -->
+            <div id="register-view" style="display: none;">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label class="form-label" for="register-username">Secure Username</label>
+                        <div class="input-container">
+                            <input type="text" id="register-username" class="form-input" placeholder="e.g. admin_sec" required>
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="register-email">Admin/User Email</label>
+                        <div class="input-container">
+                            <input type="email" id="register-email" class="form-input" placeholder="e.g. security@org.com" required>
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="register-password">Strong Password</label>
+                        <div class="input-container">
+                            <input type="password" id="register-password" class="form-input" placeholder="••••••••" required>
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="register-role">Operational Role</label>
+                        <div class="input-container">
+                            <select id="register-role" class="form-input" style="padding-left: 16px; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2394a3b8%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;">
+                                <option value="User" style="background-color: #0f172a; color: #f8fafc;">Standard User</option>
+                                <option value="Analyst" style="background-color: #0f172a; color: #f8fafc;">Cybersecurity Analyst</option>
+                                <option value="Admin" style="background-color: #0f172a; color: #f8fafc;">System Administrator</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span>CREATE ACCOUNT</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Already registered? <a href="#" id="toggle-to-login" class="auth-link">Return to Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/login.js"></script>
+</body>
+</html>
