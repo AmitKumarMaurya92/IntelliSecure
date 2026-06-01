@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InteliSecure Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <!-- Plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
@@ -12,122 +17,200 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="logo">
-            InteliSecure
+            <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="logo-text">
+                InteliSecure
+                <span class="logo-sub">AI-Powered Cybersecurity</span>
+            </div>
         </div>
-        <div class="section-title">
-            Monitoring
-        </div>
+
+        <div class="section-title">Monitoring</div>
         <ul class="menu">
-            <li class="active">Dashboard</li>
-            <li>Real-Time Monitor</li>
-            <li>Threats</li>
-            <li>Alerts</li>
-            <li>Logs</li>
-            <li>Devices</li>
+            <li class="active"><i class="fa-solid fa-house"></i> Dashboard</li>
+            <li><i class="fa-solid fa-wave-square"></i> Real-Time Monitor</li>
+            <li><i class="fa-solid fa-shield-virus"></i> Threats</li>
+            <li><i class="fa-regular fa-bell"></i> Alerts</li>
+            <li><i class="fa-regular fa-file-lines"></i> Logs</li>
+            <li><i class="fa-solid fa-desktop"></i> Devices (LAN)</li>
         </ul>
-        <div class="section-title">
-            Analytics
-        </div>
+
+        <div class="section-title">Analytics</div>
         <ul class="menu">
-            <li>Security Score</li>
-            <li>Attack Trends</li>
-            <li>Risk Analysis</li>
+            <li><i class="fa-solid fa-shield-halved"></i> Security Score</li>
+            <li><i class="fa-solid fa-chart-line"></i> Attack Trends</li>
+            <li><i class="fa-solid fa-magnifying-glass-chart"></i> Risk Analysis</li>
         </ul>
-        <div class="section-title">
-            Reports
-        </div>
+
+        <div class="section-title">Reports</div>
         <ul class="menu">
-            <li>PDF Reports</li>
-            <li>PPT Reports</li>
+            <li><i class="fa-regular fa-file-pdf"></i> Reports</li>
+            <li><i class="fa-solid fa-file-export"></i> Export Reports</li>
         </ul>
+
+        <div class="section-title">System</div>
+        <ul class="menu">
+            <li><i class="fa-solid fa-gear"></i> Settings</li>
+            <li><i class="fa-regular fa-user"></i> Users</li>
+            <li><i class="fa-regular fa-circle-question"></i> Help & Learn</li>
+        </ul>
+
+        <div class="system-status">
+            <i class="fa-solid fa-shield check-icon"></i>
+            <div class="status-content">
+                <span class="status-title">System Status</span>
+                <span class="status-main">Protected</span>
+                <span class="status-sub">All systems are secure</span>
+            </div>
+        </div>
     </aside>
 
     <!-- MAIN -->
     <main class="main-content">
         <!-- TOP BAR -->
         <header class="topbar">
-            <div>
-                <h1>Dashboard</h1>
-                <p>Welcome back Administrator</p>
+            <div class="topbar-left">
+                <i class="fa-solid fa-bars menu-toggle"></i>
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Welcome back, Admin 👋</p>
+                </div>
             </div>
-            <div>
-                <input type="text" placeholder="Search..." class="search-box">
+            
+            <div class="topbar-right">
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search anything..." class="search-box">
+                    <span class="search-shortcut">/</span>
+                </div>
+                
+                <div class="icon-group">
+                    <div class="icon-btn">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="icon-btn"><i class="fa-regular fa-sun"></i></div>
+                </div>
+
+                <div class="profile-container">
+                    <div class="avatar">A</div>
+                    <div class="profile-text">
+                        <strong>Admin</strong>
+                        <span>Administrator</span>
+                    </div>
+                </div>
+
+                <div class="date-picker">
+                    <i class="fa-regular fa-calendar"></i> May 19, 2024 <i class="fa-solid fa-chevron-down"></i>
+                </div>
             </div>
         </header>
 
         <!-- CARDS -->
         <section class="cards">
             <div class="card">
-                <h4>Total Logs</h4>
-                <h2 id="totalLogs">0</h2>
+                <div class="card-icon blue"><i class="fa-solid fa-file-lines"></i></div>
+                <div class="card-content">
+                    <h4>Total Logs</h4>
+                    <h2 id="totalLogs">24,532</h2>
+                    <p class="trend up"><i class="fa-solid fa-arrow-up"></i> 12.5% from yesterday</p>
+                </div>
             </div>
             <div class="card">
-                <h4>Active Threats</h4>
-                <h2 id="activeThreats">0</h2>
+                <div class="card-icon red"><i class="fa-solid fa-shield-virus"></i></div>
+                <div class="card-content">
+                    <h4>Active Threats</h4>
+                    <h2 id="activeThreats">28</h2>
+                    <p class="trend up red-trend"><i class="fa-solid fa-arrow-up"></i> 27% from yesterday</p>
+                </div>
             </div>
             <div class="card">
-                <h4>Critical Alerts</h4>
-                <h2 id="criticalAlerts">0</h2>
+                <div class="card-icon yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="card-content">
+                    <h4>Critical Alerts</h4>
+                    <h2 id="criticalAlerts">7</h2>
+                    <p class="trend up red-trend"><i class="fa-solid fa-arrow-up"></i> 40% from yesterday</p>
+                </div>
             </div>
             <div class="card">
-                <h4>Security Score</h4>
-                <h2 id="securityScore">0</h2>
+                <div class="card-icon green"><i class="fa-solid fa-shield"></i></div>
+                <div class="card-content">
+                    <h4>Security Score</h4>
+                    <h2><span id="securityScore" class="score-main">87</span> <span class="score-sub">/ 100</span></h2>
+                    <p class="trend good">Good</p>
+                </div>
             </div>
         </section>
 
-        <!-- CHARTS -->
-        <section class="charts">
-            <div class="chart-box">
-                <h3>Threat Trend</h3>
+        <!-- MIDDLE GRID -->
+        <section class="middle-grid">
+            <div class="chart-box span-2">
+                <div class="box-header">
+                    <h3>Threats Over Time</h3>
+                    <div class="dropdown">Last 7 Days <i class="fa-solid fa-chevron-down"></i></div>
+                </div>
                 <div id="threatTrendChart"></div>
             </div>
+            
             <div class="chart-box">
-                <h3>Threat Distribution</h3>
+                <div class="box-header">
+                    <h3>Threat Distribution</h3>
+                </div>
                 <div id="threatDistributionChart"></div>
             </div>
+            
+            <div class="chart-box attack-sources">
+                <div class="box-header">
+                    <h3>Top Attack Sources</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="sources-header">
+                    <span>IP Address</span>
+                    <span>Threats</span>
+                </div>
+                <div class="source-list" id="attackSourcesList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
         </section>
 
-        <!-- ADVANCED ANALYTICS CHARTS -->
-        <section class="charts">
+        <!-- BOTTOM GRID -->
+        <section class="bottom-grid">
+            <div class="chart-box span-2 recent-alerts-box">
+                <div class="box-header">
+                    <h3>Recent Alerts</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="alerts-list" id="alertsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            
             <div class="chart-box">
-                <h3>Security Score Trend</h3>
+                <div class="box-header">
+                    <h3>Security Score Trend</h3>
+                    <div class="dropdown">Last 7 Days <i class="fa-solid fa-chevron-down"></i></div>
+                </div>
                 <div id="scoreTrendChart"></div>
             </div>
-            <div class="chart-box">
-                <h3>Top Attack Sources</h3>
-                <div id="attackSourcesChart"></div>
-            </div>
-        </section>
-
-        <!-- ALERTS -->
-        <section class="bottom-grid">
-            <div class="recent-alerts">
-                <h3>Recent Alerts</h3>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Threat</th>
-                        <th>Severity</th>
-                        <th>Time</th>
-                    </tr>
-                    </thead>
-                    <tbody id="alertsTable">
-                    </tbody>
-                </table>
-            </div>
-            <div class="system-health">
-                <h3>System Health</h3>
-                <div class="health-item">
-                    Log Collector : Active
+            
+            <div class="chart-box system-health-box">
+                <div class="box-header">
+                    <h3>System Health</h3>
                 </div>
-                <div class="health-item">
-                    Threat Engine : Active
-                </div>
-                <div class="health-item">
-                    AI Detector : Active
+                <div class="health-list" id="healthList">
+                    <div class="health-item"><span class="dot active"></span> Log Collector <span class="badge-active">Active</span></div>
+                    <div class="health-item"><span class="dot active"></span> Threat Detection Engine <span class="badge-active">Active</span></div>
+                    <div class="health-item"><span class="dot active"></span> AI Anomaly Detector <span class="badge-active">Active</span></div>
+                    <div class="health-item"><span class="dot active"></span> LAN Monitor <span class="badge-active">Active</span></div>
+                    <div class="health-item"><span class="dot active"></span> Report Generator <span class="badge-active">Active</span></div>
+                    <div class="health-item"><span class="dot active"></span> Database <span class="badge-active">Active</span></div>
                 </div>
             </div>
         </section>
+        
+        <footer class="footer">
+            &copy; 2024 InteliSecure. All rights reserved.
+        </footer>
     </main>
 </div>
 <script src="/js/dashboard.js"></script>
