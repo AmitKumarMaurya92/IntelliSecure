@@ -1,5 +1,5 @@
 import os
-import csv
+import pandas as pd
 import datetime
 from sqlalchemy.orm import Session
 from ..models import LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog
@@ -8,53 +8,51 @@ from ..models import LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 
-def parse_iso_datetime(dt_str: str) -> datetime.datetime:
-    """Parse standard ISO-8601 datetime strings with standard datetime.fromisoformat, with fallback."""
-    if not dt_str:
+def parse_iso_datetime(dt_str) -> datetime.datetime:
+    """Parse standard ISO-8601 datetime strings."""
+    if pd.isna(dt_str) or not dt_str:
         return datetime.datetime.utcnow()
-    # Strip Z to standard format if needed
-    cleaned = dt_str.replace("Z", "")
     try:
+        # Assuming dt_str is already a string
+        cleaned = str(dt_str).replace("Z", "")
         return datetime.datetime.fromisoformat(cleaned)
     except Exception:
         return datetime.datetime.utcnow()
 
 def sync_login_logs(db: Session) -> int:
     csv_path = os.path.join(LOGS_DIR, "login_logs.csv")
-    if not os.path.exists(csv_path):
+    if not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0:
         return 0
     
     count = 0
     try:
-        with open(csv_path, mode="r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                timestamp = parse_iso_datetime(row.get("timestamp"))
-                username = row.get("username", "").strip()
-                ip_address = row.get("ip_address", "").strip()
-                status = row.get("status", "").strip()
+        df = pd.read_csv(csv_path)
+        for _, row in df.iterrows():
+            timestamp = parse_iso_datetime(row.get("timestamp"))
+            username = str(row.get("username", "")).strip()
+            ip_address = str(row.get("ip_address", "")).strip()
+            status = str(row.get("status", "")).strip()
+            
+            if not username or pd.isna(username) or username == 'nan':
+                continue
                 
-                if not username:
-                    continue
-                
-                # Deduplication check
-                exists = db.query(LoginLog).filter(
-                    LoginLog.timestamp == timestamp,
-                    LoginLog.username == username,
-                    LoginLog.ip_address == ip_address,
-                    LoginLog.status == status
-                ).first()
-                
-                if not exists:
-                    log_entry = LoginLog(
-                        timestamp=timestamp,
-                        username=username,
-                        ip_address=ip_address,
-                        status=status
-                    )
-                    db.add(log_entry)
-                    count += 1
-            db.commit()
+            exists = db.query(LoginLog).filter(
+                LoginLog.timestamp == timestamp,
+                LoginLog.username == username,
+                LoginLog.ip_address == ip_address,
+                LoginLog.status == status
+            ).first()
+            
+            if not exists:
+                log_entry = LoginLog(
+                    timestamp=timestamp,
+                    username=username,
+                    ip_address=ip_address,
+                    status=status
+                )
+                db.add(log_entry)
+                count += 1
+        db.commit()
     except Exception as e:
         print(f"Error syncing login logs: {e}")
         db.rollback()
@@ -62,56 +60,48 @@ def sync_login_logs(db: Session) -> int:
 
 def sync_network_logs(db: Session) -> int:
     csv_path = os.path.join(LOGS_DIR, "network_logs.csv")
-    if not os.path.exists(csv_path):
+    if not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0:
         return 0
     
     count = 0
     try:
-        with open(csv_path, mode="r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                timestamp = parse_iso_datetime(row.get("timestamp"))
-                source_ip = row.get("source_ip", "").strip()
-                destination_ip = row.get("destination_ip", "").strip()
-                port_str = row.get("port", "0").strip()
-                port = int(port_str) if port_str.isdigit() else 0
-                protocol = row.get("protocol", "").strip()
+        df = pd.read_csv(csv_path)
+        for _, row in df.iterrows():
+            timestamp = parse_iso_datetime(row.get("timestamp"))
+            source_ip = str(row.get("source_ip", "")).strip()
+            destination_ip = str(row.get("destination_ip", "")).strip()
+            port = int(row.get("port", 0)) if pd.notna(row.get("port")) else 0
+            protocol = str(row.get("protocol", "")).strip()
+            bytes_sent = int(row.get("bytes_sent", 0)) if pd.notna(row.get("bytes_sent")) else 0
+            bytes_received = int(row.get("bytes_received", 0)) if pd.notna(row.get("bytes_received")) else 0
+            action = str(row.get("action", "")).strip()
+            
+            if not source_ip or source_ip == 'nan' or not destination_ip or destination_ip == 'nan':
+                continue
                 
-                bytes_sent_str = row.get("bytes_sent", "0").strip()
-                bytes_sent = int(bytes_sent_str) if bytes_sent_str.isdigit() else 0
-                
-                bytes_received_str = row.get("bytes_received", "0").strip()
-                bytes_received = int(bytes_received_str) if bytes_received_str.isdigit() else 0
-                
-                action = row.get("action", "").strip()
-                
-                if not source_ip or not destination_ip:
-                    continue
-                
-                # Deduplication check
-                exists = db.query(NetworkLog).filter(
-                    NetworkLog.timestamp == timestamp,
-                    NetworkLog.source_ip == source_ip,
-                    NetworkLog.destination_ip == destination_ip,
-                    NetworkLog.port == port,
-                    NetworkLog.protocol == protocol,
-                    NetworkLog.action == action
-                ).first()
-                
-                if not exists:
-                    log_entry = NetworkLog(
-                        timestamp=timestamp,
-                        source_ip=source_ip,
-                        destination_ip=destination_ip,
-                        port=port,
-                        protocol=protocol,
-                        bytes_sent=bytes_sent,
-                        bytes_received=bytes_received,
-                        action=action
-                    )
-                    db.add(log_entry)
-                    count += 1
-            db.commit()
+            exists = db.query(NetworkLog).filter(
+                NetworkLog.timestamp == timestamp,
+                NetworkLog.source_ip == source_ip,
+                NetworkLog.destination_ip == destination_ip,
+                NetworkLog.port == port,
+                NetworkLog.protocol == protocol,
+                NetworkLog.action == action
+            ).first()
+            
+            if not exists:
+                log_entry = NetworkLog(
+                    timestamp=timestamp,
+                    source_ip=source_ip,
+                    destination_ip=destination_ip,
+                    port=port,
+                    protocol=protocol,
+                    bytes_sent=bytes_sent,
+                    bytes_received=bytes_received,
+                    action=action
+                )
+                db.add(log_entry)
+                count += 1
+        db.commit()
     except Exception as e:
         print(f"Error syncing network logs: {e}")
         db.rollback()
@@ -119,43 +109,41 @@ def sync_network_logs(db: Session) -> int:
 
 def sync_file_access_logs(db: Session) -> int:
     csv_path = os.path.join(LOGS_DIR, "file_access_logs.csv")
-    if not os.path.exists(csv_path):
+    if not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0:
         return 0
     
     count = 0
     try:
-        with open(csv_path, mode="r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                timestamp = parse_iso_datetime(row.get("timestamp"))
-                username = row.get("username", "").strip()
-                file_path = row.get("file_path", "").strip()
-                access_type = row.get("access_type", "").strip()
-                status = row.get("status", "").strip()
+        df = pd.read_csv(csv_path)
+        for _, row in df.iterrows():
+            timestamp = parse_iso_datetime(row.get("timestamp"))
+            username = str(row.get("username", "")).strip()
+            file_path = str(row.get("file_path", "")).strip()
+            access_type = str(row.get("access_type", "")).strip()
+            status = str(row.get("status", "")).strip()
+            
+            if not username or username == 'nan' or not file_path or file_path == 'nan':
+                continue
                 
-                if not username or not file_path:
-                    continue
-                
-                # Deduplication check
-                exists = db.query(FileAccessLog).filter(
-                    FileAccessLog.timestamp == timestamp,
-                    FileAccessLog.username == username,
-                    FileAccessLog.file_path == file_path,
-                    FileAccessLog.access_type == access_type,
-                    FileAccessLog.status == status
-                ).first()
-                
-                if not exists:
-                    log_entry = FileAccessLog(
-                        timestamp=timestamp,
-                        username=username,
-                        file_path=file_path,
-                        access_type=access_type,
-                        status=status
-                    )
-                    db.add(log_entry)
-                    count += 1
-            db.commit()
+            exists = db.query(FileAccessLog).filter(
+                FileAccessLog.timestamp == timestamp,
+                FileAccessLog.username == username,
+                FileAccessLog.file_path == file_path,
+                FileAccessLog.access_type == access_type,
+                FileAccessLog.status == status
+            ).first()
+            
+            if not exists:
+                log_entry = FileAccessLog(
+                    timestamp=timestamp,
+                    username=username,
+                    file_path=file_path,
+                    access_type=access_type,
+                    status=status
+                )
+                db.add(log_entry)
+                count += 1
+        db.commit()
     except Exception as e:
         print(f"Error syncing file access logs: {e}")
         db.rollback()
@@ -163,43 +151,41 @@ def sync_file_access_logs(db: Session) -> int:
 
 def sync_malware_logs(db: Session) -> int:
     csv_path = os.path.join(LOGS_DIR, "malware_logs.csv")
-    if not os.path.exists(csv_path):
+    if not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0:
         return 0
     
     count = 0
     try:
-        with open(csv_path, mode="r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                timestamp = parse_iso_datetime(row.get("timestamp"))
-                file_name = row.get("file_name", "").strip()
-                file_path = row.get("file_path", "").strip()
-                file_hash = row.get("hash", "").strip()
-                signature = row.get("signature", "").strip()
-                action_taken = row.get("action_taken", "").strip()
+        df = pd.read_csv(csv_path)
+        for _, row in df.iterrows():
+            timestamp = parse_iso_datetime(row.get("timestamp"))
+            file_name = str(row.get("file_name", "")).strip()
+            file_path = str(row.get("file_path", "")).strip()
+            file_hash = str(row.get("hash", "")).strip()
+            signature = str(row.get("signature", "")).strip()
+            action_taken = str(row.get("action_taken", "")).strip()
+            
+            if not file_hash or file_hash == 'nan':
+                continue
                 
-                if not file_hash:
-                    continue
-                
-                # Deduplication check
-                exists = db.query(MalwareLog).filter(
-                    MalwareLog.timestamp == timestamp,
-                    MalwareLog.hash == file_hash,
-                    MalwareLog.signature == signature
-                ).first()
-                
-                if not exists:
-                    log_entry = MalwareLog(
-                        timestamp=timestamp,
-                        file_name=file_name,
-                        file_path=file_path,
-                        hash=file_hash,
-                        signature=signature,
-                        action_taken=action_taken
-                    )
-                    db.add(log_entry)
-                    count += 1
-            db.commit()
+            exists = db.query(MalwareLog).filter(
+                MalwareLog.timestamp == timestamp,
+                MalwareLog.hash == file_hash,
+                MalwareLog.signature == signature
+            ).first()
+            
+            if not exists:
+                log_entry = MalwareLog(
+                    timestamp=timestamp,
+                    file_name=file_name,
+                    file_path=file_path,
+                    hash=file_hash,
+                    signature=signature,
+                    action_taken=action_taken
+                )
+                db.add(log_entry)
+                count += 1
+        db.commit()
     except Exception as e:
         print(f"Error syncing malware logs: {e}")
         db.rollback()
@@ -207,41 +193,39 @@ def sync_malware_logs(db: Session) -> int:
 
 def sync_usb_logs(db: Session) -> int:
     csv_path = os.path.join(LOGS_DIR, "usb_logs.csv")
-    if not os.path.exists(csv_path):
+    if not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0:
         return 0
     
     count = 0
     try:
-        with open(csv_path, mode="r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                timestamp = parse_iso_datetime(row.get("timestamp"))
-                username = row.get("username", "").strip()
-                device_name = row.get("device_name", "").strip()
-                device_id = row.get("device_id", "").strip()
-                action = row.get("action", "").strip()
+        df = pd.read_csv(csv_path)
+        for _, row in df.iterrows():
+            timestamp = parse_iso_datetime(row.get("timestamp"))
+            username = str(row.get("username", "")).strip()
+            device_name = str(row.get("device_name", "")).strip()
+            device_id = str(row.get("device_id", "")).strip()
+            action = str(row.get("action", "")).strip()
+            
+            if not device_id or device_id == 'nan':
+                continue
                 
-                if not device_id:
-                    continue
-                
-                # Deduplication check
-                exists = db.query(USBLog).filter(
-                    USBLog.timestamp == timestamp,
-                    USBLog.device_id == device_id,
-                    USBLog.action == action
-                ).first()
-                
-                if not exists:
-                    log_entry = USBLog(
-                        timestamp=timestamp,
-                        username=username,
-                        device_name=device_name,
-                        device_id=device_id,
-                        action=action
-                    )
-                    db.add(log_entry)
-                    count += 1
-            db.commit()
+            exists = db.query(USBLog).filter(
+                USBLog.timestamp == timestamp,
+                USBLog.device_id == device_id,
+                USBLog.action == action
+            ).first()
+            
+            if not exists:
+                log_entry = USBLog(
+                    timestamp=timestamp,
+                    username=username,
+                    device_name=device_name,
+                    device_id=device_id,
+                    action=action
+                )
+                db.add(log_entry)
+                count += 1
+        db.commit()
     except Exception as e:
         print(f"Error syncing USB logs: {e}")
         db.rollback()
