@@ -31,7 +31,7 @@ def sync_login_logs(db: Session) -> int:
             timestamp = parse_iso_datetime(row.get("timestamp"))
             username = str(row.get("username", "")).strip()
             ip_address = str(row.get("ip_address", "")).strip()
-            status = str(row.get("status", "")).strip()
+            status = str(row.get("status", "")).strip().capitalize()
             
             if not username or pd.isna(username) or username == 'nan':
                 continue
@@ -120,7 +120,7 @@ def sync_file_access_logs(db: Session) -> int:
             username = str(row.get("username", "")).strip()
             file_path = str(row.get("file_path", "")).strip()
             access_type = str(row.get("access_type", "")).strip()
-            status = str(row.get("status", "")).strip()
+            status = str(row.get("status", "")).strip().capitalize()
             
             if not username or username == 'nan' or not file_path or file_path == 'nan':
                 continue

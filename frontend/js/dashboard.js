@@ -4,6 +4,12 @@
 
 // Ensure headers carry auth tokens if necessary (currently auth is optional/mocked depending on setup)
 const apiHeaders = { "Content-Type": "application/json" };
+const token = localStorage.getItem("access_token");
+if (token) {
+    apiHeaders["Authorization"] = `Bearer ${token}`;
+} else {
+    window.location.href = "/login";
+}
 
 async function loadDashboardStats() {
     try {
