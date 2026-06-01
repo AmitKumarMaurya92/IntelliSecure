@@ -1,3 +1,4 @@
 timestamp,username,ip_address,status
-2026-06-01T13:48:05.955298Z,log_tester,testclient,Success
-2026-06-01T13:48:06.200740Z,log_tester,testclient,Failed
+2026-06-01T10:00:00Z,operator_01,192.168.1.10,Success
+2026-06-01T10:05:00Z,malicious_actor,192.168.1.200,Failed
+2026-06-01T13:51:07.835209Z,sec_admin,testclient,Success

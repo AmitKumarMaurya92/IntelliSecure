@@ -7,8 +7,9 @@ from .config import settings
 from .database import engine, Base
 
 # Import models so they are registered before metadata create_all
-from .models import User
+from .models import User, LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog
 from .api.auth_routes import router as auth_router
+from .api.log_routes import router as log_router
 
 # Dynamic database creation on startup
 Base.metadata.create_all(bind=engine)
@@ -30,6 +31,9 @@ app.add_middleware(
 
 # Include Authentication Routes
 app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
+
+# Include Telemetry Log Routes
+app.include_router(log_router, prefix="/api/logs", tags=["Logs"])
 
 # Resolve path to the frontend directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
