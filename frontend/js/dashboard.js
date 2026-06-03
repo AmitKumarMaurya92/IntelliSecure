@@ -11,6 +11,18 @@ if (token) {
     window.location.href = "/login";
 }
 
+// Global fetch interceptor to handle session timeouts (401 Unauthorized)
+const originalFetch = window.fetch;
+window.fetch = async function() {
+    const response = await originalFetch.apply(this, arguments);
+    if (response.status === 401) {
+        console.warn("Session expired. Redirecting to login...");
+        localStorage.removeItem("access_token");
+        window.location.href = "/login";
+    }
+    return response;
+};
+
 async function loadDashboardStats() {
     try {
         const response = await fetch('/api/dashboard/stats', { headers: apiHeaders });
@@ -21,13 +33,24 @@ async function loadDashboardStats() {
         document.getElementById("activeThreats").innerText = data.active_threats.toLocaleString();
         document.getElementById("criticalAlerts").innerText = data.critical_alerts.toLocaleString();
         document.getElementById("securityScore").innerText = data.security_score;
-        
+
         // Update security score color based on risk level
         const scoreEl = document.getElementById("securityScore");
         if (data.security_score < 50) scoreEl.style.color = "#ef4444";
         else if (data.security_score < 80) scoreEl.style.color = "#f59e0b";
         else scoreEl.style.color = "#10b981";
-        
+
+        // Update topbar notification badge
+        const notifBadge = document.getElementById("topbar-notification-badge");
+        if (notifBadge) {
+            if (data.active_threats > 0) {
+                notifBadge.innerText = data.active_threats;
+                notifBadge.style.display = "inline-flex";
+            } else {
+                notifBadge.style.display = "none";
+            }
+        }
+
     } catch (err) {
         console.error("Failed to load dashboard stats:", err);
     }
@@ -46,7 +69,7 @@ async function loadAlerts() {
 
 function renderAlerts(alerts) {
     const alertsList = document.getElementById("alertsList");
-    alertsList.innerHTML = ""; 
+    alertsList.innerHTML = "";
 
     if (alerts.length === 0) {
         alertsList.innerHTML = "<p style='color:#94a3b8; font-size:14px;'>No active threats detected.</p>";
@@ -56,7 +79,7 @@ function renderAlerts(alerts) {
     alerts.slice(0, 8).forEach(alert => {
         let severityClass = "";
         let iconClass = "fa-triangle-exclamation";
-        
+
         if (alert.severity === "Critical") { severityClass = "High"; iconClass = "fa-shield-virus"; }
         else if (alert.severity === "High") { severityClass = "High"; iconClass = "fa-bug"; }
         else if (alert.severity === "Medium") { severityClass = "Medium"; iconClass = "fa-satellite-dish"; }
@@ -64,7 +87,7 @@ function renderAlerts(alerts) {
 
         // Format datetime nicely
         const dateObj = new Date(alert.timestamp);
-        const timeStr = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         alertsList.innerHTML += `
             <div class="alert-item">
@@ -93,10 +116,10 @@ async function loadAttackSources() {
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
         const sources = data.sources || [];
-        
+
         const listEl = document.getElementById("attackSourcesList");
         listEl.innerHTML = "";
-        
+
         if (sources.length === 0) {
             listEl.innerHTML = "<p style='color:#94a3b8; font-size:14px;'>No sources detected.</p>";
             return;
@@ -104,7 +127,7 @@ async function loadAttackSources() {
 
         const maxCount = Math.max(...sources.map(s => s.alert_count)) || 1;
         const colors = ["#ef4444", "#f59e0b", "#8b5cf6", "#2563eb", "#06b6d4"];
-        
+
         sources.forEach((src, idx) => {
             let widthPct = (src.alert_count / maxCount) * 100;
             let color = colors[idx % colors.length];
@@ -131,7 +154,7 @@ async function loadThreatTrend(days = 7) {
         const response = await fetch(`/api/dashboard/threat-trend?days=${days}`, { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
-        
+
         const trend = data.trend || [];
         const xDates = trend.map(item => item.date);
         const yCounts = trend.map(item => item.count);
@@ -151,7 +174,7 @@ async function loadThreatTrend(days = 7) {
             plot_bgcolor: "transparent",
             xaxis: { showgrid: false, zeroline: false },
             yaxis: { showgrid: true, gridcolor: "#f1f5f9", zeroline: false }
-        }, {displayModeBar: false});
+        }, { displayModeBar: false });
 
     } catch (err) {
         console.error("Failed to load threat trend:", err);
@@ -166,15 +189,15 @@ async function loadThreatDistribution() {
         const response = await fetch('/api/dashboard/threat-distribution', { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
-        
+
         const dist = data.distribution || [];
         const values = dist.map(item => item.count);
         const labels = dist.map(item => item.threat_type);
         const apiColors = dist.map(item => item.color);
 
         const threatColors = ["#ef4444", "#f59e0b", "#8b5cf6", "#2563eb", "#94a3b8", "#10b981", "#ec4899"];
-        
-        let total = values.reduce((a,b) => a+b, 0);
+
+        let total = values.reduce((a, b) => a + b, 0);
         let annotationsText = total > 0 ? `${total}<br><span style='font-size:11px;color:#64748b;font-weight:500'>Total</span>` : "0";
 
         Plotly.newPlot("threatDistributionChart", [{
@@ -200,14 +223,14 @@ async function loadThreatDistribution() {
                 x: 0.5,
                 y: 0.5
             }]
-        }, {displayModeBar: false, responsive: true});
+        }, { displayModeBar: false, responsive: true });
 
         // Render custom legend
         const legendContainer = document.getElementById("threatLegend");
-        if(legendContainer) {
+        if (legendContainer) {
             legendContainer.innerHTML = "";
             labels.forEach((label, i) => {
-                let pct = total > 0 ? Math.round((values[i]/total)*100) : 0;
+                let pct = total > 0 ? Math.round((values[i] / total) * 100) : 0;
                 let color = apiColors[i] || threatColors[i % threatColors.length];
                 legendContainer.innerHTML += `
                     <div class="legend-item">
@@ -229,25 +252,66 @@ async function loadThreatDistribution() {
 // INITIALIZE
 // =============================
 function initDashboard() {
+    setupTopbar();
     loadDashboardStats();
     loadAlerts();
     loadAttackSources();
     loadThreatTrend(7);
     loadThreatDistribution();
-    
-    // Draw placeholder for score trend as we don't have historical score endpoint
-    Plotly.newPlot("scoreTrendChart", [{
-        x: ["Today"],
-        y: [100],
-        type: "scatter",
-        mode: "lines+markers",
-        line: { color: "#10b981", width: 2 },
-        marker: { size: 6, color: "#10b981" }
-    }], {
-        margin: { t: 20, l: 30, r: 10, b: 30 },
-        xaxis: { showgrid: false, zeroline: false },
-        yaxis: { showgrid: true, gridcolor: "#f1f5f9", zeroline: false, range: [0, 100] }
-    }, {displayModeBar: false});
+
+    loadScoreTrend();
+}
+
+function setupTopbar() {
+    // 1. Set current date
+    const dateEl = document.getElementById("current-date-text");
+    if (dateEl) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        dateEl.innerText = new Date().toLocaleDateString('en-US', options);
+    }
+
+    // 2. Setup notification click to open alerts
+    const notifBtn = document.getElementById("topbar-notification-btn");
+    if (notifBtn) {
+        notifBtn.addEventListener("click", () => {
+            const alertsMenuLink = document.querySelector('.sidebar .menu li[data-target="view-alerts"]');
+            if (alertsMenuLink) {
+                alertsMenuLink.click();
+            }
+        });
+    }
+}
+
+async function loadScoreTrend() {
+    try {
+        const response = await fetch('/api/security-score/history', { headers: apiHeaders });
+        if (!response.ok) throw new Error("API Error");
+        const data = await response.json();
+
+        if (!data || !data.trend || data.trend.length === 0) return;
+
+        const xValues = data.trend.map(t => t.date);
+        const yValues = data.trend.map(t => t.score);
+        const lineColor = data.risk_color || "#10b981";
+
+        Plotly.newPlot("scoreTrendChart", [{
+            x: xValues,
+            y: yValues,
+            type: "scatter",
+            mode: "lines+markers",
+            line: { color: lineColor, width: 3, shape: "spline" },
+            marker: { size: 8, color: lineColor, line: { color: "#ffffff", width: 2 } },
+            fill: "tozeroy",
+            fillcolor: lineColor + "20"
+        }], {
+            margin: { t: 20, l: 30, r: 20, b: 30 },
+            xaxis: { showgrid: false, zeroline: false },
+            yaxis: { showgrid: true, gridcolor: "#f1f5f9", zeroline: false, range: [0, 100] },
+            hovermode: "closest"
+        }, { displayModeBar: false, responsive: true });
+    } catch (err) {
+        console.error("Failed to load score trend:", err);
+    }
 }
 
 initDashboard();
@@ -279,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Hide all views
             viewSections.forEach(section => section.classList.remove("active"));
-            
+
             // Show target view
             const targetView = document.getElementById(targetId);
             if (targetView) {
@@ -302,15 +366,15 @@ if (themeToggle) {
     themeToggle.addEventListener("click", () => {
         document.body.classList.toggle("dark-theme");
         const isDark = document.body.classList.contains("dark-theme");
-        
+
         const themeIcon = document.getElementById("theme-icon");
         if (themeIcon) {
             themeIcon.className = isDark ? "fa-regular fa-moon" : "fa-regular fa-sun";
         }
-        
+
         const gridColor = isDark ? "#334155" : "#f1f5f9";
         const fontColor = isDark ? "#94a3b8" : "#64748b";
-    
+
         const updateLayout = {
             'yaxis.gridcolor': gridColor,
             'xaxis.tickfont.color': fontColor,
@@ -318,13 +382,13 @@ if (themeToggle) {
             'legend.font.color': fontColor,
             'annotations[0].font.color': isDark ? "#f8fafc" : "#1e293b"
         };
-    
+
         try {
             Plotly.relayout("threatTrendChart", updateLayout);
             Plotly.restyle("threatDistributionChart", { 'marker.line.color': isDark ? "#1e293b" : "#ffffff" });
             Plotly.relayout("threatDistributionChart", { 'annotations[0].font.color': isDark ? "#f8fafc" : "#1e293b" });
             Plotly.relayout("scoreTrendChart", updateLayout);
-        } catch (e) {}
+        } catch (e) { }
     });
 }
 

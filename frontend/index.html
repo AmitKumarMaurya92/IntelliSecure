@@ -91,9 +91,9 @@
                 </div>
                 
                 <div class="icon-group">
-                    <div class="icon-btn">
+                    <div class="icon-btn" id="topbar-notification-btn" title="View Alerts">
                         <i class="fa-regular fa-bell"></i>
-                        <span class="badge">3</span>
+                        <span class="badge" id="topbar-notification-badge" style="display: none;">0</span>
                     </div>
                 </div>
 
@@ -117,8 +117,8 @@
                     </div>
                 </div>
 
-                <div class="date-picker">
-                    <i class="fa-regular fa-calendar"></i> May 19, 2024 <i class="fa-solid fa-chevron-down"></i>
+                <div class="date-picker" id="topbar-date">
+                    <i class="fa-regular fa-calendar"></i> <span id="current-date-text">Loading...</span> <i class="fa-solid fa-chevron-down"></i>
                 </div>
             </div>
         </header>
