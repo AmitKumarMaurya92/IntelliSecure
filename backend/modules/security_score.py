@@ -24,11 +24,12 @@ Author: InteliSecure Team
 
 import datetime
 from sqlalchemy.orm import Session
+from sqlalchemy import func, distinct
 
 from ..models import LoginLog, MalwareLog, NetworkLog, FileAccessLog, Alert
 
 
-def calculate_security_score(db: Session) -> dict:
+def calculate_security_score(db: Session, date: str = None) -> dict:
     """
     Compute the current security score from live database data.
 
@@ -39,49 +40,33 @@ def calculate_security_score(db: Session) -> dict:
     since_1h   = datetime.datetime.utcnow() - datetime.timedelta(hours=1)
 
     # ── Data Queries ──────────────────────────────────────────────────────────
-    failed_logins = (
-        db.query(LoginLog)
-        .filter(LoginLog.status == "Failed")
-        .filter(LoginLog.timestamp >= since_24h)
-        .count()
-    )
+    login_q = db.query(LoginLog).filter(LoginLog.status == "Failed")
+    malware_q = db.query(MalwareLog)
+    net_q = db.query(NetworkLog.source_ip).group_by(NetworkLog.source_ip).having(func.count(distinct(NetworkLog.port)) >= 10)
+    file_q = db.query(FileAccessLog).filter(FileAccessLog.status == "Denied")
+    crit_alert_q = db.query(Alert).filter(Alert.severity == "Critical", Alert.resolved == False)
+    high_alert_q = db.query(Alert).filter(Alert.severity == "High", Alert.resolved == False)
 
-    malware_count = (
-        db.query(MalwareLog)
-        .filter(MalwareLog.timestamp >= since_24h)
-        .count()
-    )
+    if date:
+        login_q = login_q.filter(LoginLog.timestamp.like(f"{date}%"))
+        malware_q = malware_q.filter(MalwareLog.timestamp.like(f"{date}%"))
+        net_q = net_q.filter(NetworkLog.timestamp.like(f"{date}%"))
+        file_q = file_q.filter(FileAccessLog.timestamp.like(f"{date}%"))
+        crit_alert_q = crit_alert_q.filter(Alert.timestamp.like(f"{date}%"))
+        high_alert_q = high_alert_q.filter(Alert.timestamp.like(f"{date}%"))
+    else:
+        login_q = login_q.filter(LoginLog.timestamp >= since_24h)
+        malware_q = malware_q.filter(MalwareLog.timestamp >= since_24h)
+        net_q = net_q.filter(NetworkLog.timestamp >= since_1h)
+        file_q = file_q.filter(FileAccessLog.timestamp >= since_24h)
+        # Alerts use active status (resolved == False), no time constraint needed unless date is specified
 
-    # Count distinct IPs that touched many ports (crude port scan count)
-    from sqlalchemy import func, distinct
-    port_scan_sources = (
-        db.query(NetworkLog.source_ip)
-        .filter(NetworkLog.timestamp >= since_1h)
-        .group_by(NetworkLog.source_ip)
-        .having(func.count(distinct(NetworkLog.port)) >= 10)
-        .count()
-    )
-
-    denied_files = (
-        db.query(FileAccessLog)
-        .filter(FileAccessLog.status == "Denied")
-        .filter(FileAccessLog.timestamp >= since_24h)
-        .count()
-    )
-
-    active_critical_alerts = (
-        db.query(Alert)
-        .filter(Alert.severity == "Critical")
-        .filter(Alert.resolved == False)
-        .count()
-    )
-
-    active_high_alerts = (
-        db.query(Alert)
-        .filter(Alert.severity == "High")
-        .filter(Alert.resolved == False)
-        .count()
-    )
+    failed_logins = login_q.count()
+    malware_count = malware_q.count()
+    port_scan_sources = net_q.count()
+    denied_files = file_q.count()
+    active_critical_alerts = crit_alert_q.count()
+    active_high_alerts = high_alert_q.count()
 
     # ── Score Calculation ─────────────────────────────────────────────────────
     login_penalty    = min(failed_logins    * 2, 30)

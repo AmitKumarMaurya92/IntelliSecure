@@ -69,7 +69,7 @@ def get_dashboard_stats(
     active_threats   = alert_q.filter(Alert.resolved == False).count()
     critical_alerts  = alert_q.filter(Alert.severity == "Critical", Alert.resolved == False).count()
 
-    score_data       = calculate_security_score(db)
+    score_data       = calculate_security_score(db, date)
 
     return {
         "total_logs":      total_logs,

@@ -63,6 +63,50 @@ async function loadDashboardStats() {
             }
         }
 
+        // Update System Status in sidebar
+        const sysStatusContainer = document.getElementById("sidebar-system-status");
+        const sysStatusIcon = document.getElementById("sidebar-status-icon");
+        const sysStatusMain = document.getElementById("sidebar-status-main");
+        const sysStatusSub = document.getElementById("sidebar-status-sub");
+
+        if (sysStatusContainer && sysStatusIcon && sysStatusMain && sysStatusSub) {
+            let bgColor, borderColor, iconColor, mainColor, iconClass, mainText, subText;
+            
+            if (data.security_score < 50 || data.risk_level === 'Critical') {
+                bgColor = "var(--light-red)";
+                borderColor = "rgba(239, 68, 68, 0.3)";
+                iconColor = "var(--red)";
+                mainColor = "var(--red)";
+                iconClass = "fa-shield-virus";
+                mainText = "At Risk";
+                subText = "Critical threats detected";
+            } else if (data.security_score < 80 || data.risk_level === 'High' || data.risk_level === 'Medium') {
+                bgColor = "var(--light-yellow)";
+                borderColor = "rgba(245, 158, 11, 0.3)";
+                iconColor = "var(--yellow)";
+                mainColor = "var(--yellow)";
+                iconClass = "fa-triangle-exclamation";
+                mainText = "Warning";
+                subText = "Review active alerts";
+            } else {
+                bgColor = "var(--light-green)";
+                borderColor = "rgba(16, 185, 129, 0.3)";
+                iconColor = "var(--green)";
+                mainColor = "var(--green)";
+                iconClass = "fa-shield";
+                mainText = "Protected";
+                subText = "All systems are secure";
+            }
+
+            sysStatusContainer.style.background = bgColor;
+            sysStatusContainer.style.borderColor = borderColor;
+            sysStatusIcon.className = `fa-solid ${iconClass} check-icon`;
+            sysStatusIcon.style.color = iconColor;
+            sysStatusMain.style.color = mainColor;
+            sysStatusMain.innerText = mainText;
+            sysStatusSub.innerText = subText;
+        }
+
     } catch (err) {
         console.error("Failed to load dashboard stats:", err);
     }
