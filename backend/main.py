@@ -22,7 +22,8 @@ from .database import engine, Base
 # ─── Model registration (must import before create_all) ────────────────────────
 from .models import (
     User, LoginLog, NetworkLog, FileAccessLog,
-    MalwareLog, USBLog, Alert, ScanHistory
+    MalwareLog, USBLog, Alert, ScanHistory,
+    UserPreferences, UserSession
 )
 
 # ─── Router imports ─────────────────────────────────────────────────────────────

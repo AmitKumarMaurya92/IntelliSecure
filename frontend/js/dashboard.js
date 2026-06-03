@@ -430,8 +430,7 @@ if (themeToggle) {
             'yaxis.gridcolor': gridColor,
             'xaxis.tickfont.color': fontColor,
             'yaxis.tickfont.color': fontColor,
-            'legend.font.color': fontColor,
-            'annotations[0].font.color': isDark ? "#f8fafc" : "#1e293b"
+            'legend.font.color': fontColor
         };
 
         try {

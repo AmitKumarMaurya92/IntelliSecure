@@ -5,7 +5,7 @@ from backend.database import Base
 def get_current_time():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-from .user import User
+from .user import User, UserPreferences, UserSession
 
 class LoginLog(Base):
     __tablename__ = "login_logs"
