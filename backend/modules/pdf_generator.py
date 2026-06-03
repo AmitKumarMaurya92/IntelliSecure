@@ -15,6 +15,7 @@ Author: InteliSecure Team
 
 import os
 import sys
+import datetime
 
 ROOT_DIR   = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PDF_DIR    = os.path.join(ROOT_DIR, "reports", "pdf")

@@ -16,10 +16,12 @@
     --border-color: #e2e8f0;
     --primary-blue: #2563eb;
     --red: #ef4444;
+    --orange: #f97316;
     --yellow: #f59e0b;
     --green: #10b981;
     --light-blue: #eff6ff;
     --light-red: #fef2f2;
+    --light-orange: #fff7ed;
     --light-yellow: #fffbeb;
     --light-green: #ecfdf5;
 }
@@ -32,6 +34,7 @@ body.dark-theme {
     --border-color: #334155;
     --light-blue: rgba(37, 99, 235, 0.2);
     --light-red: rgba(239, 68, 68, 0.2);
+    --light-orange: rgba(249, 115, 22, 0.2);
     --light-yellow: rgba(245, 158, 11, 0.2);
     --light-green: rgba(16, 185, 129, 0.2);
 }
