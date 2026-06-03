@@ -1975,3 +1975,133 @@ body.dark-theme .log-badge {
 body.dark-theme .log-tab.active .log-badge {
     background: rgba(0, 0, 0, 0.2);
 }
+
+/* =========================
+   SECURITY SCORE MODULE
+========================= */
+.score-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.score-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.score-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.score-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-main);
+}
+
+.score-donut-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px auto;
+}
+
+.score-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.score-risk-label {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.score-meta {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.penalty-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.penalty-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.penalty-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.penalty-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.penalty-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--red);
+    transition: width 0.5s ease;
+}
+
+.score-line-container {
+    width: 100%;
+    height: 250px;
+}
+
+.score-recommendations {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.score-recommendations li {
+    font-size: 14px;
+    color: var(--text-main);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.score-recommendations li i {
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--primary-blue);
+}
+
+@media (max-width: 1024px) {
+    .score-grid {
+        grid-template-columns: 1fr;
+    }
+}

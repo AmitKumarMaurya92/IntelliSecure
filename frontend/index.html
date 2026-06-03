@@ -12,6 +12,8 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <!-- Plotly -->
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="container">
@@ -515,7 +517,54 @@
                 </table>
             </div>
         </div>
-        <div id="view-security-score" class="view-section"><div class="view-content"><h2>Security Score</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-security-score" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>Security Score</h2>
+                <div class="threats-filters">
+                    <button id="refresh-score-btn" class="btn-outline"><i class="fa-solid fa-rotate-right"></i> Refresh Data</button>
+                </div>
+            </div>
+
+            <div class="score-grid">
+                <!-- Left Column -->
+                <div class="score-column">
+                    <div class="score-card">
+                        <h3 class="score-card-title">Current Health</h3>
+                        <div class="score-donut-container">
+                            <canvas id="score-doughnut-chart"></canvas>
+                            <div class="score-center-text" id="score-center-value">--</div>
+                        </div>
+                        <div class="score-risk-label" id="score-risk-label">Analyzing...</div>
+                        <p class="score-meta">Calculated from live logs and active alerts over the last 24 hours.</p>
+                    </div>
+
+                    <div class="score-card">
+                        <h3 class="score-card-title">Penalty Breakdown</h3>
+                        <div id="score-breakdown-list" class="penalty-list">
+                            <!-- Populated by JS -->
+                            <p style="text-align:center; color:var(--text-muted);">Loading factors...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="score-column">
+                    <div class="score-card">
+                        <h3 class="score-card-title">7-Day Trend</h3>
+                        <div class="score-line-container">
+                            <canvas id="score-line-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="score-card" style="background: linear-gradient(145deg, var(--bg-color), rgba(16, 185, 129, 0.05)); border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <h3 class="score-card-title"><i class="fa-solid fa-lightbulb" style="color:var(--yellow);"></i> Recommendations</h3>
+                        <ul class="score-recommendations" id="score-recommendations-list">
+                            <li>Loading recommendations...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="view-attack-trends" class="view-section"><div class="view-content"><h2>Attack Trends</h2><p>Feature coming soon...</p></div></div>
         <div id="view-risk-analysis" class="view-section"><div class="view-content"><h2>Risk Analysis</h2><p>Feature coming soon...</p></div></div>
         <div id="view-reports" class="view-section"><div class="view-content"><h2>Reports</h2><p>Feature coming soon...</p></div></div>
@@ -534,5 +583,6 @@
 <script src="/js/threats.js"></script>
 <script src="/js/logs.js"></script>
 <script src="/js/devices.js"></script>
+<script src="/js/score.js"></script>
 </body>
 </html>
