@@ -1918,3 +1918,60 @@ body.dark-theme .threats-table tr:hover td {
     justify-content: flex-end;
     gap: 12px;
 }
+
+/* =========================
+   LOGS MODULE
+========================= */
+.log-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    overflow-x: auto;
+}
+
+.log-tab {
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.log-tab:hover {
+    background: var(--bg-color);
+    color: var(--text-main);
+}
+
+.log-tab.active {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.log-badge {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.log-tab.active .log-badge {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-theme .log-badge {
+    background: rgba(255, 255, 255, 0.1);
+}
+body.dark-theme .log-tab.active .log-badge {
+    background: rgba(0, 0, 0, 0.2);
+}

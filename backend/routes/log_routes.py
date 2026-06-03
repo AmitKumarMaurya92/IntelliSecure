@@ -55,7 +55,7 @@ def get_login_logs(
     
     return [{
         "id": l.id,
-        "timestamp": l.timestamp.isoformat() + "Z",
+        "timestamp": str(l.timestamp),
         "username": l.username,
         "ip_address": l.ip_address,
         "status": l.status
@@ -74,7 +74,7 @@ def get_network_logs(
     
     return [{
         "id": l.id,
-        "timestamp": l.timestamp.isoformat() + "Z",
+        "timestamp": str(l.timestamp),
         "source_ip": l.source_ip,
         "destination_ip": l.destination_ip,
         "port": l.port,
@@ -97,7 +97,7 @@ def get_file_access_logs(
     
     return [{
         "id": l.id,
-        "timestamp": l.timestamp.isoformat() + "Z",
+        "timestamp": str(l.timestamp),
         "username": l.username,
         "file_path": l.file_path,
         "access_type": l.access_type,
@@ -117,7 +117,7 @@ def get_malware_logs(
     
     return [{
         "id": l.id,
-        "timestamp": l.timestamp.isoformat() + "Z",
+        "timestamp": str(l.timestamp),
         "file_name": l.file_name,
         "file_path": l.file_path,
         "hash": l.hash,
@@ -138,7 +138,7 @@ def get_usb_logs(
     
     return [{
         "id": l.id,
-        "timestamp": l.timestamp.isoformat() + "Z",
+        "timestamp": str(l.timestamp),
         "username": l.username,
         "device_name": l.device_name,
         "device_id": l.device_id,

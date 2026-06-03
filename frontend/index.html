@@ -440,8 +440,81 @@
             </div>
         </div>
         <div id="view-alerts" class="view-section"><div class="view-content"><h2>Alerts</h2><p>Feature coming soon...</p></div></div>
-        <div id="view-logs" class="view-section"><div class="view-content"><h2>Logs</h2><p>Feature coming soon...</p></div></div>
-        <div id="view-devices" class="view-section"><div class="view-content"><h2>Devices (LAN)</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-logs" class="view-section">
+            <div class="threats-header">
+                <h2>Telemetry Logs</h2>
+                <div class="threats-filters">
+                    <button id="sync-logs-btn" class="btn-primary" style="display:none;"><i class="fa-solid fa-cloud-arrow-down"></i> Sync Telemetry</button>
+                    <button id="refresh-logs-btn" class="btn-outline"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                </div>
+            </div>
+
+            <div class="log-tabs">
+                <button class="log-tab active" data-type="login"><i class="fa-solid fa-right-to-bracket"></i> Login <span id="badge-login" class="log-badge">0</span></button>
+                <button class="log-tab" data-type="network"><i class="fa-solid fa-network-wired"></i> Network <span id="badge-network" class="log-badge">0</span></button>
+                <button class="log-tab" data-type="file"><i class="fa-regular fa-folder-open"></i> File Access <span id="badge-file" class="log-badge">0</span></button>
+                <button class="log-tab" data-type="malware"><i class="fa-solid fa-bug"></i> Malware <span id="badge-malware" class="log-badge">0</span></button>
+                <button class="log-tab" data-type="usb"><i class="fa-brands fa-usb"></i> USB Events <span id="badge-usb" class="log-badge">0</span></button>
+            </div>
+
+            <div class="threats-table-container" style="margin-top: 15px;">
+                <table class="threats-table">
+                    <thead id="logs-table-head">
+                        <tr><th>Loading...</th></tr>
+                    </thead>
+                    <tbody id="logs-table-body">
+                        <tr><td style="text-align:center; padding:20px;">Loading logs...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="threats-pagination">
+                <button id="logs-prev-btn" class="btn-outline" disabled>Previous</button>
+                <span id="logs-page-info">Page 1</span>
+                <button id="logs-next-btn" class="btn-outline" disabled>Next</button>
+            </div>
+        </div>
+        <div id="view-devices" class="view-section">
+            <div class="threats-header">
+                <h2>LAN Devices</h2>
+                <div class="threats-filters">
+                    <button id="scan-lan-btn" class="btn-primary" style="display:none;"><i class="fa-solid fa-radar"></i> Scan Network</button>
+                    <button id="refresh-devices-btn" class="btn-outline"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                </div>
+            </div>
+
+            <div class="threats-stats" id="devices-stats-container">
+                <div class="threat-stat-card"><div class="stat-title">Total Online</div><div class="stat-value" id="stat-devices-total">-</div></div>
+                <div class="threat-stat-card"><div class="stat-title">Known Devices</div><div class="stat-value text-green" id="stat-devices-known">-</div></div>
+                <div class="threat-stat-card"><div class="stat-title">Unknown/Rogue</div><div class="stat-value text-red" id="stat-devices-unknown">-</div></div>
+                <div class="threat-stat-card" style="align-items:flex-start;">
+                    <div class="stat-title">Last Scan</div>
+                    <div class="stat-value" id="stat-devices-last-scan" style="font-size:16px; font-weight:600; margin-top:5px; color:var(--primary-blue);">Never</div>
+                </div>
+            </div>
+
+            <div class="log-tabs">
+                <button class="log-tab active" data-device-tab="all"><i class="fa-solid fa-network-wired"></i> All Devices</button>
+                <button class="log-tab" data-device-tab="unknown"><i class="fa-solid fa-user-secret"></i> Unknown Devices</button>
+            </div>
+
+            <div class="threats-table-container">
+                <table class="threats-table">
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>MAC Address</th>
+                            <th>Vendor</th>
+                            <th>OS Detection</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devices-table-body">
+                        <tr><td colspan="5" style="text-align:center; padding:20px;">No scan results. Please perform a network scan.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="view-security-score" class="view-section"><div class="view-content"><h2>Security Score</h2><p>Feature coming soon...</p></div></div>
         <div id="view-attack-trends" class="view-section"><div class="view-content"><h2>Attack Trends</h2><p>Feature coming soon...</p></div></div>
         <div id="view-risk-analysis" class="view-section"><div class="view-content"><h2>Risk Analysis</h2><p>Feature coming soon...</p></div></div>
@@ -459,5 +532,7 @@
 <script src="/js/dashboard.js"></script>
 <script src="/js/realtime.js"></script>
 <script src="/js/threats.js"></script>
+<script src="/js/logs.js"></script>
+<script src="/js/devices.js"></script>
 </body>
 </html>
