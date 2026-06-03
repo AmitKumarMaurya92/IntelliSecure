@@ -22,7 +22,7 @@ from .database import engine, Base
 # ─── Model registration (must import before create_all) ────────────────────────
 from .models import (
     User, LoginLog, NetworkLog, FileAccessLog,
-    MalwareLog, USBLog, Alert
+    MalwareLog, USBLog, Alert, ScanHistory
 )
 
 # ─── Router imports ─────────────────────────────────────────────────────────────
@@ -34,6 +34,7 @@ from .routes.dashboard_routes import router as dashboard_router
 from .routes.device_routes    import router as device_router
 from .routes.report_routes    import router as report_router
 from .routes.educational_routes import router as educational_router
+from .routes.realtime_routes    import router as realtime_router
 
 # ─── DB Table Creation ──────────────────────────────────────────────────────────
 Base.metadata.create_all(bind=engine)
@@ -69,6 +70,7 @@ app.include_router(dashboard_router, prefix="/api/dashboard", tags=["Dashboard"]
 app.include_router(device_router,    prefix="/api/devices",   tags=["LAN Devices"])
 app.include_router(report_router,    prefix="/api/reports",   tags=["Reports"])
 app.include_router(educational_router, prefix="/api/education", tags=["Education"])
+app.include_router(realtime_router,     prefix="/api/realtime",   tags=["Real-Time Monitor"])
 
 # ─── Static File Serving ─────────────────────────────────────────────────────────
 BACKEND_DIR  = os.path.dirname(os.path.abspath(__file__))

@@ -252,7 +252,125 @@
         </div> <!-- End view-dashboard -->
 
         <!-- OTHER VIEWS (SKELETONS) -->
-        <div id="view-real-time" class="view-section"><div class="view-content"><h2>Real-Time Monitor</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-real-time" class="view-section">
+            <!-- CONTROL BAR -->
+            <div class="rtm-control-bar">
+                <div class="rtm-control-left">
+                    <div class="rtm-status-indicator" id="rtmStatusIndicator">
+                        <span class="rtm-pulse-dot"></span>
+                        <span class="rtm-status-text" id="rtmStatusText">Ready</span>
+                    </div>
+                    <div class="rtm-last-scan" id="rtmLastScan">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>No scans yet</span>
+                    </div>
+                </div>
+                <div class="rtm-control-right">
+                    <div class="rtm-auto-refresh">
+                        <label class="rtm-toggle-label">
+                            <span>Auto-Refresh</span>
+                            <div class="rtm-toggle" id="rtmAutoToggle">
+                                <input type="checkbox" id="rtmAutoCheck">
+                                <span class="rtm-toggle-slider"></span>
+                            </div>
+                        </label>
+                        <div class="rtm-interval-select">
+                            <select id="rtmIntervalSelect">
+                                <option value="15">15s</option>
+                                <option value="30" selected>30s</option>
+                                <option value="60">60s</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="rtm-scan-btn" id="rtmScanBtn" onclick="runRealtimeScan()">
+                        <i class="fa-solid fa-radar" id="rtmScanIcon"></i>
+                        <span>Run Scan Now</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI CARDS -->
+            <div class="rtm-cards">
+                <div class="rtm-card rtm-card-brute">
+                    <div class="rtm-card-icon"><i class="fa-solid fa-lock"></i></div>
+                    <div class="rtm-card-body">
+                        <span class="rtm-card-label">Brute Force</span>
+                        <span class="rtm-card-value" id="rtmBruteCount">—</span>
+                    </div>
+                    <div class="rtm-card-glow"></div>
+                </div>
+                <div class="rtm-card rtm-card-port">
+                    <div class="rtm-card-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <div class="rtm-card-body">
+                        <span class="rtm-card-label">Port Scans</span>
+                        <span class="rtm-card-value" id="rtmPortCount">—</span>
+                    </div>
+                    <div class="rtm-card-glow"></div>
+                </div>
+                <div class="rtm-card rtm-card-unauth">
+                    <div class="rtm-card-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <div class="rtm-card-body">
+                        <span class="rtm-card-label">Unauthorized</span>
+                        <span class="rtm-card-value" id="rtmUnauthCount">—</span>
+                    </div>
+                    <div class="rtm-card-glow"></div>
+                </div>
+                <div class="rtm-card rtm-card-ml">
+                    <div class="rtm-card-icon"><i class="fa-solid fa-brain"></i></div>
+                    <div class="rtm-card-body">
+                        <span class="rtm-card-label">ML Anomalies</span>
+                        <span class="rtm-card-value" id="rtmMLCount">—</span>
+                    </div>
+                    <div class="rtm-card-glow"></div>
+                </div>
+            </div>
+
+            <!-- MAIN GRID: Feed + Chart + Detectors -->
+            <div class="rtm-main-grid">
+                <!-- LIVE THREAT FEED -->
+                <div class="rtm-feed-panel">
+                    <div class="rtm-panel-header">
+                        <h3><i class="fa-solid fa-satellite-dish"></i> Live Threat Feed</h3>
+                        <span class="rtm-event-count" id="rtmEventCount">0 events</span>
+                    </div>
+                    <div class="rtm-feed-list" id="rtmFeedList">
+                        <div class="rtm-feed-empty">
+                            <i class="fa-solid fa-shield-check"></i>
+                            <p>Run a scan to detect threats</p>
+                            <span>Click "Run Scan Now" to start monitoring</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <div class="rtm-right-col">
+                    <!-- SCAN TIMELINE CHART -->
+                    <div class="rtm-chart-panel">
+                        <div class="rtm-panel-header">
+                            <h3><i class="fa-solid fa-chart-area"></i> Scan Timeline</h3>
+                            <span class="rtm-chart-info" id="rtmChartInfo">Last 20 scans</span>
+                        </div>
+                        <div id="rtmTimelineChart" class="rtm-chart-container"></div>
+                    </div>
+
+                    <!-- DETECTOR STATUS -->
+                    <div class="rtm-detector-panel">
+                        <div class="rtm-panel-header">
+                            <h3><i class="fa-solid fa-microchip"></i> Detector Modules</h3>
+                        </div>
+                        <div class="rtm-detector-grid" id="rtmDetectorGrid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCAN SUMMARY BAR -->
+            <div class="rtm-summary-bar" id="rtmSummaryBar">
+                <i class="fa-solid fa-circle-info"></i>
+                <span id="rtmSummaryText">No scans performed yet. Click "Run Scan Now" to begin threat detection.</span>
+            </div>
+        </div>
         <div id="view-threats" class="view-section"><div class="view-content"><h2>Threats</h2><p>Feature coming soon...</p></div></div>
         <div id="view-alerts" class="view-section"><div class="view-content"><h2>Alerts</h2><p>Feature coming soon...</p></div></div>
         <div id="view-logs" class="view-section"><div class="view-content"><h2>Logs</h2><p>Feature coming soon...</p></div></div>
@@ -272,5 +390,6 @@
     </main>
 </div>
 <script src="/js/dashboard.js"></script>
+<script src="/js/realtime.js"></script>
 </body>
 </html>

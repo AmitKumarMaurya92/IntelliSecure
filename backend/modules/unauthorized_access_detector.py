@@ -24,7 +24,7 @@ def detect_unauthorized_file_access(db: Session) -> list[dict]:
     Scan file_access_logs for 'Denied' status events.
     Escalates to High severity when same user has 3+ denials.
     """
-    since = datetime.datetime.utcnow() - datetime.timedelta(hours=1)
+    since = (datetime.datetime.utcnow() - datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
 
     denied_logs = (
         db.query(FileAccessLog)
@@ -70,7 +70,7 @@ def detect_blocked_usb_devices(db: Session) -> list[dict]:
     """
     Scan usb_logs for 'Blocked' action events indicating policy violations.
     """
-    since = datetime.datetime.utcnow() - datetime.timedelta(hours=1)
+    since = (datetime.datetime.utcnow() - datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
 
     blocked_usb = (
         db.query(USBLog)

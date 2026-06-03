@@ -8,7 +8,7 @@ def create_alert(db: Session, threat_type: str, severity: str, source: str, desc
     Includes built-in alert deduplication: checks if an active alert of the same 
     type and source occurred in the last 5 minutes to avoid flood fatigue.
     """
-    time_window = datetime.datetime.utcnow() - datetime.timedelta(minutes=5)
+    time_window = (datetime.datetime.utcnow() - datetime.timedelta(minutes=5)).strftime("%Y-%m-%d %H:%M:%S")
     
     # Check for identical duplicate active alerts in the last 5 minutes
     duplicate = db.query(Alert).filter(
@@ -20,7 +20,7 @@ def create_alert(db: Session, threat_type: str, severity: str, source: str, desc
     
     if duplicate:
         # Update description and bump timestamp to show continuation
-        duplicate.timestamp = datetime.datetime.utcnow()
+        duplicate.timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
         duplicate.description = description
         db.commit()
         db.refresh(duplicate)

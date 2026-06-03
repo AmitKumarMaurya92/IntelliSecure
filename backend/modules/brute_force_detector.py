@@ -33,7 +33,7 @@ def detect_brute_force(db: Session) -> list[dict]:
         for each IP that exceeded the failure threshold.
     """
     # Pull all FAILED login attempts within the last 10 minutes for efficiency
-    since = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
+    since = (datetime.datetime.utcnow() - datetime.timedelta(minutes=10)).strftime("%Y-%m-%d %H:%M:%S")
 
     failed_logs = (
         db.query(LoginLog)

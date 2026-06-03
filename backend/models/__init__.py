@@ -71,3 +71,16 @@ class Alert(Base):
     description = Column(String, nullable=False)
     resolved = Column(Boolean, default=False, nullable=False)
     resolution_notes = Column(String, nullable=True)
+
+class ScanHistory(Base):
+    __tablename__ = "scan_history"
+
+    id                  = Column(Integer, primary_key=True, index=True)
+    timestamp           = Column(String, default=get_current_time, nullable=False)
+    brute_force_count   = Column(Integer, default=0, nullable=False)
+    port_scan_count     = Column(Integer, default=0, nullable=False)
+    unauthorized_count  = Column(Integer, default=0, nullable=False)
+    ml_anomaly_count    = Column(Integer, default=0, nullable=False)
+    total_threats       = Column(Integer, default=0, nullable=False)
+    scan_duration_ms    = Column(Integer, default=0, nullable=False)
+    summary             = Column(String, nullable=True)

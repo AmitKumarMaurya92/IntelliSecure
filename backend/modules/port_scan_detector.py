@@ -30,7 +30,7 @@ def detect_port_scans(db: Session) -> list[dict]:
         List of dicts: { source_ip, distinct_ports, ports_scanned, window_start }
         for each detected port scanner.
     """
-    since = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
+    since = (datetime.datetime.utcnow() - datetime.timedelta(minutes=10)).strftime("%Y-%m-%d %H:%M:%S")
 
     recent_logs = (
         db.query(NetworkLog)

@@ -285,6 +285,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (targetView) {
                 targetView.classList.add("active");
             }
+
+            // Lazy-init the real-time monitor view on first activation
+            if (targetId === "view-real-time" && typeof window.initRealtimeMonitorView === "function") {
+                window.initRealtimeMonitorView();
+            }
         });
     });
 });
