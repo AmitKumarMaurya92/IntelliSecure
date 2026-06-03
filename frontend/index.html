@@ -441,7 +441,26 @@
                 </div>
             </div>
         </div>
-        <div id="view-alerts" class="view-section"><div class="view-content"><h2>Alerts</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-alerts" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>Notification Center</h2>
+                <div class="threats-filters">
+                    <button id="refresh-alerts-btn" class="btn-outline"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                </div>
+            </div>
+
+            <div class="score-grid">
+                <div class="score-card" style="grid-column: 1 / -1; padding: 0; background: transparent; border: none; box-shadow: none;">
+                    <div class="alert-feed-timeline" id="alerts-feed-list">
+                        <!-- Populated by JS -->
+                        <div style="text-align:center; padding:40px; color:var(--text-muted);">
+                            <i class="fa-regular fa-bell fa-3x" style="opacity: 0.2; margin-bottom: 15px;"></i>
+                            <p>Loading notifications...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="view-logs" class="view-section">
             <div class="threats-header">
                 <h2>Telemetry Logs</h2>
@@ -601,7 +620,46 @@
                 </div>
             </div>
         </div>
-        <div id="view-risk-analysis" class="view-section"><div class="view-content"><h2>Risk Analysis</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-risk-analysis" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>Risk Analysis</h2>
+                <div class="threats-filters">
+                    <button id="refresh-risk-btn" class="btn-outline"><i class="fa-solid fa-rotate-right"></i> Refresh Data</button>
+                </div>
+            </div>
+
+            <!-- Top Row: Bar Chart -->
+            <div class="score-grid" style="margin-bottom: 24px;">
+                <div class="score-card" style="grid-column: 1 / -1;">
+                    <h3 class="score-card-title">Top 10 High-Risk Entities</h3>
+                    <div class="score-line-container">
+                        <canvas id="risk-bar-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Data Table -->
+            <div class="score-grid" style="margin-bottom: 24px;">
+                <div class="score-card" style="grid-column: 1 / -1;">
+                    <h3 class="score-card-title">Entity Risk Leaderboard</h3>
+                    <div class="threats-table-container">
+                        <table class="threats-table">
+                            <thead>
+                                <tr>
+                                    <th>Entity (User/IP)</th>
+                                    <th>Risk Level</th>
+                                    <th>Score</th>
+                                    <th>Contributing Factors</th>
+                                </tr>
+                            </thead>
+                            <tbody id="risk-table-body">
+                                <tr><td colspan="4" style="text-align:center; padding:20px;">Analyzing entities...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="view-reports" class="view-section"><div class="view-content"><h2>Reports</h2><p>Feature coming soon...</p></div></div>
         <div id="view-export-reports" class="view-section"><div class="view-content"><h2>Export Reports</h2><p>Feature coming soon...</p></div></div>
         <div id="view-settings" class="view-section"><div class="view-content"><h2>Settings</h2><p>Feature coming soon...</p></div></div>
@@ -620,5 +678,7 @@
 <script src="/js/devices.js"></script>
 <script src="/js/score.js"></script>
 <script src="/js/trends.js"></script>
+<script src="/js/risk.js"></script>
+<script src="/js/alerts.js"></script>
 </body>
 </html>

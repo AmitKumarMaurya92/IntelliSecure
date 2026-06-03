@@ -2166,3 +2166,92 @@ body.dark-theme .log-tab.active .log-badge {
     font-size: 12px;
     color: var(--text-muted);
 }
+
+/* =========================
+   RISK ANALYSIS MODULE
+========================= */
+.risk-factor-pill {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-main);
+    background: var(--bg-color);
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    display: inline-block;
+}
+
+/* =========================
+   ALERTS MODULE
+========================= */
+.alert-feed-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.alert-feed-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.alert-feed-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+}
+
+body.dark-theme .alert-feed-card {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.alert-feed-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.alert-feed-content {
+    flex-grow: 1;
+}
+
+.alert-feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.alert-feed-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-main);
+}
+
+.alert-feed-time {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.alert-feed-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.alert-feed-actions {
+    display: flex;
+    gap: 10px;
+}

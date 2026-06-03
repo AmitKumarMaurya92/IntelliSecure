@@ -21,3 +21,4 @@ matplotlib
 plotly
 pytest
 httpx
+email-validator

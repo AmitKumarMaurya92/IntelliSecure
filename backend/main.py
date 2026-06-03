@@ -32,9 +32,10 @@ from .routes.threat_routes import router as threat_router
 from .routes.score_routes  import router as score_router
 from .routes.dashboard_routes import router as dashboard_router
 from .routes.device_routes    import router as device_router
-from .routes.report_routes    import router as report_router
-from .routes.educational_routes import router as educational_router
-from .routes.realtime_routes    import router as realtime_router
+from backend.routes.report_routes    import router as report_router
+from backend.routes.educational_routes import router as educational_router
+from backend.routes.realtime_routes  import router as realtime_router
+from backend.routes.risk_routes      import router as risk_router
 
 # ─── DB Table Creation ──────────────────────────────────────────────────────────
 Base.metadata.create_all(bind=engine)
@@ -71,6 +72,7 @@ app.include_router(device_router,    prefix="/api/devices",   tags=["LAN Devices
 app.include_router(report_router,    prefix="/api/reports",   tags=["Reports"])
 app.include_router(educational_router, prefix="/api/education", tags=["Education"])
 app.include_router(realtime_router,     prefix="/api/realtime",   tags=["Real-Time Monitor"])
+app.include_router(risk_router,      prefix="/api/risk",      tags=["Risk Analysis"])
 
 # ─── Static File Serving ─────────────────────────────────────────────────────────
 BACKEND_DIR  = os.path.dirname(os.path.abspath(__file__))
