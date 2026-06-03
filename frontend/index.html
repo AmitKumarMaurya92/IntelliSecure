@@ -565,7 +565,42 @@
                 </div>
             </div>
         </div>
-        <div id="view-attack-trends" class="view-section"><div class="view-content"><h2>Attack Trends</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-attack-trends" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>Attack Trends</h2>
+                <div class="threats-filters">
+                    <button id="refresh-trends-btn" class="btn-outline"><i class="fa-solid fa-rotate-right"></i> Refresh Data</button>
+                </div>
+            </div>
+
+            <!-- Top Row: Full Width Timeline -->
+            <div class="score-grid" style="margin-bottom: 24px;">
+                <div class="score-card" style="grid-column: 1 / -1;">
+                    <h3 class="score-card-title">Threat Volume Timeline (7 Days)</h3>
+                    <div class="score-line-container">
+                        <canvas id="trends-timeline-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: 2 Columns -->
+            <div class="score-grid">
+                <div class="score-card">
+                    <h3 class="score-card-title">Threat Distribution</h3>
+                    <div class="trends-donut-container">
+                        <canvas id="trends-distribution-chart"></canvas>
+                    </div>
+                    <p class="score-meta" style="margin-top:0px;">Total active threats by category</p>
+                </div>
+
+                <div class="score-card">
+                    <h3 class="score-card-title">Top Attack Sources</h3>
+                    <ul class="top-attackers-list" id="trends-top-sources">
+                        <p style="text-align:center; color:var(--text-muted); margin-top:30px;">Loading sources...</p>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div id="view-risk-analysis" class="view-section"><div class="view-content"><h2>Risk Analysis</h2><p>Feature coming soon...</p></div></div>
         <div id="view-reports" class="view-section"><div class="view-content"><h2>Reports</h2><p>Feature coming soon...</p></div></div>
         <div id="view-export-reports" class="view-section"><div class="view-content"><h2>Export Reports</h2><p>Feature coming soon...</p></div></div>
@@ -584,5 +619,6 @@
 <script src="/js/logs.js"></script>
 <script src="/js/devices.js"></script>
 <script src="/js/score.js"></script>
+<script src="/js/trends.js"></script>
 </body>
 </html>
