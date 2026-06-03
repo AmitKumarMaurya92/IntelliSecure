@@ -75,16 +75,16 @@ def analyze_entity_risk(db: Session, days_back: int = 7) -> list[dict]:
             score = data["score"]
             if score >= 80:
                 level = "Critical"
-                color = "var(--purple)"
+                color = "#8b5cf6"  # Purple
             elif score >= 50:
                 level = "High"
-                color = "var(--red)"
+                color = "#ef4444"  # Red
             elif score >= 25:
                 level = "Medium"
-                color = "var(--yellow)"
+                color = "#f59e0b"  # Yellow
             else:
                 level = "Low"
-                color = "var(--green)"
+                color = "#10b981"  # Green
                 
             result.append({
                 "entity": entity,
