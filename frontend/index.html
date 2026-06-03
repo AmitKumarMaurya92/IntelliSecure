@@ -660,7 +660,56 @@
                 </div>
             </div>
         </div>
-        <div id="view-reports" class="view-section"><div class="view-content"><h2>Reports</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-reports" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>Security Reports</h2>
+                <div class="threats-filters">
+                    <button id="refresh-reports-list-btn" class="btn-outline"><i class="fa-solid fa-rotate-right"></i> Refresh List</button>
+                </div>
+            </div>
+
+            <div class="score-grid" style="margin-bottom: 24px; display:flex; gap:20px;">
+                <div class="score-card" style="flex:1; text-align:center; padding:40px 20px;">
+                    <div style="background:var(--red); width:60px; height:60px; border-radius:15px; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px auto; color:white;">
+                        <i class="fa-solid fa-file-pdf fa-2x"></i>
+                    </div>
+                    <h3>PDF Incident Report</h3>
+                    <p style="color:var(--text-muted); margin:10px 0 20px 0;">Generate a comprehensive PDF report summarizing all active threats and system telemetry.</p>
+                    <button id="generate-pdf-btn" class="btn-primary" style="width:100%;"><i class="fa-solid fa-file-pdf"></i> Generate PDF Report</button>
+                </div>
+
+                <div class="score-card" style="flex:1; text-align:center; padding:40px 20px;">
+                    <div style="background:var(--orange); width:60px; height:60px; border-radius:15px; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px auto; color:white;">
+                        <i class="fa-solid fa-file-powerpoint fa-2x"></i>
+                    </div>
+                    <h3>PPTX Executive Brief</h3>
+                    <p style="color:var(--text-muted); margin:10px 0 20px 0;">Generate a high-level PowerPoint presentation suitable for executive briefings.</p>
+                    <button id="generate-ppt-btn" class="btn-primary" style="width:100%;"><i class="fa-solid fa-file-powerpoint"></i> Generate PPT Report</button>
+                </div>
+            </div>
+
+            <div class="score-grid">
+                <div class="score-card" style="grid-column: 1 / -1;">
+                    <h3 class="score-card-title">Generated Reports History</h3>
+                    <div class="threats-table-container">
+                        <table class="threats-table">
+                            <thead>
+                                <tr>
+                                    <th>Filename</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Generated At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reports-list-body">
+                                <tr><td colspan="5" style="text-align:center; padding:20px;">Loading reports...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="view-export-reports" class="view-section"><div class="view-content"><h2>Export Reports</h2><p>Feature coming soon...</p></div></div>
         <div id="view-settings" class="view-section"><div class="view-content"><h2>Settings</h2><p>Feature coming soon...</p></div></div>
         <div id="view-users" class="view-section"><div class="view-content"><h2>Users</h2><p>Feature coming soon...</p></div></div>
@@ -680,5 +729,6 @@
 <script src="/js/trends.js"></script>
 <script src="/js/risk.js"></script>
 <script src="/js/alerts.js"></script>
+<script src="/js/reports.js"></script>
 </body>
 </html>

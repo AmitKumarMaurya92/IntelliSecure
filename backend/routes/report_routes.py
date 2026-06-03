@@ -138,3 +138,29 @@ def list_reports(
                     })
 
     return {"reports": reports, "count": len(reports)}
+
+
+@router.get("/download/{filename}", summary="Download an existing report")
+def download_report(
+    filename: str,
+    _: object = all_authenticated
+):
+    """Download a previously generated report file."""
+    if filename.endswith(".pdf"):
+        filepath = os.path.join(PDF_DIR, filename)
+        media_type = "application/pdf"
+    elif filename.endswith(".pptx"):
+        filepath = os.path.join(PPT_DIR, filename)
+        media_type = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    else:
+        raise HTTPException(status_code=400, detail="Invalid file format.")
+
+    if not os.path.exists(filepath):
+        raise HTTPException(status_code=404, detail="File not found.")
+
+    return FileResponse(
+        path=filepath,
+        filename=filename,
+        media_type=media_type,
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
