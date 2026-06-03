@@ -36,7 +36,7 @@
             <li class="active" data-target="view-dashboard"><i class="fa-solid fa-house"></i> Dashboard</li>
             <li data-target="view-real-time"><i class="fa-solid fa-wave-square"></i> Real-Time Monitor</li>
             <li data-target="view-threats"><i class="fa-solid fa-shield-virus"></i> Threats</li>
-            <li data-target="view-alerts"><i class="fa-regular fa-bell"></i> Alerts</li>
+            <li data-target="view-alerts" style="display: none;"><i class="fa-regular fa-bell"></i> Alerts</li>
             <li data-target="view-logs"><i class="fa-regular fa-file-lines"></i> Logs</li>
             <li data-target="view-devices"><i class="fa-solid fa-desktop"></i> Devices (LAN)</li>
         </ul>
@@ -371,7 +371,74 @@
                 <span id="rtmSummaryText">No scans performed yet. Click "Run Scan Now" to begin threat detection.</span>
             </div>
         </div>
-        <div id="view-threats" class="view-section"><div class="view-content"><h2>Threats</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-threats" class="view-section">
+            <div class="threats-header">
+                <h2>Security Threats</h2>
+                <div class="threats-filters">
+                    <select id="threat-status-filter" class="threat-select">
+                        <option value="all">All Status</option>
+                        <option value="active" selected>Active (Unresolved)</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                    <select id="threat-severity-filter" class="threat-select">
+                        <option value="all">All Severities</option>
+                        <option value="Critical">Critical</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    <button id="refresh-threats-btn" class="btn-primary"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                </div>
+            </div>
+            
+            <div class="threats-stats" id="threats-stats-container">
+                <div class="threat-stat-card"><div class="stat-title">Total Threats</div><div class="stat-value" id="stat-total">-</div></div>
+                <div class="threat-stat-card"><div class="stat-title">Active</div><div class="stat-value text-red" id="stat-active">-</div></div>
+                <div class="threat-stat-card"><div class="stat-title">Resolved</div><div class="stat-value text-green" id="stat-resolved">-</div></div>
+                <div class="threat-stat-card"><div class="stat-title">Critical</div><div class="stat-value text-red" id="stat-critical">-</div></div>
+            </div>
+
+            <div class="threats-table-container">
+                <table class="threats-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Threat Type</th>
+                            <th>Severity</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="threats-table-body">
+                        <tr><td colspan="6" style="text-align:center; padding:20px;">Loading threats...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="threats-pagination">
+                <button id="threats-prev-btn" class="btn-outline" disabled>Previous</button>
+                <span id="threats-page-info">Page 1</span>
+                <button id="threats-next-btn" class="btn-outline" disabled>Next</button>
+            </div>
+            
+            <!-- XAI Modal -->
+            <div id="xai-modal" class="modal-overlay">
+                <div class="modal-content xai-modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fa-solid fa-microchip"></i> AI Threat Analysis</h3>
+                        <button class="close-modal-btn" id="close-xai-modal"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body" id="xai-modal-body">
+                        <div style="text-align:center; padding:30px;"><i class="fa-solid fa-circle-notch fa-spin fa-2x text-primary"></i><p style="margin-top:10px;">Analyzing threat...</p></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-outline" id="xai-cancel-btn">Close</button>
+                        <button class="btn-success" id="xai-resolve-btn" style="display:none;">Mark as Resolved</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="view-alerts" class="view-section"><div class="view-content"><h2>Alerts</h2><p>Feature coming soon...</p></div></div>
         <div id="view-logs" class="view-section"><div class="view-content"><h2>Logs</h2><p>Feature coming soon...</p></div></div>
         <div id="view-devices" class="view-section"><div class="view-content"><h2>Devices (LAN)</h2><p>Feature coming soon...</p></div></div>
@@ -391,5 +458,6 @@
 </div>
 <script src="/js/dashboard.js"></script>
 <script src="/js/realtime.js"></script>
+<script src="/js/threats.js"></script>
 </body>
 </html>
