@@ -1,13 +1,13 @@
-"""
+﻿"""
 Settings API Routes
 ===================
 REST endpoints for getting and updating user settings.
 
 Endpoints:
-  GET /api/settings/  — Get current user's settings
-  PUT /api/settings/  — Update current user's settings
+  GET /api/settings/  â€” Get current user's settings
+  PUT /api/settings/  â€” Update current user's settings
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status

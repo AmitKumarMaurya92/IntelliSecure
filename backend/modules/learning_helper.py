@@ -1,12 +1,12 @@
-"""
-Learning Helper Module — Educational Threat Explanations
+﻿"""
+Learning Helper Module â€” Educational Threat Explanations
 ==========================================================
 Provides simple, beginner-friendly explanations for security concepts.
 Bridges the gap between technical security events and plain English.
 
 Designed for users without cybersecurity backgrounds.
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import sys, os
@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from modules.glossary import get_term, search_glossary, get_all_terms
 
 
-# ─── Threat-to-Glossary Mapping ────────────────────────────────────────────────
+# â”€â”€â”€ Threat-to-Glossary Mapping â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 THREAT_TO_GLOSSARY_KEYS: dict[str, list[str]] = {
     "Brute Force Attack":        ["brute_force", "credential_stuffing", "mfa"],
     "Port Scan":                 ["port_scan", "firewall", "intrusion_detection"],
@@ -59,7 +59,7 @@ def explain_threat_simply(threat_type: str) -> dict:
         "Port Scan": {
             "what_happened": (
                 "Someone is 'knocking on all the doors' of your network to see which ones are unlocked. "
-                "Ports are like doors that allow different types of network traffic — and hackers scan "
+                "Ports are like doors that allow different types of network traffic â€” and hackers scan "
                 "them to find weak entry points."
             ),
             "why_it_matters": (
@@ -102,14 +102,14 @@ def explain_threat_simply(threat_type: str) -> dict:
         "Malware Detected": {
             "what_happened": (
                 "Dangerous software (a virus, ransomware, or spyware) was found on a device in your "
-                "network. The security system has flagged it — now you need to act quickly."
+                "network. The security system has flagged it â€” now you need to act quickly."
             ),
             "why_it_matters": (
                 "Malware can spread through your network, steal data, encrypt files for ransom, or "
                 "give hackers remote control over your systems."
             ),
             "what_to_do": (
-                "Disconnect the infected device from the network immediately. Don't turn it off — "
+                "Disconnect the infected device from the network immediately. Don't turn it off â€” "
                 "run a full antivirus scan first. Notify your IT security team right away."
             )
         },
@@ -194,7 +194,7 @@ def get_learning_path() -> list[dict]:
         {
             "order":       5,
             "topic":       "AI in Cybersecurity",
-            "description": "Learn how InteliSecure's AI modules protect you.",
+            "description": "Learn how IntelliSecure's AI modules protect you.",
             "glossary_keys": ["anomaly_detection", "siem", "intrusion_detection"],
             "estimated_time": "8 minutes"
         },

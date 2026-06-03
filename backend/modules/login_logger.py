@@ -1,8 +1,8 @@
-import os
+﻿import os
 import csv
 import datetime
 
-# Resolve paths dynamically to target d:\InteliSecure\logs\login_logs.csv
+# Resolve paths dynamically to target d:\IntelliSecure\logs\login_logs.csv
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 LOGIN_LOG_FILE = os.path.join(LOGS_DIR, "login_logs.csv")

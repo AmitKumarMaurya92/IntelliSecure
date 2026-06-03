@@ -1,4 +1,4 @@
-"""
+﻿"""
 ML Anomaly Predictor
 ======================
 Loads the trained Isolation Forest model and runs inference on
@@ -8,7 +8,7 @@ Usage (module):
     from ml.predict import detect_anomalies_from_logs
     results = detect_anomalies_from_logs(db)
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import os
@@ -20,11 +20,11 @@ import sys
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BACKEND_DIR)
 
-# ─── Path constants ─────────────────────────────────────────────────────────────
+# â”€â”€â”€ Path constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ML_DIR     = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(ML_DIR, "anomaly_model.pkl")
 
-# ─── Lazy model loader (cache in module scope) ──────────────────────────────────
+# â”€â”€â”€ Lazy model loader (cache in module scope) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 _model = None
 
 def _load_model():
@@ -129,7 +129,7 @@ def detect_anomalies_from_logs(db, limit: int = 100) -> list[dict]:
     try:
         model = _load_model()
     except RuntimeError:
-        # Model not available — return empty list gracefully
+        # Model not available â€” return empty list gracefully
         return []
 
     from models import LoginLog, NetworkLog
@@ -137,7 +137,7 @@ def detect_anomalies_from_logs(db, limit: int = 100) -> list[dict]:
 
     since = datetime.datetime.utcnow() - datetime.timedelta(hours=1)
 
-    # ── Check Login Logs ───────────────────────────────────────────────────
+    # â”€â”€ Check Login Logs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     try:
         login_logs = (
             db.query(LoginLog)
@@ -160,7 +160,7 @@ def detect_anomalies_from_logs(db, limit: int = 100) -> list[dict]:
     except Exception:
         pass
 
-    # ── Check Network Logs ─────────────────────────────────────────────────
+    # â”€â”€ Check Network Logs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     try:
         network_logs = (
             db.query(NetworkLog)

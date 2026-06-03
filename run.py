@@ -1,5 +1,5 @@
-"""
-InteliSecure - Application Launcher
+﻿"""
+IntelliSecure - Application Launcher
 =====================================
 Run this from the project root:  python run.py
 Or via uvicorn:                  uvicorn backend.main:app --reload

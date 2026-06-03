@@ -1,18 +1,18 @@
-"""
+﻿"""
 Dashboard Aggregation API Routes
 ==================================
 Provides pre-aggregated data for the main security dashboard.
 All endpoints are optimized for fast dashboard rendering.
 
 Endpoints:
-  GET /api/dashboard/stats            — 4 KPI cards
-  GET /api/dashboard/threat-trend     — Daily threat counts (last N days)
-  GET /api/dashboard/threat-distribution — Threat type breakdown
-  GET /api/dashboard/top-sources      — Top 5 attacker IPs
-  GET /api/dashboard/recent-alerts    — Latest 5 alerts for timeline
-  GET /api/dashboard/system-health    — System component status
+  GET /api/dashboard/stats            â€” 4 KPI cards
+  GET /api/dashboard/threat-trend     â€” Daily threat counts (last N days)
+  GET /api/dashboard/threat-distribution â€” Threat type breakdown
+  GET /api/dashboard/top-sources      â€” Top 5 attacker IPs
+  GET /api/dashboard/recent-alerts    â€” Latest 5 alerts for timeline
+  GET /api/dashboard/system-health    â€” System component status
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, Query

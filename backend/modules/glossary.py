@@ -1,13 +1,13 @@
-"""
+﻿"""
 Cybersecurity Glossary Module
 ================================
 Provides plain-language definitions for 30+ cybersecurity terms.
-Designed to make InteliSecure accessible to non-technical users.
+Designed to make IntelliSecure accessible to non-technical users.
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
-# ─── Full Cybersecurity Glossary ───────────────────────────────────────────────
+# â”€â”€â”€ Full Cybersecurity Glossary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 GLOSSARY: dict[str, dict] = {
     "brute_force": {
@@ -19,7 +19,7 @@ GLOSSARY: dict[str, dict] = {
     },
     "port_scan": {
         "term":       "Port Scan",
-        "definition": "A technique hackers use to find which 'doors' (ports) are open on your computer or network — like trying every lock in a building.",
+        "definition": "A technique hackers use to find which 'doors' (ports) are open on your computer or network â€” like trying every lock in a building.",
         "example":    "An attacker scans your server to find that port 22 (SSH) and port 3389 (Remote Desktop) are open and then targets those.",
         "severity":   "High",
         "category":   "Reconnaissance"
@@ -47,7 +47,7 @@ GLOSSARY: dict[str, dict] = {
     },
     "ddos": {
         "term":       "DDoS Attack",
-        "definition": "Distributed Denial of Service — flooding a website or server with so much fake traffic that real users can't access it.",
+        "definition": "Distributed Denial of Service â€” flooding a website or server with so much fake traffic that real users can't access it.",
         "example":    "Hackers use thousands of infected computers to overload a gaming company's servers.",
         "severity":   "High",
         "category":   "Availability Attack"
@@ -61,14 +61,14 @@ GLOSSARY: dict[str, dict] = {
     },
     "mfa": {
         "term":       "Multi-Factor Authentication (MFA)",
-        "definition": "Using two or more verification steps to log in — like a password plus a code sent to your phone.",
+        "definition": "Using two or more verification steps to log in â€” like a password plus a code sent to your phone.",
         "example":    "After typing your password, Gmail sends a 6-digit code to your phone that you must also enter.",
         "severity":   "Low",
         "category":   "Security Control"
     },
     "firewall": {
         "term":       "Firewall",
-        "definition": "A security system that monitors and controls incoming and outgoing network traffic — like a security guard for your network.",
+        "definition": "A security system that monitors and controls incoming and outgoing network traffic â€” like a security guard for your network.",
         "example":    "A firewall blocks unauthorized access from the internet while allowing normal web browsing.",
         "severity":   "Low",
         "category":   "Security Control"
@@ -82,7 +82,7 @@ GLOSSARY: dict[str, dict] = {
     },
     "zero_day": {
         "term":       "Zero-Day Vulnerability",
-        "definition": "A newly discovered software flaw that even the software maker doesn't know about yet — and has had 'zero days' to fix.",
+        "definition": "A newly discovered software flaw that even the software maker doesn't know about yet â€” and has had 'zero days' to fix.",
         "example":    "A hacker finds a bug in Windows before Microsoft knows about it and uses it to attack systems.",
         "severity":   "Critical",
         "category":   "Vulnerability"
@@ -96,14 +96,14 @@ GLOSSARY: dict[str, dict] = {
     },
     "insider_threat": {
         "term":       "Insider Threat",
-        "definition": "A security risk that comes from people inside an organization — employees, contractors, or business partners.",
+        "definition": "A security risk that comes from people inside an organization â€” employees, contractors, or business partners.",
         "example":    "An angry employee copies confidential client data to a USB drive before quitting.",
         "severity":   "High",
         "category":   "Insider Risk"
     },
     "encryption": {
         "term":       "Encryption",
-        "definition": "Scrambling data so it can only be read by someone with the correct key — making it unreadable to everyone else.",
+        "definition": "Scrambling data so it can only be read by someone with the correct key â€” making it unreadable to everyone else.",
         "example":    "WhatsApp uses end-to-end encryption so only you and the recipient can read your messages.",
         "severity":   "Low",
         "category":   "Security Control"
@@ -111,7 +111,7 @@ GLOSSARY: dict[str, dict] = {
     "intrusion_detection": {
         "term":       "Intrusion Detection System (IDS)",
         "definition": "Software that monitors your network for suspicious activity and alerts you when something unusual is detected.",
-        "example":    "InteliSecure's threat detector is an IDS — it alerts you when brute force attacks are detected.",
+        "example":    "IntelliSecure's threat detector is an IDS â€” it alerts you when brute force attacks are detected.",
         "severity":   "Low",
         "category":   "Security Tool"
     },
@@ -124,7 +124,7 @@ GLOSSARY: dict[str, dict] = {
     },
     "rbac": {
         "term":       "Role-Based Access Control (RBAC)",
-        "definition": "A security model where users are given only the permissions they need for their job — nothing more.",
+        "definition": "A security model where users are given only the permissions they need for their job â€” nothing more.",
         "example":    "A cashier can process payments but cannot access payroll records.",
         "severity":   "Low",
         "category":   "Security Control"
@@ -145,22 +145,22 @@ GLOSSARY: dict[str, dict] = {
     },
     "anomaly_detection": {
         "term":       "Anomaly Detection",
-        "definition": "Using AI/ML to identify unusual patterns that deviate from normal behaviour — the basis of InteliSecure's ML module.",
+        "definition": "Using AI/ML to identify unusual patterns that deviate from normal behaviour â€” the basis of IntelliSecure's ML module.",
         "example":    "The system flags a login at 3 AM from a country the user has never visited as an anomaly.",
         "severity":   "Medium",
         "category":   "Security Technology"
     },
     "jwt": {
         "term":       "JWT (JSON Web Token)",
-        "definition": "A secure way to transmit user identity information between systems — used for authentication in InteliSecure.",
-        "example":    "When you log in, InteliSecure gives you a JWT token that proves your identity for future requests.",
+        "definition": "A secure way to transmit user identity information between systems â€” used for authentication in IntelliSecure.",
+        "example":    "When you log in, IntelliSecure gives you a JWT token that proves your identity for future requests.",
         "severity":   "Low",
         "category":   "Authentication"
     },
     "mitre_attack": {
         "term":       "MITRE ATT&CK Framework",
         "definition": "A globally recognized knowledge base of attacker tactics, techniques, and procedures used for threat intelligence.",
-        "example":    "InteliSecure maps each detected threat to its MITRE ATT&CK technique code (e.g., T1110 for Brute Force).",
+        "example":    "IntelliSecure maps each detected threat to its MITRE ATT&CK technique code (e.g., T1110 for Brute Force).",
         "severity":   "Low",
         "category":   "Security Framework"
     },
@@ -174,21 +174,21 @@ GLOSSARY: dict[str, dict] = {
     "least_privilege": {
         "term":       "Principle of Least Privilege",
         "definition": "Giving users and systems the minimum level of access rights needed to perform their work.",
-        "example":    "A developer only gets access to the code they're working on — not the production database or payroll system.",
+        "example":    "A developer only gets access to the code they're working on â€” not the production database or payroll system.",
         "severity":   "Low",
         "category":   "Security Principle"
     },
     "honeypot": {
         "term":       "Honeypot",
-        "definition": "A decoy system set up to attract and study hackers — helping security teams understand attack methods.",
+        "definition": "A decoy system set up to attract and study hackers â€” helping security teams understand attack methods.",
         "example":    "A fake vulnerable server placed on the network to lure attackers away from real systems.",
         "severity":   "Low",
         "category":   "Security Tool"
     },
     "siem": {
         "term":       "SIEM (Security Information and Event Management)",
-        "definition": "A platform that collects and analyzes security logs from across your organization in real-time. InteliSecure is a lightweight SIEM.",
-        "example":    "InteliSecure aggregates login logs, network logs, file access logs, and malware logs in one dashboard.",
+        "definition": "A platform that collects and analyzes security logs from across your organization in real-time. IntelliSecure is a lightweight SIEM.",
+        "example":    "IntelliSecure aggregates login logs, network logs, file access logs, and malware logs in one dashboard.",
         "severity":   "Low",
         "category":   "Security Technology"
     },

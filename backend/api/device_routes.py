@@ -1,14 +1,14 @@
-"""
+﻿"""
 LAN Device Monitor API Routes
 ================================
 REST endpoints for LAN device discovery, inventory, and unknown device detection.
 
 Endpoints:
-  GET  /api/devices/         — Return last cached device inventory
-  POST /api/devices/scan     — Trigger a fresh LAN scan (Admin/Analyst only)
-  GET  /api/devices/unknown  — Return only unknown/unregistered devices
+  GET  /api/devices/         â€” Return last cached device inventory
+  POST /api/devices/scan     â€” Trigger a fresh LAN scan (Admin/Analyst only)
+  GET  /api/devices/unknown  â€” Return only unknown/unregistered devices
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
@@ -25,7 +25,7 @@ router = APIRouter()
 analyst_or_admin  = Depends(RoleChecker(allowed_roles=["Admin", "Analyst"]))
 all_authenticated = Depends(get_current_user)
 
-# ─── In-memory cache for last scan result ─────────────────────────────────────
+# â”€â”€â”€ In-memory cache for last scan result â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # In production this would be stored in DB or Redis
 _last_scan_result: dict = {}
 _last_scan_time: str    = ""
@@ -58,7 +58,7 @@ def trigger_lan_scan(
 ):
     """
     Perform a live LAN scan of the specified subnet.
-    WARNING: This may take 30–60 seconds for a /24 subnet.
+    WARNING: This may take 30â€“60 seconds for a /24 subnet.
     Requires Analyst or Admin role.
     """
     global _last_scan_result, _last_scan_time

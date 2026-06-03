@@ -1,14 +1,14 @@
-"""
+﻿"""
 Security Score API Routes
 ==========================
 Endpoints for retrieving the current security health score and trend data.
 
 Endpoints:
-  GET /api/score/        — Current security score + risk level + breakdown
-  GET /api/score/history — 7-day score trend
-  GET /api/score/summary — Quick summary for dashboard cards
+  GET /api/score/        â€” Current security score + risk level + breakdown
+  GET /api/score/history â€” 7-day score trend
+  GET /api/score/summary â€” Quick summary for dashboard cards
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends
@@ -29,7 +29,7 @@ def get_security_score(
     _:  object  = auth
 ):
     """
-    Calculate and return the current security health score (0–100).
+    Calculate and return the current security health score (0â€“100).
     Includes risk level, penalty breakdown, and 7-day trend.
     """
     return calculate_security_score(db)

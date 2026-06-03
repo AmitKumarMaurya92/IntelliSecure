@@ -1,14 +1,14 @@
-"""
+﻿"""
 Unauthorized Access Detector
 ==============================
 Identifies unauthorized file access attempts and blocked USB device events.
 
 Detection Rules:
-  - File access with status "Denied" → MEDIUM alert
-  - USB device with action "Blocked" → HIGH alert
-  - Multiple denied file accesses (≥3) by same user → HIGH alert (escalated)
+  - File access with status "Denied" â†’ MEDIUM alert
+  - USB device with action "Blocked" â†’ HIGH alert
+  - Multiple denied file accesses (â‰¥3) by same user â†’ HIGH alert (escalated)
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import datetime

@@ -1,8 +1,8 @@
-# InteliSecure
+﻿# IntelliSecure
 
 AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response System
 
-InteliSecure is a comprehensive, end-to-end security platform designed to detect malicious activities, provide explainable AI insights, automatically recommend mitigation strategies, and generate executive reports.
+IntelliSecure is a comprehensive, end-to-end security platform designed to detect malicious activities, provide explainable AI insights, automatically recommend mitigation strategies, and generate executive reports.
 
 ## Features overview
 
@@ -49,7 +49,7 @@ The server will start at `http://127.0.0.1:8000`.
 
 ## API Documentation
 
-InteliSecure is built on FastAPI, meaning interactive API documentation is automatically generated.
+IntelliSecure is built on FastAPI, meaning interactive API documentation is automatically generated.
 Once the server is running, you can access the docs at:
 - **Swagger UI**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 - **ReDoc**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)

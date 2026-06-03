@@ -1,11 +1,11 @@
-"""
-Unit Tests — Authentication System
+﻿"""
+Unit Tests â€” Authentication System
 ======================================
 Tests for user registration, login, JWT validation, and RBAC enforcement.
 
 Run: cd backend && pytest tests/test_auth.py -v
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import sys
@@ -21,7 +21,7 @@ from backend.database import get_db
 from backend.auth import get_password_hash, verify_password, create_access_token
 
 
-# ─── Test Database (In-Memory SQLite) ─────────────────────────────────────────
+# â”€â”€â”€ Test Database (In-Memory SQLite) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 TEST_DB_URL  = "sqlite:///./test_intelisecure.db"
 test_engine  = create_engine(TEST_DB_URL, connect_args={"check_same_thread": False})
 TestSession  = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
@@ -43,7 +43,7 @@ def db():
             pass
 
 
-# ─── Password Tests ────────────────────────────────────────────────────────────
+# â”€â”€â”€ Password Tests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class TestPasswordHashing:
     """Tests for bcrypt password hashing and verification."""
@@ -70,7 +70,7 @@ class TestPasswordHashing:
         assert h1 != h2  # Each call generates a different salt
 
 
-# ─── JWT Token Tests ──────────────────────────────────────────────────────────
+# â”€â”€â”€ JWT Token Tests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class TestJWTTokens:
     """Tests for JWT creation and validation."""
@@ -93,7 +93,7 @@ class TestJWTTokens:
         assert "exp" in payload
 
 
-# ─── User Model Tests ─────────────────────────────────────────────────────────
+# â”€â”€â”€ User Model Tests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class TestUserModel:
     """Tests for user creation in the database."""
@@ -133,7 +133,7 @@ class TestUserModel:
         assert first_user.role == "Admin"
 
 
-# ─── Detector Tests ───────────────────────────────────────────────────────────
+# â”€â”€â”€ Detector Tests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class TestSecurityScore:
     """Tests for the security score calculation."""

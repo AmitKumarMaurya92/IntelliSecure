@@ -1,13 +1,13 @@
-"""
+﻿"""
 Export API Routes
 =================
 REST endpoints for exporting raw database tables into CSV and Excel formats.
 Optimized for data analysts and BI tools.
 
 Endpoints:
-  GET /api/export/{dataset} — Export dataset (format: csv|xlsx)
+  GET /api/export/{dataset} â€” Export dataset (format: csv|xlsx)
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Query

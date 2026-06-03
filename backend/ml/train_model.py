@@ -1,15 +1,15 @@
-"""
-ML Model Training Script — Isolation Forest Anomaly Detector
+﻿"""
+ML Model Training Script â€” Isolation Forest Anomaly Detector
 ==============================================================
 Trains an Isolation Forest model on login and network log features.
 Detects anomalous behaviour that doesn't match the established baseline.
 
 Features Used:
-  - hour_of_day:       Time of day (0–23)
+  - hour_of_day:       Time of day (0â€“23)
   - day_of_week:       Day (0=Monday, 6=Sunday)
   - failed_attempts:   Number of failed logins in last 5 min from same IP
   - port_number:       Network port contacted (0 for login events)
-  - bytes_ratio:       bytes_sent / (bytes_received + 1) — ratio anomaly
+  - bytes_ratio:       bytes_sent / (bytes_received + 1) â€” ratio anomaly
   - is_external_ip:    1 if source IP is outside 192.168.x.x (external)
 
 Usage:
@@ -18,7 +18,7 @@ Usage:
 Output:
     backend/ml/anomaly_model.pkl
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import os
@@ -32,7 +32,7 @@ from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
-# ─── Path setup ────────────────────────────────────────────────────────────────
+# â”€â”€â”€ Path setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ML_DIR       = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR  = os.path.dirname(ML_DIR)
 ROOT_DIR     = os.path.dirname(BACKEND_DIR)
@@ -45,7 +45,7 @@ def extract_features(row: dict) -> list:
     Convert a raw CSV log row into a numeric feature vector.
     Handles both login log rows and network log rows.
     """
-    # ── Timestamp features ──────────────────────────────────────────────────
+    # â”€â”€ Timestamp features â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     ts_str = row.get("timestamp", "").replace("Z", "").strip()
     try:
         ts = datetime.datetime.fromisoformat(ts_str)
@@ -55,23 +55,23 @@ def extract_features(row: dict) -> list:
     hour_of_day  = ts.hour
     day_of_week  = ts.weekday()
 
-    # ── Login-specific features ──────────────────────────────────────────────
+    # â”€â”€ Login-specific features â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     failed_attempts = int(row.get("failed_attempts", 0))
     status_failed   = 1 if row.get("status", "").lower() == "failed" else 0
 
-    # ── Network-specific features ────────────────────────────────────────────
+    # â”€â”€ Network-specific features â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     port_number    = int(row.get("port", 0))
     bytes_sent     = int(row.get("bytes_sent", 0))
     bytes_received = int(row.get("bytes_received", 1))
     bytes_ratio    = bytes_sent / (bytes_received + 1)
 
-    # ── IP classification ────────────────────────────────────────────────────
+    # â”€â”€ IP classification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     ip = row.get("source_ip", row.get("ip_address", "192.168.1.1"))
     is_external = 0 if (ip.startswith("192.168.") or ip.startswith("10.") or ip.startswith("127.")) else 1
 
     return [
-        hour_of_day,    # 0–23
-        day_of_week,    # 0–6
+        hour_of_day,    # 0â€“23
+        day_of_week,    # 0â€“6
         failed_attempts,
         status_failed,
         port_number,
@@ -114,12 +114,12 @@ def train_model(csv_path: str = DATASET_PATH, model_path: str = MODEL_PATH):
         model_path: Path to save the trained model (.pkl)
     """
     print(f"\n{'='*55}")
-    print("  InteliSecure — ML Anomaly Detector Training")
+    print("  IntelliSecure â€” ML Anomaly Detector Training")
     print(f"{'='*55}")
     print(f"  Dataset:  {csv_path}")
     print(f"  Model:    {model_path}")
 
-    # ── Load data ─────────────────────────────────────────────────────────────
+    # â”€â”€ Load data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     print("\n[1/4] Loading training data...")
     df = load_training_data(csv_path)
     print(f"  Loaded {len(df)} training samples.")
@@ -128,7 +128,7 @@ def train_model(csv_path: str = DATASET_PATH, model_path: str = MODEL_PATH):
 
     X = df.values
 
-    # ── Build pipeline: Scaler + Isolation Forest ─────────────────────────────
+    # â”€â”€ Build pipeline: Scaler + Isolation Forest â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     print("\n[2/4] Building model pipeline...")
     pipeline = Pipeline([
         ("scaler", StandardScaler()),
@@ -141,7 +141,7 @@ def train_model(csv_path: str = DATASET_PATH, model_path: str = MODEL_PATH):
         ))
     ])
 
-    # ── Train ─────────────────────────────────────────────────────────────────
+    # â”€â”€ Train â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     print("\n[3/4] Training Isolation Forest...")
     pipeline.fit(X)
 
@@ -150,7 +150,7 @@ def train_model(csv_path: str = DATASET_PATH, model_path: str = MODEL_PATH):
     n_anomalies = (preds == -1).sum()
     print(f"  Flagged {n_anomalies} training samples as anomalies ({n_anomalies/len(X)*100:.1f}%)")
 
-    # ── Save model ────────────────────────────────────────────────────────────
+    # â”€â”€ Save model â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     print(f"\n[4/4] Saving model to {model_path}...")
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
     joblib.dump(pipeline, model_path)

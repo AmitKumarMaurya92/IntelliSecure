@@ -1,7 +1,7 @@
-"""
+﻿"""
 Security Score Engine
 ======================
-Calculates the current security health score (0–100) based on live data
+Calculates the current security health score (0â€“100) based on live data
 from all threat logs and active alerts in the database.
 
 Formula:
@@ -14,12 +14,12 @@ Formula:
     score  = max(0, score)
 
 Risk Levels:
-    80–100 → Low
-    60–79  → Medium
-    40–59  → High
-    0–39   → Critical
+    80â€“100 â†’ Low
+    60â€“79  â†’ Medium
+    40â€“59  â†’ High
+    0â€“39   â†’ Critical
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import datetime
@@ -39,7 +39,7 @@ def calculate_security_score(db: Session, date: str = None) -> dict:
     since_24h  = datetime.datetime.utcnow() - datetime.timedelta(hours=24)
     since_1h   = datetime.datetime.utcnow() - datetime.timedelta(hours=1)
 
-    # ── Data Queries ──────────────────────────────────────────────────────────
+    # â”€â”€ Data Queries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     login_q = db.query(LoginLog).filter(LoginLog.status == "Failed")
     malware_q = db.query(MalwareLog)
     net_q = db.query(NetworkLog.source_ip).group_by(NetworkLog.source_ip).having(func.count(distinct(NetworkLog.port)) >= 10)
@@ -68,7 +68,7 @@ def calculate_security_score(db: Session, date: str = None) -> dict:
     active_critical_alerts = crit_alert_q.count()
     active_high_alerts = high_alert_q.count()
 
-    # ── Score Calculation ─────────────────────────────────────────────────────
+    # â”€â”€ Score Calculation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     login_penalty    = min(failed_logins    * 2, 30)
     malware_penalty  = min(malware_count    * 5, 25)
     portscan_penalty = min(port_scan_sources * 3, 20)
@@ -81,7 +81,7 @@ def calculate_security_score(db: Session, date: str = None) -> dict:
     )
     score = max(0, 100 - total_penalty)
 
-    # ── Risk Level ────────────────────────────────────────────────────────────
+    # â”€â”€ Risk Level â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if score >= 80:
         risk_level = "Low"
         risk_color = "#10b981"   # green
@@ -95,7 +95,7 @@ def calculate_security_score(db: Session, date: str = None) -> dict:
         risk_level = "Critical"
         risk_color = "#7c3aed"   # purple
 
-    # ── Trend (last 7 days) — computed from daily penalties ──────────────────
+    # â”€â”€ Trend (last 7 days) â€” computed from daily penalties â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     trend = _compute_score_trend(db)
 
     return {

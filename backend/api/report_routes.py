@@ -1,14 +1,14 @@
-"""
+﻿"""
 Report Generation API Routes
 ==============================
 Endpoints for generating and downloading security reports in PDF and PPT formats.
 
 Endpoints:
-  POST /api/reports/pdf   — Generate and download PDF incident report
-  POST /api/reports/ppt   — Generate and download PPTX security report
-  GET  /api/reports/list  — List all generated report files
+  POST /api/reports/pdf   â€” Generate and download PDF incident report
+  POST /api/reports/ppt   â€” Generate and download PPTX security report
+  GET  /api/reports/list  â€” List all generated report files
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, HTTPException

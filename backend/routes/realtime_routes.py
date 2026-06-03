@@ -1,14 +1,14 @@
-"""
+﻿"""
 Real-Time Monitor API Routes
 ===============================
 REST endpoints for the live security monitoring dashboard.
 
 Endpoints:
-  POST /api/realtime/scan      — Trigger full detector scan and persist results
-  GET  /api/realtime/status    — Detector module health and scan readiness
-  GET  /api/realtime/history   — Last N scan summaries for timeline chart
+  POST /api/realtime/scan      â€” Trigger full detector scan and persist results
+  GET  /api/realtime/status    â€” Detector module health and scan readiness
+  GET  /api/realtime/history   â€” Last N scan summaries for timeline chart
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, Query
@@ -31,7 +31,7 @@ analyst_or_admin = Depends(RoleChecker(allowed_roles=["Admin", "Analyst"]))
 all_authenticated = Depends(get_current_user)
 
 
-# ─── POST /scan — Run all detectors and persist results ───────────────────────
+# â”€â”€â”€ POST /scan â€” Run all detectors and persist results â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 @router.post("/scan", summary="Run real-time threat scan")
 def run_realtime_scan(
@@ -109,7 +109,7 @@ def run_realtime_scan(
     }
 
 
-# ─── GET /status — Detector health and scan readiness ─────────────────────────
+# â”€â”€â”€ GET /status â€” Detector health and scan readiness â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 @router.get("/status", summary="Detector module status")
 def get_realtime_status(
@@ -216,7 +216,7 @@ def get_realtime_status(
     }
 
 
-# ─── GET /history — Last N scan summaries ─────────────────────────────────────
+# â”€â”€â”€ GET /history â€” Last N scan summaries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 @router.get("/history", summary="Scan history for timeline chart")
 def get_scan_history(
@@ -252,7 +252,7 @@ def get_scan_history(
     return {"history": history, "count": len(history)}
 
 
-# ─── Helper: Build flat events list from scan results ─────────────────────────
+# â”€â”€â”€ Helper: Build flat events list from scan results â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _build_events_list(results: dict) -> list:
     """
@@ -288,7 +288,7 @@ def _build_events_list(results: dict) -> list:
             "type":        "Port Scan",
             "severity":    "High" if port_count >= 20 else "Medium",
             "source":      ip,
-            "description": f"Port scanning detected — {port_count} unique ports from {ip}",
+            "description": f"Port scanning detected â€” {port_count} unique ports from {ip}",
             "icon":        "fa-network-wired",
             "color":       "#f59e0b"
         })

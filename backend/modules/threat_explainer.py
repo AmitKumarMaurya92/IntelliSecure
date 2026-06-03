@@ -1,20 +1,20 @@
-"""
+﻿"""
 Explainable AI (XAI) Threat Explainer
 ========================================
 Provides human-readable, structured explanations for every detected threat type.
 Outputs threat_name, severity, reason, impact, and recommendation for analysts.
 
 This module enables non-technical users to understand what a threat means
-and what action to take — core to InteliSecure's educational usability.
+and what action to take â€” core to IntelliSecure's educational usability.
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-# ─── XAI Knowledge Base ────────────────────────────────────────────────────────
+# â”€â”€â”€ XAI Knowledge Base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Maps each threat_type string to a structured explanation template.
 # Templates support optional field substitution via .format(**context).
 
@@ -42,7 +42,7 @@ XAI_KNOWLEDGE_BASE: dict[str, dict] = {
             "Notify the affected user(s) to change their passwords immediately.",
             "Consider deploying a CAPTCHA on login forms."
         ],
-        "mitre_technique": "T1110 — Brute Force"
+        "mitre_technique": "T1110 â€” Brute Force"
     },
 
     "Port Scan": {
@@ -52,7 +52,7 @@ XAI_KNOWLEDGE_BASE: dict[str, dict] = {
         "simple_summary":   "An attacker is mapping your network to find open doors.",
         "technical_reason": (
             "A single source IP address sent connection requests to an unusually high number of "
-            "distinct ports in a very short time — a classic network reconnaissance technique "
+            "distinct ports in a very short time â€” a classic network reconnaissance technique "
             "used to discover running services and potential vulnerabilities."
         ),
         "impact": (
@@ -67,7 +67,7 @@ XAI_KNOWLEDGE_BASE: dict[str, dict] = {
             "Review network segmentation to limit lateral movement potential.",
             "Enable rate-limiting on network connections."
         ],
-        "mitre_technique": "T1046 — Network Service Scanning"
+        "mitre_technique": "T1046 â€” Network Service Scanning"
     },
 
     "Unauthorized File Access": {
@@ -92,7 +92,7 @@ XAI_KNOWLEDGE_BASE: dict[str, dict] = {
             "Enable file access auditing for all sensitive folders.",
             "Consider implementing Data Loss Prevention (DLP) controls."
         ],
-        "mitre_technique": "T1083 — File and Directory Discovery"
+        "mitre_technique": "T1083 â€” File and Directory Discovery"
     },
 
     "Blocked USB Device": {
@@ -117,7 +117,7 @@ XAI_KNOWLEDGE_BASE: dict[str, dict] = {
             "Review endpoint logs for any data transfer attempts prior to blocking.",
             "Consider disabling USB ports physically on sensitive workstations."
         ],
-        "mitre_technique": "T1091 — Replication Through Removable Media"
+        "mitre_technique": "T1091 â€” Replication Through Removable Media"
     },
 
     "Malware Detected": {
@@ -142,7 +142,7 @@ XAI_KNOWLEDGE_BASE: dict[str, dict] = {
             "Report the incident to your incident response team.",
             "Patch the OS and all applications to close the initial entry point."
         ],
-        "mitre_technique": "T1204 — User Execution / T1059 — Command and Scripting"
+        "mitre_technique": "T1204 â€” User Execution / T1059 â€” Command and Scripting"
     },
 
     "ML Anomaly": {
@@ -168,7 +168,7 @@ XAI_KNOWLEDGE_BASE: dict[str, dict] = {
             "Retrain the ML model with new data to improve accuracy over time.",
             "Cross-reference with threat intelligence feeds for known IoCs."
         ],
-        "mitre_technique": "T1036 — Masquerading / Unknown"
+        "mitre_technique": "T1036 â€” Masquerading / Unknown"
     },
 }
 
@@ -201,7 +201,7 @@ def explain_threat(threat_type: str, context: dict = None) -> dict:
             "severity_default": "Medium",
             "simple_summary":   "An unrecognised security event was detected.",
             "technical_reason": f"Threat type '{threat_type}' was flagged by the detection engine.",
-            "impact":           "Impact unknown — manual investigation required.",
+            "impact":           "Impact unknown â€” manual investigation required.",
             "recommendation":   [
                 "Investigate the alert manually.",
                 "Review relevant logs for context.",

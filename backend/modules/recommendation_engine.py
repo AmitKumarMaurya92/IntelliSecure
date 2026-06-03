@@ -1,4 +1,4 @@
-"""
+﻿"""
 Recommendation Engine
 ======================
 Generates actionable, prioritized security recommendations based on:
@@ -7,20 +7,20 @@ Generates actionable, prioritized security recommendations based on:
   - Individual threat type context
 
 Each recommendation includes:
-  - priority:     P1 (Critical) → P4 (Informational)
+  - priority:     P1 (Critical) â†’ P4 (Informational)
   - action:       Short action title
   - description:  Detailed guidance
   - effort:       Low / Medium / High
   - impact:       Low / Medium / High
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-# ─── Threat-Specific Recommendation Library ───────────────────────────────────
+# â”€â”€â”€ Threat-Specific Recommendation Library â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 THREAT_RECOMMENDATIONS: dict[str, list[dict]] = {
 
@@ -73,7 +73,7 @@ THREAT_RECOMMENDATIONS: dict[str, list[dict]] = {
         {
             "priority":    "P2",
             "action":      "Audit Open Ports and Services",
-            "description": "Run a service audit — close any ports that are not required for business operations.",
+            "description": "Run a service audit â€” close any ports that are not required for business operations.",
             "effort":      "Medium",
             "impact":      "High"
         },
@@ -128,7 +128,7 @@ THREAT_RECOMMENDATIONS: dict[str, list[dict]] = {
         {
             "priority":    "P1",
             "action":      "Interview the Involved Employee",
-            "description": "Contact the user immediately to determine intent — accidental or deliberate policy violation.",
+            "description": "Contact the user immediately to determine intent â€” accidental or deliberate policy violation.",
             "effort":      "Low",
             "impact":      "High"
         },
@@ -212,7 +212,7 @@ THREAT_RECOMMENDATIONS: dict[str, list[dict]] = {
 }
 
 
-# ─── General Security Best-Practice Recommendations ────────────────────────────
+# â”€â”€â”€ General Security Best-Practice Recommendations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 GENERAL_RECOMMENDATIONS: list[dict] = [
     {
@@ -225,7 +225,7 @@ GENERAL_RECOMMENDATIONS: list[dict] = [
     {
         "priority":    "P3",
         "action":      "Enable Centralised Logging",
-        "description": "Ensure all systems forward logs to the InteliSecure SIEM for unified correlation.",
+        "description": "Ensure all systems forward logs to the IntelliSecure SIEM for unified correlation.",
         "effort":      "Medium",
         "impact":      "High"
     },

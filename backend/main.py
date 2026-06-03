@@ -1,12 +1,12 @@
-"""
-InteliSecure - Main FastAPI Application Entry Point
+﻿"""
+IntelliSecure - Main FastAPI Application Entry Point
 ===================================================
 AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response System
 
 Run with: uvicorn main:app --reload (from backend/ directory)
 Or:       python -m uvicorn main:app --reload
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import FastAPI
@@ -15,18 +15,18 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
 
-# ─── Core imports ──────────────────────────────────────────────────────────────
+# â”€â”€â”€ Core imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 from .config   import settings
 from .database import engine, Base
 
-# ─── Model registration (must import before create_all) ────────────────────────
+# â”€â”€â”€ Model registration (must import before create_all) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 from .models import (
     User, LoginLog, NetworkLog, FileAccessLog,
     MalwareLog, USBLog, Alert, ScanHistory,
     UserPreferences, UserSession
 )
 
-# ─── Router imports ─────────────────────────────────────────────────────────────
+# â”€â”€â”€ Router imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 from .routes.auth_routes   import router as auth_router
 from .routes.log_routes    import router as log_router
 from .routes.threat_routes import router as threat_router
@@ -41,10 +41,10 @@ from backend.routes.export_routes    import router as export_router
 from backend.routes.user_routes      import router as user_router
 from backend.routes.settings_routes  import router as settings_router
 
-# ─── DB Table Creation ──────────────────────────────────────────────────────────
+# â”€â”€â”€ DB Table Creation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 Base.metadata.create_all(bind=engine)
 
-# ─── App Instantiation ──────────────────────────────────────────────────────────
+# â”€â”€â”€ App Instantiation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description=(
@@ -57,7 +57,7 @@ app = FastAPI(
     redoc_url="/api/redoc"
 )
 
-# ─── CORS Middleware ─────────────────────────────────────────────────────────────
+# â”€â”€â”€ CORS Middleware â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -66,7 +66,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ─── API Routers ─────────────────────────────────────────────────────────────────
+# â”€â”€â”€ API Routers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.include_router(auth_router,      prefix="/api/auth",      tags=["Authentication"])
 app.include_router(log_router,       prefix="/api/logs",      tags=["Logs"])
 app.include_router(threat_router,    prefix="/api/threats",   tags=["Threats"])
@@ -81,7 +81,7 @@ app.include_router(export_router,    prefix="/api/export",    tags=["Export Data
 app.include_router(user_router,      prefix="/api/users",     tags=["Users"])
 app.include_router(settings_router,  prefix="/api/settings",  tags=["Settings"])
 
-# ─── Static File Serving ─────────────────────────────────────────────────────────
+# â”€â”€â”€ Static File Serving â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 BACKEND_DIR  = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR     = os.path.dirname(BACKEND_DIR)
 FRONTEND_DIR = os.path.join(ROOT_DIR, "frontend")
@@ -93,7 +93,7 @@ app.mount("/css",    StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")),  
 app.mount("/js",     StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")),     name="js")
 app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
 
-# ─── Frontend Page Routes ─────────────────────────────────────────────────────────
+# â”€â”€â”€ Frontend Page Routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 @app.get("/", include_in_schema=False)
 @app.get("/login", include_in_schema=False)
 def serve_login():
@@ -115,7 +115,7 @@ def serve_devices():
 def serve_reports():
     return FileResponse(os.path.join(FRONTEND_DIR, "reports.html"))
 
-# ─── Health Check ─────────────────────────────────────────────────────────────────
+# â”€â”€â”€ Health Check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 @app.get("/api/health", tags=["System"])
 def health_check():
     return {

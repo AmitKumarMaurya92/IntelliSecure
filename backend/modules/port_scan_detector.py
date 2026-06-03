@@ -1,12 +1,12 @@
-"""
+﻿"""
 Port Scan Detector
 ==================
 Analyzes network_logs to identify IP addresses performing port scans.
 
 Detection Rule:
-  ≥ 10 distinct destination ports from same source IP within 30 seconds → HIGH alert
+  â‰¥ 10 distinct destination ports from same source IP within 30 seconds â†’ HIGH alert
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import datetime

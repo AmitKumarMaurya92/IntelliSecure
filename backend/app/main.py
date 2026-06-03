@@ -1,12 +1,12 @@
-"""
-InteliSecure - Main FastAPI Application Entry Point
+﻿"""
+IntelliSecure - Main FastAPI Application Entry Point
 ===================================================
 AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response System
 
 Architecture: Unified backend using root-level modules and routes.
 All API routes, static files, and page endpoints are mounted here.
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import FastAPI
@@ -16,23 +16,23 @@ from fastapi.responses import FileResponse
 import os
 import sys
 
-# ─── Path Resolution ───────────────────────────────────────────────────────────
+# â”€â”€â”€ Path Resolution â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Ensure the backend root is on sys.path so all relative imports resolve correctly
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR    = os.path.dirname(BACKEND_DIR)
 sys.path.insert(0, BACKEND_DIR)
 
-# ─── Core imports ──────────────────────────────────────────────────────────────
+# â”€â”€â”€ Core imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 from config   import settings
 from database import engine, Base
 
-# ─── Model registration (must import before create_all) ────────────────────────
+# â”€â”€â”€ Model registration (must import before create_all) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 from models import (
     User, LoginLog, NetworkLog, FileAccessLog,
     MalwareLog, USBLog, Alert
 )
 
-# ─── Router imports ─────────────────────────────────────────────────────────────
+# â”€â”€â”€ Router imports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 from api.auth_routes      import router as auth_router
 from api.log_routes       import router as log_router
 from api.threat_routes    import router as threat_router
@@ -41,10 +41,10 @@ from api.dashboard_routes import router as dashboard_router
 from api.device_routes    import router as device_router
 from api.report_routes    import router as report_router
 
-# ─── DB Table Creation ──────────────────────────────────────────────────────────
+# â”€â”€â”€ DB Table Creation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 Base.metadata.create_all(bind=engine)
 
-# ─── App Instantiation ──────────────────────────────────────────────────────────
+# â”€â”€â”€ App Instantiation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description=(
@@ -57,7 +57,7 @@ app = FastAPI(
     redoc_url="/api/redoc"
 )
 
-# ─── CORS Middleware ─────────────────────────────────────────────────────────────
+# â”€â”€â”€ CORS Middleware â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],          # Open for development; restrict in production
@@ -66,7 +66,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ─── API Routers ─────────────────────────────────────────────────────────────────
+# â”€â”€â”€ API Routers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.include_router(auth_router,      prefix="/api/auth",      tags=["Authentication"])
 app.include_router(log_router,       prefix="/api/logs",      tags=["Logs"])
 app.include_router(threat_router,    prefix="/api/threats",   tags=["Threats"])
@@ -75,7 +75,7 @@ app.include_router(dashboard_router, prefix="/api/dashboard", tags=["Dashboard"]
 app.include_router(device_router,    prefix="/api/devices",   tags=["LAN Devices"])
 app.include_router(report_router,    prefix="/api/reports",   tags=["Reports"])
 
-# ─── Static File Serving ─────────────────────────────────────────────────────────
+# â”€â”€â”€ Static File Serving â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 FRONTEND_DIR = os.path.join(ROOT_DIR, "frontend")
 
 # Ensure required frontend directories exist
@@ -86,7 +86,7 @@ app.mount("/css",    StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")),  
 app.mount("/js",     StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")),     name="js")
 app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
 
-# ─── Frontend Page Routes ─────────────────────────────────────────────────────────
+# â”€â”€â”€ Frontend Page Routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 @app.get("/", include_in_schema=False)
 @app.get("/login", include_in_schema=False)
 def serve_login():
@@ -110,7 +110,7 @@ def serve_devices():
 def serve_reports():
     return FileResponse(os.path.join(FRONTEND_DIR, "reports.html"))
 
-# ─── Health Check ─────────────────────────────────────────────────────────────────
+# â”€â”€â”€ Health Check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 @app.get("/api/health", tags=["System"])
 def health_check():
     """System health probe endpoint."""

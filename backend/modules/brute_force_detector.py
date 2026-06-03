@@ -1,13 +1,13 @@
-"""
+﻿"""
 Brute Force Attack Detector
 ============================
 Scans the login_logs database table for repeated failed login attempts
 from the same IP address within a short time window.
 
 Detection Rule:
-  ≥ 5 failed logins from same IP within 60 seconds → CRITICAL alert
+  â‰¥ 5 failed logins from same IP within 60 seconds â†’ CRITICAL alert
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import datetime

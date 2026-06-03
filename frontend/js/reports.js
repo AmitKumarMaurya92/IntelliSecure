@@ -1,4 +1,4 @@
-// =============================
+﻿// =============================
 // REPORTS MODULE
 // =============================
 
@@ -78,7 +78,7 @@ async function generateReport(format) {
         a.href = url;
         // Extract filename from headers if possible, else default
         const contentDisposition = response.headers.get('Content-Disposition');
-        let filename = `InteliSecure_Report.${format === 'ppt' ? 'pptx' : 'pdf'}`;
+        let filename = `IntelliSecure_Report.${format === 'ppt' ? 'pptx' : 'pdf'}`;
         if (contentDisposition && contentDisposition.includes('filename=')) {
             filename = contentDisposition.split('filename=')[1].replace(/["']/g, "");
         }

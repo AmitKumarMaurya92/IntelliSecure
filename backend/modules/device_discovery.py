@@ -1,4 +1,4 @@
-"""
+﻿"""
 LAN Device Discovery Module
 ==============================
 Discovers active devices on the local network using ICMP ping sweep.
@@ -12,7 +12,7 @@ Strategy:
 
 Note: On Windows, uses subprocess ping. No admin rights required for ICMP.
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import os
@@ -26,7 +26,7 @@ import datetime
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-# ─── Configuration ──────────────────────────────────────────────────────────────
+# â”€â”€â”€ Configuration â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 DEFAULT_SUBNET    = "192.168.1.0/24"
 PING_TIMEOUT_SEC  = 0.5           # Timeout per ping
 MAX_WORKERS       = 64            # Concurrent threads for ping sweep
@@ -121,7 +121,7 @@ def discover_devices(db=None, subnet: str = DEFAULT_SUBNET) -> dict:
     Main entry point: scan LAN, classify devices, return full inventory.
 
     Args:
-        db:     SQLAlchemy DB session (optional — used for known IP lookup)
+        db:     SQLAlchemy DB session (optional â€” used for known IP lookup)
         subnet: Subnet to scan
 
     Returns:

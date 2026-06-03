@@ -1,5 +1,5 @@
-"""
-PowerPoint Report Generator — InteliSecure
+﻿"""
+PowerPoint Report Generator â€” IntelliSecure
 ============================================
 Generates executive-level PowerPoint presentations using python-pptx.
 Ideal for management briefings and security review meetings.
@@ -14,7 +14,7 @@ Slides:
 
 Output: reports/ppt/security_report_YYYYMMDD.pptx
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import os
@@ -36,7 +36,7 @@ except ImportError:
     PPTX_AVAILABLE = False
 
 
-# ─── Color Constants ──────────────────────────────────────────────────────────
+# â”€â”€â”€ Color Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 C_DARK  = RGBColor(0x0F, 0x17, 0x2A)   # Dark navy
 C_BLUE  = RGBColor(0x1E, 0x40, 0xAF)   # Primary blue
 C_CYAN  = RGBColor(0x06, 0xB6, 0xD4)   # Accent cyan
@@ -103,15 +103,15 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
 
     blank_layout = prs.slide_layouts[6]  # Blank layout
 
-    # ─── Slide 1: Title ──────────────────────────────────────────────────────
+    # â”€â”€â”€ Slide 1: Title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     slide = prs.slides.add_slide(blank_layout)
     _fill_background(slide, C_DARK)
 
-    _add_text_box(slide, "🔒 INTELISECURE",
+    _add_text_box(slide, "ðŸ”’ INTELISECURE",
                   Inches(1), Inches(1.5), Inches(11), Inches(1.2),
                   font_size=40, bold=True, color=C_CYAN, align=PP_ALIGN.CENTER)
 
-    _add_text_box(slide, "AI-Powered Cybersecurity — Executive Security Report",
+    _add_text_box(slide, "AI-Powered Cybersecurity â€” Executive Security Report",
                   Inches(1), Inches(2.8), Inches(11), Inches(0.8),
                   font_size=20, color=C_WHITE, align=PP_ALIGN.CENTER)
 
@@ -120,7 +120,7 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
                   Inches(1), Inches(4.5), Inches(11), Inches(0.6),
                   font_size=14, color=C_GREY, align=PP_ALIGN.CENTER)
 
-    # ─── Slide 2: Security Score ─────────────────────────────────────────────
+    # â”€â”€â”€ Slide 2: Security Score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     slide = prs.slides.add_slide(blank_layout)
     _fill_background(slide, C_DARK)
 
@@ -136,7 +136,7 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
                   Inches(4.5), Inches(1.5), Inches(4), Inches(2.5),
                   font_size=90, bold=True, color=risk_color, align=PP_ALIGN.CENTER)
 
-    _add_text_box(slide, f"/ 100  —  Risk Level: {risk_level}",
+    _add_text_box(slide, f"/ 100  â€”  Risk Level: {risk_level}",
                   Inches(2.5), Inches(4.2), Inches(8), Inches(0.8),
                   font_size=18, color=risk_color, align=PP_ALIGN.CENTER)
 
@@ -153,7 +153,7 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
         _add_text_box(slide, label, x, Inches(6.0), Inches(3), Inches(0.5),
                       font_size=12, color=C_GREY)
 
-    # ─── Slide 3: Active Threats ──────────────────────────────────────────────
+    # â”€â”€â”€ Slide 3: Active Threats â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     slide = prs.slides.add_slide(blank_layout)
     _fill_background(slide, C_DARK)
 
@@ -167,15 +167,15 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
             color = C_RED if sev in ("Critical", "High") else C_AMB
             y     = Inches(1.2 + i * 0.95)
             _add_text_box(slide,
-                          f"[{sev}]  {alert.get('threat_type', '—')}  ←  {alert.get('source', '—')}",
+                          f"[{sev}]  {alert.get('threat_type', 'â€”')}  â†  {alert.get('source', 'â€”')}",
                           Inches(0.5), y, Inches(12), Inches(0.7),
                           font_size=13, color=color)
     else:
-        _add_text_box(slide, "✅  No active threats at time of report.",
+        _add_text_box(slide, "âœ…  No active threats at time of report.",
                       Inches(0.5), Inches(3), Inches(12), Inches(1),
                       font_size=18, color=C_GREEN, align=PP_ALIGN.CENTER)
 
-    # ─── Slide 4: Top Attack Sources ──────────────────────────────────────────
+    # â”€â”€â”€ Slide 4: Top Attack Sources â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     slide = prs.slides.add_slide(blank_layout)
     _fill_background(slide, C_DARK)
 
@@ -186,7 +186,7 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
     if top_sources:
         for i, src in enumerate(top_sources[:5]):
             y = Inches(1.3 + i * 1.0)
-            _add_text_box(slide, f"#{i+1}  {src.get('source', '—')}",
+            _add_text_box(slide, f"#{i+1}  {src.get('source', 'â€”')}",
                           Inches(0.5), y, Inches(7), Inches(0.6),
                           font_size=16, bold=True, color=C_WHITE)
             _add_text_box(slide, f"{src.get('alert_count', 0)} alerts",
@@ -197,7 +197,7 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
                       Inches(0.5), Inches(3), Inches(12), Inches(1),
                       font_size=18, color=C_GREY, align=PP_ALIGN.CENTER)
 
-    # ─── Slide 5: Recommendations ─────────────────────────────────────────────
+    # â”€â”€â”€ Slide 5: Recommendations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     slide = prs.slides.add_slide(blank_layout)
     _fill_background(slide, C_DARK)
 
@@ -212,7 +212,7 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
                       Inches(0.5), y, Inches(12), Inches(0.7),
                       font_size=13, color=C_WHITE)
 
-    # ─── Slide 6: Next Steps ──────────────────────────────────────────────────
+    # â”€â”€â”€ Slide 6: Next Steps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     slide = prs.slides.add_slide(blank_layout)
     _fill_background(slide, C_BLUE)
 
@@ -225,14 +225,14 @@ def generate_security_ppt(stats: dict, alerts: list, score: dict,
         "2. Schedule follow-up scan within 24 hours.",
         "3. Brief the security team on active threat landscape.",
         "4. Update incident response playbooks if new attack patterns emerged.",
-        "5. Re-run InteliSecure security scan after remediation."
+        "5. Re-run IntelliSecure security scan after remediation."
     ]
     for i, step in enumerate(next_steps):
         _add_text_box(slide, step,
                       Inches(1), Inches(1.8 + i * 0.85), Inches(11), Inches(0.7),
                       font_size=14, color=C_WHITE)
 
-    _add_text_box(slide, f"InteliSecure v2.0 — Confidential | {datetime.datetime.utcnow().strftime('%Y-%m-%d')}",
+    _add_text_box(slide, f"IntelliSecure v2.0 â€” Confidential | {datetime.datetime.utcnow().strftime('%Y-%m-%d')}",
                   Inches(0.5), Inches(6.8), Inches(12), Inches(0.5),
                   font_size=10, color=RGBColor(0xBF, 0xDB, 0xFF), align=PP_ALIGN.CENTER)
 

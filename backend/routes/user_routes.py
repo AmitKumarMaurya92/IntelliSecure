@@ -1,14 +1,14 @@
-"""
+﻿"""
 User Management API Routes
 ============================
 REST endpoints for managing user accounts, roles, and status.
 
 Endpoints:
-  GET  /api/users/            — List all users
-  POST /api/users/{id}/role   — Change user role (Admin only)
-  POST /api/users/{id}/status — Toggle active status (Admin only)
+  GET  /api/users/            â€” List all users
+  POST /api/users/{id}/role   â€” Change user role (Admin only)
+  POST /api/users/{id}/status â€” Toggle active status (Admin only)
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status

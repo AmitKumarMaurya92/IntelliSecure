@@ -1,15 +1,15 @@
-"""
+﻿"""
 Educational Module API Routes
 ==============================
 Exposes the cybersecurity glossary for the frontend educational section.
 
 Endpoints:
-  GET /api/education/glossary         — Get all glossary terms
-  GET /api/education/glossary/search  — Search the glossary
-  GET /api/education/glossary/categories — Get list of categories
-  GET /api/education/glossary/{term}  — Get a specific term
+  GET /api/education/glossary         â€” Get all glossary terms
+  GET /api/education/glossary/search  â€” Search the glossary
+  GET /api/education/glossary/categories â€” Get list of categories
+  GET /api/education/glossary/{term}  â€” Get a specific term
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, Query, HTTPException

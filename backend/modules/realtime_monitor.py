@@ -1,4 +1,4 @@
-"""
+﻿"""
 Real-Time Threat Monitor (Orchestrator)
 =========================================
 Coordinates all threat detectors and runs them in a single scan operation.
@@ -7,7 +7,7 @@ Also integrates the ML anomaly detector if the model is available.
 Usage:
     results = run_all_detectors(db)
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import datetime
@@ -35,7 +35,7 @@ def run_all_detectors(db: Session) -> dict:
     scan_time = datetime.datetime.utcnow()
     results   = {"scan_timestamp": scan_time.isoformat() + "Z"}
 
-    # ── 1. Brute Force Detection ──────────────────────────────────────────
+    # â”€â”€ 1. Brute Force Detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     try:
         bf_events = detect_brute_force(db)
         results["brute_force"] = bf_events
@@ -43,7 +43,7 @@ def run_all_detectors(db: Session) -> dict:
         results["brute_force"] = []
         results["brute_force_error"] = str(e)
 
-    # ── 2. Port Scan Detection ────────────────────────────────────────────
+    # â”€â”€ 2. Port Scan Detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     try:
         ps_events = detect_port_scans(db)
         results["port_scans"] = ps_events
@@ -51,7 +51,7 @@ def run_all_detectors(db: Session) -> dict:
         results["port_scans"] = []
         results["port_scan_error"] = str(e)
 
-    # ── 3. Unauthorized Access Detection ─────────────────────────────────
+    # â”€â”€ 3. Unauthorized Access Detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     try:
         ua_events = detect_all_unauthorized(db)
         results["unauthorized"] = ua_events
@@ -59,7 +59,7 @@ def run_all_detectors(db: Session) -> dict:
         results["unauthorized"] = {"unauthorized_file_access": [], "blocked_usb_devices": [], "total_incidents": 0}
         results["unauthorized_error"] = str(e)
 
-    # ── 4. ML Anomaly Detection ───────────────────────────────────────────
+    # â”€â”€ 4. ML Anomaly Detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     # Attempt to load and run the ML predictor; gracefully skip if unavailable
     try:
         from ..ml.predict import detect_anomalies_from_logs
@@ -68,7 +68,7 @@ def run_all_detectors(db: Session) -> dict:
     except Exception:
         results["ml_anomalies"] = []  # Model not yet trained or unavailable
 
-    # ── 5. Totals & Summary ───────────────────────────────────────────────
+    # â”€â”€ 5. Totals & Summary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     bf_count  = len(results["brute_force"])
     ps_count  = len(results["port_scans"])
     ua_count  = results["unauthorized"].get("total_incidents", 0)

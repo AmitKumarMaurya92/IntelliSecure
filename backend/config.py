@@ -1,11 +1,11 @@
-import os
+﻿import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
 class Settings:
-    PROJECT_NAME: str = "InteliSecure"
+    PROJECT_NAME: str = "IntelliSecure"
     _db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'intelisecure.db')
     DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{_db_path}")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "supersecretkey_pleasechangeinproduction_intelisecure_2026")

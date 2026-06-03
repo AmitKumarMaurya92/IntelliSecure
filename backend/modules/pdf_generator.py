@@ -1,5 +1,5 @@
-"""
-PDF Report Generator — InteliSecure
+﻿"""
+PDF Report Generator â€” IntelliSecure
 =====================================
 Generates professional PDF security incident and threat reports
 using the ReportLab library.
@@ -10,7 +10,7 @@ Generates:
 
 Output: reports/pdf/incident_YYYYMMDD_HHMMSS.pdf
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 import os
@@ -66,7 +66,7 @@ def generate_incident_report(stats: dict, alerts: list, score: dict, recommendat
     styles  = getSampleStyleSheet()
     content = []
 
-    # ── Color Palette ─────────────────────────────────────────────────────────
+    # â”€â”€ Color Palette â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     PRIMARY   = colors.HexColor("#1e40af")
     DANGER    = colors.HexColor("#ef4444")
     SUCCESS   = colors.HexColor("#10b981")
@@ -74,16 +74,16 @@ def generate_incident_report(stats: dict, alerts: list, score: dict, recommendat
     LIGHT_BG  = colors.HexColor("#f8fafc")
     HEADER_BG = colors.HexColor("#0f172a")
 
-    # ── Custom Styles ─────────────────────────────────────────────────────────
+    # â”€â”€ Custom Styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     title_style   = ParagraphStyle("Title",   parent=styles["Heading1"], fontSize=22, textColor=PRIMARY, spaceAfter=4)
     h2_style      = ParagraphStyle("H2",      parent=styles["Heading2"], fontSize=14, textColor=PRIMARY, spaceBefore=12, spaceAfter=4)
     body_style    = ParagraphStyle("Body",    parent=styles["Normal"],   fontSize=10, leading=14)
     caption_style = ParagraphStyle("Caption", parent=styles["Normal"],   fontSize=8,  textColor=colors.grey)
     bold_style    = ParagraphStyle("Bold",    parent=styles["Normal"],   fontSize=10, fontName="Helvetica-Bold")
 
-    # ── Header ────────────────────────────────────────────────────────────────
-    content.append(Paragraph("🔒 InteliSecure", title_style))
-    content.append(Paragraph("AI-Powered Cybersecurity — Incident Report", h2_style))
+    # â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    content.append(Paragraph("ðŸ”’ IntelliSecure", title_style))
+    content.append(Paragraph("AI-Powered Cybersecurity â€” Incident Report", h2_style))
     content.append(Paragraph(
         f"Generated: {datetime.datetime.utcnow().strftime('%B %d, %Y at %H:%M UTC')}",
         caption_style
@@ -91,19 +91,19 @@ def generate_incident_report(stats: dict, alerts: list, score: dict, recommendat
     content.append(HRFlowable(width="100%", thickness=1, color=PRIMARY))
     content.append(Spacer(1, 0.4*cm))
 
-    # ── Executive Summary ─────────────────────────────────────────────────────
+    # â”€â”€ Executive Summary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     content.append(Paragraph("1. Executive Summary", h2_style))
     summary_text = (
-        f"This report summarizes the current security status of the InteliSecure monitored network. "
+        f"This report summarizes the current security status of the IntelliSecure monitored network. "
         f"The system detected <b>{stats.get('active_threats', 0)}</b> active threat(s), with "
         f"<b>{stats.get('critical_alerts', 0)}</b> critical alert(s) requiring immediate attention. "
-        f"The current security score is <b>{score.get('score', 'N/A')}/100</b> — "
+        f"The current security score is <b>{score.get('score', 'N/A')}/100</b> â€” "
         f"Risk Level: <b>{score.get('risk_level', 'Unknown')}</b>."
     )
     content.append(Paragraph(summary_text, body_style))
     content.append(Spacer(1, 0.3*cm))
 
-    # ── KPI Table ─────────────────────────────────────────────────────────────
+    # â”€â”€ KPI Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     kpi_data = [
         ["Metric",              "Value"],
         ["Total Logs Collected",    str(stats.get("total_logs", 0))],
@@ -126,7 +126,7 @@ def generate_incident_report(stats: dict, alerts: list, score: dict, recommendat
     content.append(kpi_table)
     content.append(Spacer(1, 0.5*cm))
 
-    # ── Active Alerts Table ───────────────────────────────────────────────────
+    # â”€â”€ Active Alerts Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     content.append(Paragraph("2. Active Security Alerts", h2_style))
 
     if alerts:
@@ -134,10 +134,10 @@ def generate_incident_report(stats: dict, alerts: list, score: dict, recommendat
         for i, a in enumerate(alerts[:20], 1):
             alert_data.append([
                 str(i),
-                a.get("threat_type", "—"),
-                a.get("severity",    "—"),
-                a.get("source",      "—")[:30],
-                str(a.get("timestamp", "—"))[:19]
+                a.get("threat_type", "â€”"),
+                a.get("severity",    "â€”"),
+                a.get("source",      "â€”")[:30],
+                str(a.get("timestamp", "â€”"))[:19]
             ])
 
         alert_table = Table(alert_data, colWidths=[1*cm, 5*cm, 3*cm, 4*cm, 4*cm])
@@ -156,7 +156,7 @@ def generate_incident_report(stats: dict, alerts: list, score: dict, recommendat
 
     content.append(Spacer(1, 0.5*cm))
 
-    # ── Score Breakdown ───────────────────────────────────────────────────────
+    # â”€â”€ Score Breakdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     content.append(Paragraph("3. Security Score Breakdown", h2_style))
     breakdown = score.get("breakdown", {})
     if breakdown:
@@ -187,27 +187,27 @@ def generate_incident_report(stats: dict, alerts: list, score: dict, recommendat
 
     content.append(Spacer(1, 0.5*cm))
 
-    # ── Recommendations ───────────────────────────────────────────────────────
+    # â”€â”€ Recommendations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     content.append(Paragraph("4. Priority Recommendations", h2_style))
 
     p1_recs = recommendations.get("p1_critical", [])
     p2_recs = recommendations.get("p2_high", [])
 
-    for priority, recs, color in [("P1 — Critical", p1_recs, DANGER), ("P2 — High", p2_recs, WARNING)]:
+    for priority, recs, color in [("P1 â€” Critical", p1_recs, DANGER), ("P2 â€” High", p2_recs, WARNING)]:
         if recs:
             content.append(Paragraph(priority, bold_style))
             for rec in recs[:5]:
                 content.append(Paragraph(
-                    f"• <b>{rec.get('action', '')}</b>: {rec.get('description', '')}",
+                    f"â€¢ <b>{rec.get('action', '')}</b>: {rec.get('description', '')}",
                     body_style
                 ))
             content.append(Spacer(1, 0.2*cm))
 
-    # ── Footer ────────────────────────────────────────────────────────────────
+    # â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     content.append(Spacer(1, 0.5*cm))
     content.append(HRFlowable(width="100%", thickness=0.5, color=colors.lightgrey))
     content.append(Paragraph(
-        f"InteliSecure v2.0 | Confidential — For Authorized Personnel Only | {datetime.datetime.utcnow().strftime('%Y-%m-%d')}",
+        f"IntelliSecure v2.0 | Confidential â€” For Authorized Personnel Only | {datetime.datetime.utcnow().strftime('%Y-%m-%d')}",
         caption_style
     ))
 

@@ -1,20 +1,20 @@
-"""
+﻿"""
 Threat Detection API Routes
 =============================
 REST endpoints for listing, scanning, explaining, and resolving security threats.
 
 Endpoints:
-  GET  /api/threats/           — List all alerts (paginated)
-  GET  /api/threats/active     — Unresolved alerts only
-  GET  /api/threats/stats      — Threat count statistics
-  GET  /api/threats/top-sources — Top attacker IPs
-  POST /api/threats/scan       — Trigger real-time detector scan
-  GET  /api/threats/{id}       — Get single alert
-  GET  /api/threats/{id}/explain — XAI explanation for an alert
-  GET  /api/threats/{id}/recommendations — Mitigation recommendations
-  POST /api/threats/{id}/resolve — Resolve an alert
+  GET  /api/threats/           â€” List all alerts (paginated)
+  GET  /api/threats/active     â€” Unresolved alerts only
+  GET  /api/threats/stats      â€” Threat count statistics
+  GET  /api/threats/top-sources â€” Top attacker IPs
+  POST /api/threats/scan       â€” Trigger real-time detector scan
+  GET  /api/threats/{id}       â€” Get single alert
+  GET  /api/threats/{id}/explain â€” XAI explanation for an alert
+  GET  /api/threats/{id}/recommendations â€” Mitigation recommendations
+  POST /api/threats/{id}/resolve â€” Resolve an alert
 
-Author: InteliSecure Team
+Author: IntelliSecure Team
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query
@@ -37,7 +37,7 @@ analyst_or_admin = Depends(RoleChecker(allowed_roles=["Admin", "Analyst"]))
 all_authenticated = Depends(get_current_user)
 
 
-# ─── Helper: Alert → Dict ─────────────────────────────────────────────────────
+# â”€â”€â”€ Helper: Alert â†’ Dict â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def alert_to_dict(alert: Alert) -> dict:
     """Serialize an Alert ORM object to a response dictionary."""
@@ -58,7 +58,7 @@ def alert_to_dict(alert: Alert) -> dict:
     }
 
 
-# ─── Endpoints ────────────────────────────────────────────────────────────────
+# â”€â”€â”€ Endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 @router.get("/", summary="List all alerts")
 def list_alerts(
