@@ -3,9 +3,13 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 
 from ..database import get_db
-from ..models import LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog
+from ..models import LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog, get_current_time
 from ..auth import get_current_user, RoleChecker
 from ..modules.log_parser import sync_all_logs
+from ..schemas.log_schema import (
+    LoginLogCreate, NetworkLogCreate, FileAccessLogCreate, 
+    MalwareLogCreate, USBLogCreate
+)
 
 router = APIRouter()
 
@@ -19,6 +23,86 @@ def sync_telemetry_logs(db: Session = Depends(get_db), current_user=auth_analyst
     """Parse local telemetry CSVs and load unique records into the database."""
     sync_stats = sync_all_logs(db)
     return {"message": "Telemetry synchronization finished.", "stats": sync_stats}
+
+# --- DYNAMIC LOG INGESTION ENDPOINTS ---
+
+@router.post("/ingest/login", status_code=status.HTTP_201_CREATED)
+def ingest_login_log(log: LoginLogCreate, db: Session = Depends(get_db)):
+    """Ingest a live login event from an external system."""
+    new_log = LoginLog(
+        timestamp=log.timestamp or get_current_time(),
+        username=log.username,
+        ip_address=log.ip_address,
+        status=log.status
+    )
+    db.add(new_log)
+    db.commit()
+    return {"message": "Login log ingested successfully"}
+
+@router.post("/ingest/network", status_code=status.HTTP_201_CREATED)
+def ingest_network_log(log: NetworkLogCreate, db: Session = Depends(get_db)):
+    """Ingest a live network packet event."""
+    new_log = NetworkLog(
+        timestamp=log.timestamp or get_current_time(),
+        source_ip=log.source_ip,
+        destination_ip=log.destination_ip,
+        port=log.port,
+        protocol=log.protocol,
+        bytes_sent=log.bytes_sent,
+        bytes_received=log.bytes_received,
+        action=log.action
+    )
+    db.add(new_log)
+    db.commit()
+    return {"message": "Network log ingested successfully"}
+
+@router.post("/ingest/file", status_code=status.HTTP_201_CREATED)
+def ingest_file_log(log: FileAccessLogCreate, db: Session = Depends(get_db)):
+    """Ingest a live file access event."""
+    new_log = FileAccessLog(
+        timestamp=log.timestamp or get_current_time(),
+        username=log.username,
+        file_path=log.file_path,
+        access_type=log.access_type,
+        status=log.status
+    )
+    db.add(new_log)
+    db.commit()
+    return {"message": "File access log ingested successfully"}
+
+@router.post("/ingest/malware", status_code=status.HTTP_201_CREATED)
+def ingest_malware_log(log: MalwareLogCreate, db: Session = Depends(get_db)):
+    """Ingest a live malware detection event."""
+    try:
+        new_log = MalwareLog(
+            timestamp=log.timestamp or get_current_time(),
+            file_name=log.file_name,
+            file_path=log.file_path,
+            hash=log.hash,
+            signature=log.signature,
+            action_taken=log.action
+        )
+        db.add(new_log)
+        db.commit()
+        return {"message": "Malware log ingested successfully"}
+    except Exception as e:
+        import traceback
+        return {"error": str(e), "traceback": traceback.format_exc()}
+
+@router.post("/ingest/usb", status_code=status.HTTP_201_CREATED)
+def ingest_usb_log(log: USBLogCreate, db: Session = Depends(get_db)):
+    """Ingest a live USB device event."""
+    new_log = USBLog(
+        timestamp=log.timestamp or get_current_time(),
+        username=log.username,
+        device_name=log.device_name,
+        device_id=log.device_id,
+        action=log.action
+    )
+    db.add(new_log)
+    db.commit()
+    return {"message": "USB log ingested successfully"}
+
 
 @router.get("/stats", status_code=status.HTTP_200_OK)
 def get_log_statistics(db: Session = Depends(get_db), current_user=auth_all):
