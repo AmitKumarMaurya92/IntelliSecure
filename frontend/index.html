@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -81,7 +81,7 @@
                 <i class="fa-solid fa-bars menu-toggle"></i>
                 <div>
                     <h1>Dashboard</h1>
-                    <p>Welcome back, Admin ðŸ‘‹</p>
+                    <p id="topbar-welcome">Welcome back, Amit 👋</p>
                 </div>
             </div>
             
@@ -112,9 +112,9 @@
                 <div class="topbar-divider"></div>
 
                 <div class="profile-container">
-                    <div class="avatar">A</div>
+                    <div class="avatar" id="topbar-avatar">A</div>
                     <div class="profile-text">
-                        <strong>Admin</strong>
+                        <strong id="topbar-name">Amit</strong>
                         <span>Administrator</span>
                     </div>
                 </div>
@@ -760,25 +760,6 @@
                 <div>
                     <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 5px;">Settings</h2>
                     <p style="color: var(--text-muted); font-size: 14px;">Manage your preferences, security and system configuration</p>
-                </div>
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <div class="search-box" style="background: var(--card-bg); border-color: var(--border-color); border-radius: 8px;">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Search anything..." style="background: transparent; border: none; color: var(--text-main); width: 150px; outline: none;">
-                        <span style="font-size: 10px; color: var(--text-muted); border: 1px solid var(--border-color); padding: 2px 5px; border-radius: 4px;">Ctrl + /</span>
-                    </div>
-                    <div style="position: relative; width: 40px; height: 40px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                        <i class="fa-regular fa-bell" style="color: var(--text-muted);"></i>
-                        <span style="position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 10px; font-weight: bold; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">3</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px; background: var(--card-bg); border: 1px solid var(--border-color); padding: 5px 15px 5px 5px; border-radius: 20px; cursor: pointer;">
-                        <img src="https://i.pravatar.cc/150?u=admin" alt="User" style="width: 30px; height: 30px; border-radius: 50%;">
-                        <div style="display: flex; flex-direction: column;">
-                            <span style="font-size: 12px; font-weight: bold;">Admin User</span>
-                            <span style="font-size: 10px; color: var(--text-muted);">Super Admin</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: var(--text-muted); margin-left: 10px;"></i>
-                    </div>
                 </div>
             </div>
 

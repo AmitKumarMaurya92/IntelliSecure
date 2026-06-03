@@ -52,6 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (fullNameInput && prefs.full_name) {
                 fullNameInput.value = prefs.full_name;
                 if (profileDisplayName) profileDisplayName.textContent = prefs.full_name;
+                const topbarName = document.getElementById("topbar-name");
+                const topbarAvatar = document.getElementById("topbar-avatar");
+                const topbarWelcome = document.getElementById("topbar-welcome");
+                if (topbarName) topbarName.textContent = prefs.full_name;
+                if (topbarAvatar) topbarAvatar.textContent = prefs.full_name.charAt(0).toUpperCase();
+                if (topbarWelcome) topbarWelcome.innerHTML = `Welcome back, ${prefs.full_name} 👋`;
             }
             if (prefs.avatar_base64) {
                 currentAvatarBase64 = prefs.avatar_base64;
@@ -130,7 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // ─── Profile Logic ───
     if (fullNameInput && profileDisplayName) {
         fullNameInput.addEventListener("input", (e) => {
-            profileDisplayName.textContent = e.target.value || "Admin User";
+            const newName = e.target.value || "Admin User";
+            profileDisplayName.textContent = newName;
+            const topbarName = document.getElementById("topbar-name");
+            const topbarAvatar = document.getElementById("topbar-avatar");
+            const topbarWelcome = document.getElementById("topbar-welcome");
+            if (topbarName) topbarName.textContent = newName;
+            if (topbarAvatar) topbarAvatar.textContent = newName.charAt(0).toUpperCase();
+            if (topbarWelcome) topbarWelcome.innerHTML = `Welcome back, ${newName} 👋`;
         });
     }
 

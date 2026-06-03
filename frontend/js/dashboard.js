@@ -424,6 +424,17 @@ setInterval(() => {
 // SPA NAVIGATION LOGIC
 // =============================
 document.addEventListener("DOMContentLoaded", () => {
+    // Sync avatar initial and welcome message with name on page load
+    const topbarName = document.getElementById("topbar-name");
+    const topbarAvatar = document.getElementById("topbar-avatar");
+    const topbarWelcome = document.getElementById("topbar-welcome");
+    
+    if (topbarName) {
+        const currentName = topbarName.textContent.trim();
+        if (topbarAvatar) topbarAvatar.textContent = currentName.charAt(0).toUpperCase();
+        if (topbarWelcome) topbarWelcome.innerHTML = `Welcome back, ${currentName} 👋`;
+    }
+
     const menuItems = document.querySelectorAll(".sidebar .menu li");
     const viewSections = document.querySelectorAll(".view-section");
 
