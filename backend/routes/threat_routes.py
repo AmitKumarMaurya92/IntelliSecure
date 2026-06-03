@@ -87,21 +87,24 @@ def list_alerts(
     }
 
 
-@router.get("/active", summary="List unresolved alerts")
-def list_active_alerts(
+@router.get("/active", summary="List unresolved active threats")
+def get_active_threats(
+    limit: int = Query(50, ge=1, le=200),
+    date: Optional[str] = Query(None, description="Filter date in YYYY-MM-DD format"),
     db: Session = Depends(get_db),
-    _: object   = all_authenticated
+    _: object = all_authenticated
 ):
-    """Return all active (unresolved) security alerts, ordered by severity."""
+    """Return all unresolved alerts (active threats)."""
     severity_order = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3}
-
+    q = db.query(Alert).filter(Alert.resolved == False)
+    if date:
+        q = q.filter(Alert.timestamp.like(f"{date}%"))
+        
     alerts = (
-        db.query(Alert)
-        .filter(Alert.resolved == False)
-        .order_by(Alert.timestamp.desc())
+        q.order_by(Alert.timestamp.desc())
+        .limit(limit)
         .all()
     )
-
     sorted_alerts = sorted(alerts, key=lambda a: severity_order.get(a.severity, 99))
 
     return {

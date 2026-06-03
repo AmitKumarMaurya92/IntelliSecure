@@ -119,8 +119,9 @@
                     </div>
                 </div>
 
-                <div class="date-picker" id="topbar-date">
+                <div class="date-picker" id="topbar-date" style="position: relative; cursor: pointer;">
                     <i class="fa-regular fa-calendar"></i> <span id="current-date-text">Loading...</span> <i class="fa-solid fa-chevron-down"></i>
+                    <input type="date" id="topbar-date-input" style="position: absolute; top: 0; left: 0; width: 0; height: 0; opacity: 0; pointer-events: none;">
                 </div>
             </div>
         </header>
@@ -710,11 +711,380 @@
                 </div>
             </div>
         </div>
-        <div id="view-export-reports" class="view-section"><div class="view-content"><h2>Export Reports</h2><p>Feature coming soon...</p></div></div>
-        <div id="view-settings" class="view-section"><div class="view-content"><h2>Settings</h2><p>Feature coming soon...</p></div></div>
-        <div id="view-users" class="view-section"><div class="view-content"><h2>Users</h2><p>Feature coming soon...</p></div></div>
-        <div id="view-help" class="view-section"><div class="view-content"><h2>Help & Learn</h2><p>Feature coming soon...</p></div></div>
+        <div id="view-export-reports" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>Export Raw Data</h2>
+                <div class="threats-filters">
+                    <button class="btn-outline" disabled><i class="fa-solid fa-download"></i> Download Center</button>
+                </div>
+            </div>
 
+            <div class="score-grid">
+                <div class="score-card" style="grid-column: 1 / -1; max-width: 700px; margin: 0 auto; padding: 40px;">
+                    <h3 class="score-card-title" style="margin-bottom: 25px; text-align: center;">Select Data to Export</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display:block; font-weight:bold; margin-bottom:10px;">Dataset:</label>
+                        <select id="export-dataset-select" class="form-control" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-main);">
+                            <option value="threats">Active Threats (Alerts)</option>
+                            <option value="login_logs">Authentication Logs (LoginLog)</option>
+                            <option value="network_logs">Network Telemetry (NetworkLog)</option>
+                            <option value="file_logs">File Integrity Monitoring (FileAccessLog)</option>
+                            <option value="malware_logs">Malware Detection Events (MalwareLog)</option>
+                            <option value="usb_logs">Removable Media Events (USBLog)</option>
+                            <option value="devices">Discovered LAN Devices (LANDevice)</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <label style="display:block; font-weight:bold; margin-bottom:10px;">Export Format:</label>
+                        <div style="display:flex; gap:20px;">
+                            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                <input type="radio" name="export_format" value="csv" checked style="width:18px; height:18px;">
+                                <i class="fa-solid fa-file-csv text-green" style="font-size:20px;"></i> CSV (.csv)
+                            </label>
+                            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                <input type="radio" name="export_format" value="xlsx" style="width:18px; height:18px;">
+                                <i class="fa-solid fa-file-excel text-green" style="font-size:20px;"></i> Excel (.xlsx)
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="trigger-export-btn" class="btn-primary" style="width: 100%; padding: 15px; font-size: 16px;"><i class="fa-solid fa-cloud-arrow-down"></i> Download Dataset</button>
+                    <p id="export-status-text" style="text-align:center; color:var(--text-muted); margin-top:15px; display:none;">Generating file...</p>
+                </div>
+            </div>
+        </div>
+        <div id="view-settings" class="view-section" style="padding-bottom: 80px;">
+            <div class="settings-header-top" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px;">
+                <div>
+                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 5px;">Settings</h2>
+                    <p style="color: var(--text-muted); font-size: 14px;">Manage your preferences, security and system configuration</p>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div class="search-box" style="background: var(--card-bg); border-color: var(--border-color); border-radius: 8px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search anything..." style="background: transparent; border: none; color: var(--text-main); width: 150px; outline: none;">
+                        <span style="font-size: 10px; color: var(--text-muted); border: 1px solid var(--border-color); padding: 2px 5px; border-radius: 4px;">Ctrl + /</span>
+                    </div>
+                    <div style="position: relative; width: 40px; height: 40px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                        <i class="fa-regular fa-bell" style="color: var(--text-muted);"></i>
+                        <span style="position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 10px; font-weight: bold; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">3</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; background: var(--card-bg); border: 1px solid var(--border-color); padding: 5px 15px 5px 5px; border-radius: 20px; cursor: pointer;">
+                        <img src="https://i.pravatar.cc/150?u=admin" alt="User" style="width: 30px; height: 30px; border-radius: 50%;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 12px; font-weight: bold;">Admin User</span>
+                            <span style="font-size: 10px; color: var(--text-muted);">Super Admin</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: var(--text-muted); margin-left: 10px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings-tabs-container" class="settings-nav-tabs" style="display: flex; gap: 5px; background: var(--card-bg); padding: 5px; border-radius: 12px; margin-bottom: 25px; border: 1px solid var(--border-color); overflow-x: auto;">
+                <button class="settings-tab active" data-tab="general" style="background: var(--primary-blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">General</button>
+                <button class="settings-tab" data-tab="security" style="background: transparent; color: var(--text-muted); border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">Security</button>
+                <button class="settings-tab" data-tab="notifications" style="background: transparent; color: var(--text-muted); border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">Notifications</button>
+                <button class="settings-tab" data-tab="system" style="background: transparent; color: var(--text-muted); border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">System</button>
+                <button class="settings-tab" data-tab="integrations" style="background: transparent; color: var(--text-muted); border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">Integrations</button>
+                <button class="settings-tab" data-tab="appearance" style="background: transparent; color: var(--text-muted); border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">Appearance</button>
+                <button class="settings-tab" data-tab="advanced" style="background: transparent; color: var(--text-muted); border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">Advanced</button>
+            </div>
+
+            <!-- TAB CONTENT: GENERAL -->
+            <div id="settings-content-general" class="settings-content-section" style="display: block;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- Left Column -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- Profile Settings -->
+                        <div class="score-card" style="padding: 25px; border-radius: 12px;">
+                            <h3 class="score-card-title" style="font-size: 15px; margin-bottom: 5px;">Profile Settings</h3>
+                            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 25px;">Manage your profile information</p>
+                            
+                            <div style="text-align: center; margin-bottom: 30px; position: relative;">
+                                <div style="position: relative; display: inline-block;">
+                                    <img id="profile-avatar-img" src="https://ui-avatars.com/api/?name=Admin+User&background=2563eb&color=fff&size=150" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color);">
+                                    <input type="file" id="avatar-upload-input" accept="image/*" style="display: none;">
+                                    <div id="avatar-edit-btn" style="position: absolute; bottom: 0; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Upload Image">
+                                        <i class="fa-solid fa-pen" style="font-size: 10px; color: var(--text-muted);"></i>
+                                    </div>
+                                    <div id="avatar-remove-btn" style="position: absolute; bottom: 0; left: 0; background: var(--card-bg); border: 1px solid var(--border-color); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--red);" title="Remove Image">
+                                        <i class="fa-solid fa-trash" style="font-size: 10px;"></i>
+                                    </div>
+                                </div>
+                                <h4 id="profile-display-name" style="margin-top: 15px; margin-bottom: 5px; font-size: 16px;">Admin User</h4>
+                                <p id="profile-display-email" style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">admin@intelisecure.com</p>
+                                <span style="background: var(--light-blue); color: var(--primary-blue); padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: bold;">Super Admin</span>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 100px 1fr; gap: 15px; align-items: center;">
+                                <label style="font-size: 13px; color: var(--text-muted);">Full Name</label>
+                                <input type="text" id="settings-fullname" value="Admin User" class="form-control" style="width: 100%; box-sizing: border-box; padding: 10px 15px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 13px;">
+
+                                <label style="font-size: 13px; color: var(--text-muted);">Email Address</label>
+                                <input type="text" id="settings-email" value="admin@intelisecure.com" class="form-control" style="width: 100%; box-sizing: border-box; padding: 10px 15px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 13px;">
+
+                                <label style="font-size: 13px; color: var(--text-muted);">Phone Number</label>
+                                <input type="tel" id="settings-phone" value="+91 9876543210" class="form-control" style="width: 100%; box-sizing: border-box; padding: 10px 15px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 13px;">
+                            </div>
+
+                            <div style="margin-top: 25px; display: flex; justify-content: center;">
+                                <button class="btn-primary" style="padding: 10px 20px; font-size: 13px; display: flex; align-items: center; gap: 8px;" onclick="alert('Profile updated successfully!')">
+                                    <i class="fa-regular fa-user"></i> Update Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- Language & Region -->
+                        <div class="score-card" style="padding: 25px; border-radius: 12px;">
+                            <h3 class="score-card-title" style="font-size: 15px; margin-bottom: 5px;">Language & Region</h3>
+                            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px;">Set your preferred language and region</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label style="font-size: 13px; color: var(--text-muted); width: 150px;">Language</label>
+                                    <select id="setting-language" class="form-control" style="flex: 1; padding: 10px 15px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 13px; appearance: none;">
+                                        <option value="English (US)">English (US)</option>
+                                        <option value="English (UK)">English (UK)</option>
+                                        <option value="Spanish">Spanish</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label style="font-size: 13px; color: var(--text-muted); width: 150px;">Time Zone</label>
+                                    <select id="setting-timezone" class="form-control" style="flex: 1; padding: 10px 15px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 13px; appearance: none;">
+                                        <option value="(UTC+05:30) Asia/Kolkata">(UTC+05:30) Asia/Kolkata</option>
+                                        <option value="(UTC+00:00) London">(UTC+00:00) London</option>
+                                        <option value="(UTC-05:00) Eastern Time (US)">(UTC-05:00) Eastern Time (US)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT: SECURITY -->
+            <div id="settings-content-security" class="settings-content-section" style="display: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- Left Column -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- Session Management -->
+                        <div class="score-card" style="padding: 25px; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                                <div>
+                                    <h3 class="score-card-title" style="font-size: 15px; margin-bottom: 5px;">Session Management</h3>
+                                    <p style="color: var(--text-muted); font-size: 12px;">Manage your active sessions</p>
+                                </div>
+                                <div style="width: 32px; height: 32px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-desktop" style="font-size: 12px; color: var(--text-muted);"></i>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 600; margin-bottom: 5px;">Current Session</div>
+                                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 3px;" id="current-session-browser">Chrome on Windows • New Delhi, India</div>
+                                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 3px;" id="current-session-ip">192.168.1.1</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Started <span id="current-session-time">10:30 AM</span></div>
+                                </div>
+                                <span style="background: var(--light-green); color: var(--green); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold;">Active</span>
+                            </div>
+
+                            <div id="other-sessions-toggle" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 5px; cursor: pointer;">
+                                <span style="font-size: 13px; font-weight: 600;">Other Active Sessions</span>
+                                <div style="display: flex; align-items: center; gap: 5px; color: var(--text-muted); font-size: 12px;">
+                                    <span id="other-sessions-count">0</span>
+                                    <i id="other-sessions-icon" class="fa-solid fa-chevron-right" style="font-size: 10px; transition: transform 0.2s;"></i>
+                                </div>
+                            </div>
+
+                            <div id="other-sessions-list" style="display: none; margin-bottom: 15px;">
+                                <!-- Dynamically populated sessions will go here -->
+                            </div>
+
+                            <button id="logout-others-btn" style="width: 100%; padding: 12px; background: transparent; border: 1px solid var(--red); color: var(--red); border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--light-red)'" onmouseout="this.style.background='transparent'">
+                                <i class="fa-solid fa-power-off"></i> Logout All Sessions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT: SYSTEM -->
+            <div id="settings-content-system" class="settings-content-section" style="display: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- Left Column -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- System Preferences -->
+                        <div class="score-card" style="padding: 25px; border-radius: 12px;">
+                            <h3 class="score-card-title" style="font-size: 15px; margin-bottom: 5px;">System Preferences</h3>
+                            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px;">Configure system behavior and performance</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 20px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 3px;">Auto Refresh Dashboard</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Refresh dashboard data automatically</div>
+                                    </div>
+                                    <select id="setting-auto-refresh" class="form-control" style="width: 120px; padding: 8px 15px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 12px; appearance: none;">
+                                        <option value="10">10 Seconds</option>
+                                        <option value="30">30 Seconds</option>
+                                        <option value="60">60 Seconds</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 3px;">Enable Sound Alerts</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Play sound for critical alerts</div>
+                                    </div>
+                                    <label class="switch settings-switch">
+                                        <input type="checkbox" id="setting-sound-alerts">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 3px;">Show Security Tips</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Display security tips and recommendations</div>
+                                    </div>
+                                    <label class="switch settings-switch">
+                                        <input type="checkbox" id="setting-security-tips">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- Data & Logs -->
+                        <div class="score-card" style="padding: 25px; border-radius: 12px;">
+                            <h3 class="score-card-title" style="font-size: 15px; margin-bottom: 5px;">Data & Logs</h3>
+                            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px;">Configure data storage and log retention settings</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 20px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label style="font-size: 13px; color: var(--text-muted); width: 150px;">Log Retention Period</label>
+                                    <select id="setting-log-retention" class="form-control" style="flex: 1; padding: 10px 15px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 13px; appearance: none;">
+                                        <option value="90">90 Days</option>
+                                        <option value="180">180 Days</option>
+                                        <option value="365">365 Days</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 3px;">Auto Delete Old Logs</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Automatically delete logs older than retention period</div>
+                                    </div>
+                                    <label class="switch settings-switch">
+                                        <input type="checkbox" id="setting-auto-delete">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 3px;">Compress Old Logs</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Compress logs to save storage space</div>
+                                    </div>
+                                    <label class="switch settings-switch">
+                                        <input type="checkbox" id="setting-compress-logs">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTHER TABS (Placeholders) -->
+            <div id="settings-content-notifications" class="settings-content-section" style="display: none;">
+                <div class="score-card" style="padding: 40px; text-align: center; border-radius: 12px;">
+                    <i class="fa-regular fa-bell" style="font-size: 30px; color: var(--text-muted); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 18px; margin-bottom: 5px;">Notifications</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Advanced notification routing will be available in v2.0.</p>
+                </div>
+            </div>
+
+            <div id="settings-content-integrations" class="settings-content-section" style="display: none;">
+                <div class="score-card" style="padding: 40px; text-align: center; border-radius: 12px;">
+                    <i class="fa-solid fa-link" style="font-size: 30px; color: var(--text-muted); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 18px; margin-bottom: 5px;">Integrations</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Slack, PagerDuty, and SIEM integrations coming soon.</p>
+                </div>
+            </div>
+
+            <div id="settings-content-appearance" class="settings-content-section" style="display: none;">
+                <div class="score-card" style="padding: 40px; text-align: center; border-radius: 12px;">
+                    <i class="fa-solid fa-palette" style="font-size: 30px; color: var(--text-muted); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 18px; margin-bottom: 5px;">Appearance</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Custom themes and branding settings.</p>
+                </div>
+            </div>
+
+            <div id="settings-content-advanced" class="settings-content-section" style="display: none;">
+                <div class="score-card" style="padding: 40px; text-align: center; border-radius: 12px;">
+                    <i class="fa-solid fa-sliders" style="font-size: 30px; color: var(--text-muted); margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 18px; margin-bottom: 5px;">Advanced Settings</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Developer API access and webhook configuration.</p>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <button id="save-settings-btn" class="btn-primary" style="padding: 12px 25px; font-size: 14px; display: flex; align-items: center; gap: 8px; border-radius: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
+                    <i class="fa-regular fa-floppy-disk"></i> Save Changes
+                </button>
+            </div>
+        </div>
+
+        <div id="view-users" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>User Management</h2>
+            </div>
+            <div class="score-grid">
+                <div class="score-card" style="grid-column: 1 / -1;">
+                    <div class="threats-table-container">
+                        <table class="threats-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <tr><td colspan="5" style="text-align:center; padding:20px;">Loading users...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-help" class="view-section">
+            <div class="threats-header" style="margin-bottom: 25px;">
+                <h2>Help & Learn</h2>
+                <div class="threats-filters">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="glossary-search" placeholder="Search glossary...">
+                    </div>
+                </div>
+            </div>
+            <div class="score-grid" id="glossary-grid">
+                <div class="score-card" style="grid-column: 1 / -1; text-align:center; padding:40px;">
+                    <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
+                    <p style="margin-top:15px; color:var(--text-muted);">Loading cybersecurity glossary...</p>
+                </div>
+            </div>
+        </div>
         <footer class="footer">
             &copy; 2024 InteliSecure. All rights reserved.
         </footer>
@@ -730,5 +1100,9 @@
 <script src="/js/risk.js"></script>
 <script src="/js/alerts.js"></script>
 <script src="/js/reports.js"></script>
+<script src="/js/export.js"></script>
+<script src="/js/settings.js"></script>
+<script src="/js/users.js"></script>
+<script src="/js/help.js"></script>
 </body>
 </html>

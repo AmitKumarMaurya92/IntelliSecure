@@ -19,6 +19,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 import datetime
+from typing import Optional
 
 from ..database import get_db
 from ..models   import LoginLog, NetworkLog, FileAccessLog, MalwareLog, USBLog, Alert
@@ -32,6 +33,7 @@ auth = Depends(get_current_user)
 
 @router.get("/stats", summary="Dashboard KPI cards")
 def get_dashboard_stats(
+    date: Optional[str] = Query(None, description="Filter date in YYYY-MM-DD format"),
     db: Session = Depends(get_db),
     _:  object  = auth
 ):
@@ -39,17 +41,33 @@ def get_dashboard_stats(
     Return the 4 main KPI card values:
     total_logs, active_threats, critical_alerts, security_score.
     """
+    # Base queries
+    login_q = db.query(LoginLog)
+    net_q = db.query(NetworkLog)
+    file_q = db.query(FileAccessLog)
+    mal_q = db.query(MalwareLog)
+    usb_q = db.query(USBLog)
+    alert_q = db.query(Alert)
+
+    if date:
+        login_q = login_q.filter(LoginLog.timestamp.like(f"{date}%"))
+        net_q = net_q.filter(NetworkLog.timestamp.like(f"{date}%"))
+        file_q = file_q.filter(FileAccessLog.timestamp.like(f"{date}%"))
+        mal_q = mal_q.filter(MalwareLog.timestamp.like(f"{date}%"))
+        usb_q = usb_q.filter(USBLog.timestamp.like(f"{date}%"))
+        alert_q = alert_q.filter(Alert.timestamp.like(f"{date}%"))
+
     # Total logs across all tables
     total_logs = (
-        db.query(LoginLog).count()     +
-        db.query(NetworkLog).count()   +
-        db.query(FileAccessLog).count() +
-        db.query(MalwareLog).count()   +
-        db.query(USBLog).count()
+        login_q.count() +
+        net_q.count() +
+        file_q.count() +
+        mal_q.count() +
+        usb_q.count()
     )
 
-    active_threats   = db.query(Alert).filter(Alert.resolved == False).count()
-    critical_alerts  = db.query(Alert).filter(Alert.severity == "Critical", Alert.resolved == False).count()
+    active_threats   = alert_q.filter(Alert.resolved == False).count()
+    critical_alerts  = alert_q.filter(Alert.severity == "Critical", Alert.resolved == False).count()
 
     score_data       = calculate_security_score(db)
 
@@ -66,14 +84,26 @@ def get_dashboard_stats(
 @router.get("/threat-trend", summary="Daily threat count trend")
 def get_threat_trend(
     days: int   = Query(7, ge=1, le=90, description="Number of days to look back"),
+    date: Optional[str] = Query(None, description="Filter date in YYYY-MM-DD format (end date for trend)"),
     db:   Session = Depends(get_db),
     _:    object  = auth
 ):
-    """Return daily alert counts for the last N days (default 7)."""
+    """Return daily alert counts for the last N days (default 7) up to the specified date."""
     trend = []
+    
+    if date:
+        try:
+            base_date = datetime.datetime.strptime(date, "%Y-%m-%d")
+            # Set to end of the given day
+            base_date = base_date.replace(hour=23, minute=59, second=59)
+        except ValueError:
+            base_date = datetime.datetime.utcnow()
+    else:
+        base_date = datetime.datetime.utcnow()
+        
     for days_ago in range(days - 1, -1, -1):
-        day_start = datetime.datetime.utcnow() - datetime.timedelta(days=days_ago + 1)
-        day_end   = datetime.datetime.utcnow() - datetime.timedelta(days=days_ago)
+        day_start = base_date - datetime.timedelta(days=days_ago + 1)
+        day_end   = base_date - datetime.timedelta(days=days_ago)
 
         count = (
             db.query(Alert)
@@ -91,14 +121,17 @@ def get_threat_trend(
 
 @router.get("/threat-distribution", summary="Threat type breakdown")
 def get_threat_distribution(
+    date: Optional[str] = Query(None, description="Filter date in YYYY-MM-DD format"),
     db: Session = Depends(get_db),
     _:  object  = auth
 ):
     """Return alert counts grouped by threat_type for the donut chart."""
+    q = db.query(Alert.threat_type, func.count(Alert.id).label("count")).filter(Alert.resolved == False)
+    if date:
+        q = q.filter(Alert.timestamp.like(f"{date}%"))
+        
     type_counts = (
-        db.query(Alert.threat_type, func.count(Alert.id).label("count"))
-        .filter(Alert.resolved == False)
-        .group_by(Alert.threat_type)
+        q.group_by(Alert.threat_type)
         .order_by(func.count(Alert.id).desc())
         .all()
     )
@@ -133,14 +166,17 @@ def get_threat_distribution(
 @router.get("/top-sources", summary="Top attack source IPs")
 def get_top_attack_sources(
     limit:  int     = Query(5, ge=1, le=20),
+    date: Optional[str] = Query(None, description="Filter date in YYYY-MM-DD format"),
     db:     Session = Depends(get_db),
     _:      object  = auth
 ):
     """Return top N source IPs/usernames by active alert count."""
+    q = db.query(Alert.source, func.count(Alert.id).label("count")).filter(Alert.resolved == False)
+    if date:
+        q = q.filter(Alert.timestamp.like(f"{date}%"))
+        
     sources = (
-        db.query(Alert.source, func.count(Alert.id).label("count"))
-        .filter(Alert.resolved == False)
-        .group_by(Alert.source)
+        q.group_by(Alert.source)
         .order_by(func.count(Alert.id).desc())
         .limit(limit)
         .all()

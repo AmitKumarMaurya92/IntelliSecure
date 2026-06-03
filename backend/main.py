@@ -36,6 +36,9 @@ from backend.routes.report_routes    import router as report_router
 from backend.routes.educational_routes import router as educational_router
 from backend.routes.realtime_routes  import router as realtime_router
 from backend.routes.risk_routes      import router as risk_router
+from backend.routes.export_routes    import router as export_router
+from backend.routes.user_routes      import router as user_router
+from backend.routes.settings_routes  import router as settings_router
 
 # ─── DB Table Creation ──────────────────────────────────────────────────────────
 Base.metadata.create_all(bind=engine)
@@ -73,6 +76,9 @@ app.include_router(report_router,    prefix="/api/reports",   tags=["Reports"])
 app.include_router(educational_router, prefix="/api/education", tags=["Education"])
 app.include_router(realtime_router,     prefix="/api/realtime",   tags=["Real-Time Monitor"])
 app.include_router(risk_router,      prefix="/api/risk",      tags=["Risk Analysis"])
+app.include_router(export_router,    prefix="/api/export",    tags=["Export Data"])
+app.include_router(user_router,      prefix="/api/users",     tags=["Users"])
+app.include_router(settings_router,  prefix="/api/settings",  tags=["Settings"])
 
 # ─── Static File Serving ─────────────────────────────────────────────────────────
 BACKEND_DIR  = os.path.dirname(os.path.abspath(__file__))

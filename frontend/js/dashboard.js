@@ -23,9 +23,21 @@ window.fetch = async function() {
     return response;
 };
 
+// =============================
+// DATE FILTER UTILS
+// =============================
+function appendDateQuery(url) {
+    const dateInput = document.getElementById("topbar-date-input");
+    if (dateInput && dateInput.value) {
+        // Only append date query if it's explicitly set by user, otherwise fallback to default (today or all-time)
+        return url.includes('?') ? `${url}&date=${dateInput.value}` : `${url}?date=${dateInput.value}`;
+    }
+    return url;
+}
+
 async function loadDashboardStats() {
     try {
-        const response = await fetch('/api/dashboard/stats', { headers: apiHeaders });
+        const response = await fetch(appendDateQuery('/api/dashboard/stats'), { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
 
@@ -58,7 +70,7 @@ async function loadDashboardStats() {
 
 async function loadAlerts() {
     try {
-        const response = await fetch('/api/threats/active', { headers: apiHeaders });
+        const response = await fetch(appendDateQuery('/api/threats/active'), { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
         renderAlerts(data.alerts || []);
@@ -112,7 +124,7 @@ function renderAlerts(alerts) {
 // =============================
 async function loadAttackSources() {
     try {
-        const response = await fetch('/api/dashboard/top-sources', { headers: apiHeaders });
+        const response = await fetch(appendDateQuery('/api/dashboard/top-sources'), { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
         const sources = data.sources || [];
@@ -151,7 +163,7 @@ async function loadAttackSources() {
 // =============================
 async function loadThreatTrend(days = 7) {
     try {
-        const response = await fetch(`/api/dashboard/threat-trend?days=${days}`, { headers: apiHeaders });
+        const response = await fetch(appendDateQuery(`/api/dashboard/threat-trend?days=${days}`), { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
 
@@ -186,7 +198,7 @@ async function loadThreatTrend(days = 7) {
 // =============================
 async function loadThreatDistribution() {
     try {
-        const response = await fetch('/api/dashboard/threat-distribution', { headers: apiHeaders });
+        const response = await fetch(appendDateQuery('/api/dashboard/threat-distribution'), { headers: apiHeaders });
         if (!response.ok) throw new Error("API Error");
         const data = await response.json();
 
@@ -265,9 +277,48 @@ function initDashboard() {
 function setupTopbar() {
     // 1. Set current date
     const dateEl = document.getElementById("current-date-text");
+    const dateInput = document.getElementById("topbar-date-input");
+    const datePickerDiv = document.getElementById("topbar-date");
+    
     if (dateEl) {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        dateEl.innerText = new Date().toLocaleDateString('en-US', options);
+        const today = new Date();
+        dateEl.innerText = today.toLocaleDateString('en-US', options);
+        
+        if (dateInput) {
+            // Set the default input value to today for the native picker (YYYY-MM-DD format)
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+            
+            // Make the whole button clickable to open the native calendar
+            if (datePickerDiv) {
+                datePickerDiv.addEventListener('click', () => {
+                    try {
+                        dateInput.showPicker();
+                    } catch (e) {
+                        dateInput.focus();
+                    }
+                });
+            }
+            
+            // Listen for changes
+            dateInput.addEventListener('change', (e) => {
+                if (e.target.value) {
+                    const selectedDate = new Date(e.target.value);
+                    dateEl.innerText = selectedDate.toLocaleDateString('en-US', options);
+                    
+                    // Reload dashboard data with new date filter
+                    loadDashboardStats();
+                    loadAlerts();
+                    loadAttackSources();
+                    loadThreatTrend(7);
+                    loadThreatDistribution();
+                    loadScoreTrend();
+                }
+            });
+        }
     }
 
     // 2. Setup notification click to open alerts
