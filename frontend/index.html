@@ -17,6 +17,8 @@
 </head>
 <body>
 <div class="container">
+    <!-- MOBILE SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="logo">
@@ -669,7 +671,7 @@
                 </div>
             </div>
 
-            <div class="score-grid" style="margin-bottom: 24px; display:flex; gap:20px;">
+            <div class="score-grid responsive-flex-row" style="margin-bottom: 24px; display:flex; gap:20px;">
                 <div class="score-card" style="flex:1; text-align:center; padding:40px 20px;">
                     <div style="background:var(--red); width:60px; height:60px; border-radius:15px; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px auto; color:white;">
                         <i class="fa-solid fa-file-pdf fa-2x"></i>
@@ -1053,9 +1055,9 @@
             <div class="threats-header" style="margin-bottom: 25px;">
                 <h2>Help & Learn</h2>
                 <div class="threats-filters">
-                    <div class="search-box">
+                    <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="glossary-search" placeholder="Search glossary...">
+                        <input type="text" id="glossary-search" class="search-box" placeholder="Search glossary...">
                     </div>
                 </div>
             </div>

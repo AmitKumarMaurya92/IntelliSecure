@@ -228,9 +228,10 @@ async function loadThreatTrend(days = 7) {
             margin: { t: 20, l: 30, r: 10, b: 30 },
             paper_bgcolor: "transparent",
             plot_bgcolor: "transparent",
+            autosize: true,
             xaxis: { showgrid: false, zeroline: false },
             yaxis: { showgrid: true, gridcolor: "#f1f5f9", zeroline: false }
-        }, { displayModeBar: false });
+        }, { displayModeBar: false, responsive: true });
 
     } catch (err) {
         console.error("Failed to load threat trend:", err);
@@ -272,6 +273,7 @@ async function loadThreatDistribution() {
             showlegend: false,
             paper_bgcolor: "transparent",
             plot_bgcolor: "transparent",
+            autosize: true,
             annotations: [{
                 font: { size: 20, weight: 700, color: "#1e293b" },
                 showarrow: false,
@@ -400,6 +402,7 @@ async function loadScoreTrend() {
             fillcolor: lineColor + "20"
         }], {
             margin: { t: 20, l: 30, r: 20, b: 30 },
+            autosize: true,
             xaxis: { showgrid: false, zeroline: false },
             yaxis: { showgrid: true, gridcolor: "#f1f5f9", zeroline: false, range: [0, 100] },
             hovermode: "closest"
@@ -435,8 +438,79 @@ document.addEventListener("DOMContentLoaded", () => {
         if (topbarWelcome) topbarWelcome.innerHTML = `Welcome back, ${currentName} 👋`;
     }
 
+    // =============================
+    // MOBILE SIDEBAR TOGGLE
+    // =============================
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+    function openMobileSidebar() {
+        if (sidebar) sidebar.classList.add("mobile-open");
+        if (sidebarOverlay) sidebarOverlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeMobileSidebar() {
+        if (sidebar) sidebar.classList.remove("mobile-open");
+        if (sidebarOverlay) sidebarOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    if (menuToggle) {
+        menuToggle.addEventListener("click", () => {
+            if (sidebar && sidebar.classList.contains("mobile-open")) {
+                closeMobileSidebar();
+            } else {
+                openMobileSidebar();
+            }
+        });
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener("click", closeMobileSidebar);
+    }
+
+    // Close sidebar on window resize above mobile breakpoint
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 768) {
+            closeMobileSidebar();
+        }
+        // Trigger Plotly chart resize for all visible Plotly charts
+        triggerPlotlyResize();
+    });
+
+    function triggerPlotlyResize() {
+        const plotlyCharts = document.querySelectorAll(".js-plotly-plot");
+        plotlyCharts.forEach(chart => {
+            try { Plotly.Plots.resize(chart); } catch(e) {}
+        });
+    }
+
+    // =============================
+    // SPA NAVIGATION LOGIC
+    // =============================
     const menuItems = document.querySelectorAll(".sidebar .menu li");
     const viewSections = document.querySelectorAll(".view-section");
+    const topbarTitle = document.querySelector(".topbar-left h1");
+
+    // Map targets to display titles
+    const titleMap = {
+        "view-dashboard": "Dashboard",
+        "view-real-time": "Real-Time Monitor",
+        "view-threats": "Threats",
+        "view-alerts": "Alerts",
+        "view-logs": "Logs",
+        "view-devices": "Devices (LAN)",
+        "view-security-score": "Security Score",
+        "view-attack-trends": "Attack Trends",
+        "view-risk-analysis": "Risk Analysis",
+        "view-reports": "Reports",
+        "view-export-reports": "Export Reports",
+        "view-settings": "Settings",
+        "view-users": "Users",
+        "view-help": "Help & Learn"
+    };
 
     menuItems.forEach(item => {
         item.addEventListener("click", () => {
@@ -456,10 +530,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 targetView.classList.add("active");
             }
 
+            // Update topbar title
+            if (topbarTitle && titleMap[targetId]) {
+                topbarTitle.textContent = titleMap[targetId];
+            }
+
+            // Close mobile sidebar after navigation
+            if (window.innerWidth <= 768) {
+                closeMobileSidebar();
+            }
+
             // Lazy-init the real-time monitor view on first activation
             if (targetId === "view-real-time" && typeof window.initRealtimeMonitorView === "function") {
                 window.initRealtimeMonitorView();
             }
+
+            // Resize charts after view switch (needed for Plotly/Chart.js)
+            setTimeout(() => {
+                triggerPlotlyResize();
+                // Also trigger Chart.js resize for canvases
+                const canvases = targetView ? targetView.querySelectorAll("canvas") : [];
+                canvases.forEach(c => {
+                    const chartInstance = Chart.getChart(c);
+                    if (chartInstance) chartInstance.resize();
+                });
+            }, 100);
         });
     });
 });

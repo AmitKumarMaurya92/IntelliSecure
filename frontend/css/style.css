@@ -889,8 +889,31 @@ body.dark-theme .dropdown-select {
     border-radius: 10px;
 }
 
-@media(max-width:1400px) {
+/* ── Mobile Sidebar Overlay Mechanism ─── */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ─────────────────────────────────────────
+   BREAKPOINT: 1400px (Large Desktops)
+───────────────────────────────────────── */
+@media (max-width: 1400px) {
     .middle-grid,
     .bottom-grid {
         grid-template-columns: 1fr 1fr;
@@ -899,9 +922,16 @@ body.dark-theme .dropdown-select {
     .chart-box.span-2 {
         grid-column: span 1;
     }
+
+    .system-health-box {
+        grid-column: span 1;
+    }
 }
 
-@media(max-width:1024px) {
+/* ─────────────────────────────────────────
+   BREAKPOINT: 1024px (Tablets / Small Laptops)
+───────────────────────────────────────── */
+@media (max-width: 1024px) {
     .cards {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -914,11 +944,75 @@ body.dark-theme .dropdown-select {
     .chart-box.span-2 {
         grid-column: span 1;
     }
+
+    .system-health-box {
+        grid-column: span 1;
+    }
+
+    /* Topbar adjustments */
+    .topbar {
+        padding: 0 20px;
+    }
+
+    .search-box {
+        width: 200px;
+    }
+
+    .switch-track {
+        width: 120px;
+        height: 38px;
+    }
+
+    .switch-thumb {
+        width: 30px;
+        height: 30px;
+    }
+
+    body.dark-theme .switch-thumb {
+        transform: translateX(-72px);
+    }
+
+    .switch-text {
+        font-size: 9px;
+    }
+
+    /* Score grid */
+    .score-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Threats stats */
+    .threats-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* View sections padding */
+    .view-section {
+        padding: 0 5px;
+    }
 }
 
-@media(max-width:768px) {
+/* ─────────────────────────────────────────
+   BREAKPOINT: 768px (Mobile - Portrait Tablets)
+───────────────────────────────────────── */
+@media (max-width: 768px) {
+    /* ── Sidebar: Hidden by default, shown as overlay ── */
     .sidebar {
-        display: none;
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 260px;
+        height: 100vh;
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        box-shadow: none;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+        box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
     }
 
     .main-content {
@@ -926,12 +1020,663 @@ body.dark-theme .dropdown-select {
         width: 100%;
     }
 
-    .cards {
-        grid-template-columns: 1fr;
+    /* ── Topbar ── */
+    .topbar {
+        height: auto;
+        min-height: 60px;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .topbar-left {
+        gap: 12px;
+    }
+
+    .topbar-left h1 {
+        font-size: 17px;
+    }
+
+    .topbar-left p {
+        font-size: 11px;
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 22px;
+        padding: 4px;
+        cursor: pointer;
+    }
+
+    .topbar-right {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
 
     .search-container {
         display: none;
+    }
+
+    .theme-switch {
+        margin-left: 0;
+    }
+
+    .switch-track {
+        width: 100px;
+        height: 34px;
+    }
+
+    .switch-thumb {
+        width: 26px;
+        height: 26px;
+    }
+
+    .switch-thumb i {
+        font-size: 14px;
+    }
+
+    body.dark-theme .switch-thumb {
+        transform: translateX(-60px);
+    }
+
+    .switch-text {
+        font-size: 8px;
+        letter-spacing: 0.3px;
+    }
+
+    .switch-text.light-text {
+        left: 12px;
+    }
+
+    .switch-text.dark-text {
+        right: 8px;
+    }
+
+    .topbar-divider {
+        display: none;
+    }
+
+    .profile-text {
+        display: none;
+    }
+
+    .date-picker {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+    .icon-group {
+        border-right: none;
+        padding-right: 0;
+    }
+
+    /* ── Dashboard Cards ── */
+    .cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .card {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .card-content h2 {
+        font-size: 22px;
+    }
+
+    .card-content h4 {
+        font-size: 11px;
+    }
+
+    /* ── Grid Layouts ── */
+    .middle-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 16px 16px;
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 16px 16px;
+    }
+
+    .system-health-box {
+        grid-column: span 1;
+    }
+
+    .chart-box {
+        padding: 16px;
+    }
+
+    /* ── Donut Chart ── */
+    .donut-container {
+        flex-direction: column;
+        height: auto;
+        gap: 16px;
+    }
+
+    .donut-chart {
+        min-height: 200px;
+        width: 100%;
+    }
+
+    .custom-legend {
+        width: 100%;
+    }
+
+    /* ── Plotly Chart Heights ── */
+    #threatTrendChart,
+    #threatDistributionChart,
+    #scoreTrendChart {
+        height: 220px;
+        min-height: 200px;
+    }
+
+    .rtm-chart-container {
+        height: 180px;
+        min-height: 160px;
+    }
+
+    /* ── Score Grid (used in many views) ── */
+    .score-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* ── Threats Module ── */
+    .threats-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 0 16px;
+    }
+
+    .threats-filters {
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .threats-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0 16px;
+    }
+
+    .threat-stat-card {
+        padding: 14px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .threats-table-container {
+        border-radius: 10px;
+    }
+
+    .threats-table th,
+    .threats-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .threats-pagination {
+        padding: 0 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* ── Logs Module ── */
+    .log-tabs {
+        padding: 0 16px 10px;
+        gap: 6px;
+    }
+
+    .log-tab {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    /* ── RTM Module ── */
+    .rtm-control-bar {
+        margin: 16px 16px 0;
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .rtm-control-left {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .rtm-control-right {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .rtm-scan-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .rtm-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 16px 16px 0;
+    }
+
+    .rtm-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .rtm-card-value {
+        font-size: 22px;
+    }
+
+    .rtm-main-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px 16px 0;
+    }
+
+    .rtm-feed-list {
+        max-height: 300px;
+    }
+
+    .rtm-summary-bar {
+        margin: 16px 16px 10px;
+        padding: 12px 16px;
+    }
+
+    /* ── Settings Module ── */
+    .settings-nav-tabs {
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── Reports Module ── */
+    .view-section .score-grid[style*="display:flex"] {
+        flex-direction: column !important;
+    }
+
+    /* ── Footer ── */
+    .footer {
+        padding: 16px;
+        font-size: 11px;
+    }
+
+    /* ── Modal ── */
+    .modal-content {
+        margin: 16px;
+        max-width: calc(100% - 32px);
+    }
+
+    .modal-header {
+        padding: 16px 20px;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 16px 20px;
+    }
+
+    /* ── View sections general padding ── */
+    .view-section {
+        padding: 0;
+    }
+
+    #view-dashboard .cards {
+        padding: 16px;
+    }
+
+    /* ── Alert Feed ── */
+    .alert-feed-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .alert-feed-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .alert-feed-title {
+        font-size: 14px;
+    }
+
+    .alert-feed-desc {
+        font-size: 13px;
+    }
+
+    .alert-feed-actions {
+        flex-wrap: wrap;
+    }
+
+    /* ── Score Module ── */
+    .score-donut-container {
+        width: 160px;
+        height: 160px;
+    }
+
+    .score-center-text {
+        font-size: 36px;
+    }
+
+    .score-line-container {
+        height: 200px;
+    }
+
+    /* ── Trends Module ── */
+    .trends-donut-container {
+        height: 200px;
+    }
+
+    /* ── Export Module ── */
+    .view-section .score-card[style*="max-width: 700px"] {
+        max-width: 100% !important;
+        padding: 24px !important;
+    }
+}
+
+/* ─────────────────────────────────────────
+   BREAKPOINT: 480px (Small Mobile Phones)
+───────────────────────────────────────── */
+@media (max-width: 480px) {
+    /* ── Topbar ── */
+    .topbar {
+        padding: 10px 12px;
+    }
+
+    .topbar-left h1 {
+        font-size: 15px;
+    }
+
+    .topbar-right {
+        gap: 8px;
+    }
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+    }
+
+    .date-picker {
+        display: none;
+    }
+
+    /* ── Dashboard Cards ── */
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    .card-content h2 {
+        font-size: 20px;
+    }
+
+    /* ── Grid Layouts ── */
+    .middle-grid,
+    .bottom-grid {
+        padding: 0 12px 12px;
+        gap: 12px;
+    }
+
+    .chart-box {
+        padding: 14px;
+    }
+
+    .box-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    /* ── Threats ── */
+    .threats-header {
+        padding: 0 12px;
+    }
+
+    .threats-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 0 12px;
+    }
+
+    .threats-table-container {
+        border-radius: 10px;
+    }
+
+    .threats-table th,
+    .threats-table td {
+        padding: 8px 10px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+    .threats-pagination {
+        padding: 0 12px;
+    }
+
+    /* ── RTM ── */
+    .rtm-control-bar {
+        margin: 12px 12px 0;
+        padding: 10px 12px;
+    }
+
+    .rtm-cards {
+        grid-template-columns: 1fr;
+        padding: 12px 12px 0;
+    }
+
+    .rtm-main-grid {
+        padding: 12px 12px 0;
+    }
+
+    .rtm-summary-bar {
+        margin: 12px 12px 10px;
+        font-size: 12px;
+    }
+
+    .rtm-detector-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rtm-feed-item {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .rtm-feed-title {
+        font-size: 12px;
+    }
+
+    .rtm-feed-desc {
+        font-size: 11px;
+    }
+
+    /* ── Score Grid ── */
+    .score-grid {
+        gap: 12px;
+    }
+
+    .score-card {
+        padding: 16px;
+    }
+
+    .score-card-title {
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+
+    .score-donut-container {
+        width: 140px;
+        height: 140px;
+    }
+
+    .score-center-text {
+        font-size: 30px;
+    }
+
+    .score-line-container {
+        height: 180px;
+    }
+
+    /* ── Logs ── */
+    .log-tabs {
+        padding: 0 12px 8px;
+        gap: 4px;
+    }
+
+    .log-tab {
+        padding: 7px 10px;
+        font-size: 11px;
+        gap: 5px;
+    }
+
+    /* ── Alerts ── */
+    .alert-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .alert-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* ── Settings ── */
+    .settings-nav-tabs {
+        gap: 3px !important;
+        padding: 3px !important;
+    }
+
+    .settings-tab {
+        padding: 8px 12px !important;
+        font-size: 11px !important;
+    }
+
+    /* ── Modal ── */
+    .modal-content {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+        border-radius: 10px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+        padding: 12px;
+        font-size: 10px;
+    }
+
+    /* ── Trends Module ── */
+    .trends-donut-container {
+        height: 180px;
+    }
+}
+
+/* =========================
+   RESPONSIVE UTILITIES
+========================= */
+.responsive-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.responsive-form-grid {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 15px;
+    align-items: center;
+}
+
+.responsive-flex-row {
+    display: flex;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .responsive-grid-2col {
+        grid-template-columns: 1fr;
+    }
+
+    .responsive-form-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .responsive-flex-row {
+        flex-direction: column;
+    }
+
+    /* Fix inline flex/grid in settings/reports that use inline styles */
+    div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    div[style*="grid-template-columns: 100px 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Fix settings label alignment on mobile */
+    div[style*="display: flex; align-items: center; justify-content: space-between"] {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* Settings header */
+    .settings-header-top {
+        padding: 0 16px;
+    }
+
+    /* Settings tabs container */
+    .settings-nav-tabs {
+        margin: 0 16px 25px 16px !important;
+    }
+
+    /* Settings content sections */
+    .settings-content-section {
+        padding: 0 16px;
+    }
+
+    /* Save button container */
+    #view-settings > div:last-child {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .responsive-form-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
 }
 
@@ -940,10 +1685,36 @@ body.dark-theme .dropdown-select {
 ========================= */
 .view-section {
     display: none;
+    padding: 20px 30px;
 }
 
 .view-section.active {
     display: block;
+}
+
+/* Dashboard view has its own padding via cards/grid sections */
+#view-dashboard {
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .view-section {
+        padding: 16px;
+    }
+
+    #view-dashboard {
+        padding: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .view-section {
+        padding: 12px;
+    }
+
+    #view-dashboard {
+        padding: 0;
+    }
 }
 
 .view-content {
@@ -2001,6 +2772,8 @@ body.dark-theme .log-tab.active .log-badge {
     padding: 24px;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .score-card-title {
@@ -2317,4 +3090,18 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/* =========================
+   RESPONSIVE TABLES
+========================= */
+.threats-table-container {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+}
+
+.threats-table {
+    min-width: 500px;
 }
