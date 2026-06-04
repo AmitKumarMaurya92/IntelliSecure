@@ -1,4 +1,4 @@
-﻿"""
+"""
 IntelliSecure - Main FastAPI Application Entry Point
 ===================================================
 AI-Powered Cybersecurity Threat Detection, Analysis, and Incident Response System
@@ -96,6 +96,7 @@ app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets"))
 # â”€â”€â”€ Frontend Page Routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 @app.get("/", include_in_schema=False)
 @app.get("/login", include_in_schema=False)
+@app.get("/login.html", include_in_schema=False)
 def serve_login():
     return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
 

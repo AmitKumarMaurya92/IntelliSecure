@@ -113,11 +113,18 @@
 
                 <div class="topbar-divider"></div>
 
-                <div class="profile-container">
+                <div class="profile-container" id="profile-menu-toggle" style="position: relative; cursor: pointer; user-select: none;">
                     <div class="avatar" id="topbar-avatar">A</div>
                     <div class="profile-text">
                         <strong id="topbar-name">Amit</strong>
                         <span>Administrator</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down" id="profile-chevron" style="color: var(--text-muted); font-size: 10px; margin-left: 2px; transition: transform 0.2s;"></i>
+                    
+                    <div class="profile-dropdown" id="profile-dropdown" style="display: none; position: absolute; top: calc(100% + 15px); right: 0; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 5px 0; min-width: 160px; z-index: 1000;">
+                        <a href="/login" id="logout-btn" class="dropdown-item" style="display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: #ef4444; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s;">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                        </a>
                     </div>
                 </div>
 

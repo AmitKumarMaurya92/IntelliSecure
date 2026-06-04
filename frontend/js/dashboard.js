@@ -606,3 +606,37 @@ if (trendSelect) {
         loadThreatTrend(parseInt(val));
     });
 }
+
+// =============================
+// PROFILE DROPDOWN LOGIC
+// =============================
+const profileToggle = document.getElementById("profile-menu-toggle");
+const profileDropdown = document.getElementById("profile-dropdown");
+const profileChevron = document.getElementById("profile-chevron");
+
+if (profileToggle && profileDropdown) {
+    profileToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isVisible = profileDropdown.style.display === "block";
+        profileDropdown.style.display = isVisible ? "none" : "block";
+        if (profileChevron) {
+            profileChevron.style.transform = isVisible ? "rotate(0deg)" : "rotate(180deg)";
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!profileToggle.contains(e.target)) {
+            profileDropdown.style.display = "none";
+            if (profileChevron) {
+                profileChevron.style.transform = "rotate(0deg)";
+            }
+        }
+    });
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+            localStorage.removeItem("access_token");
+        });
+    }
+}
